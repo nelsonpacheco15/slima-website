@@ -919,44 +919,132 @@
   .mock-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
 
   /* ══════════════════════════════════════
-     4. AI DIALOGUE
+     4. AI DIALOGUE — scroll-driven, messages recede toward horizon
      ══════════════════════════════════════ */
-  .dialogue-section { padding: 120px 32px; background: #0a0a0a; color: #fff; position: relative; overflow: hidden; }
+  .dialogue-section {
+    background: #1a1a1a;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    /* tall track gives us scroll space for the sticky animation */
+    min-height: 220vh;
+  }
+  /* Soft fade from the previous (white) section into the dark one */
   .dialogue-section::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at 70% 30%, rgba(99,102,241,0.15) 0%, transparent 60%);
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(to bottom, #ffffff 0%, rgba(26,26,26,0) 100%);
+    z-index: 1; pointer-events: none;
+  }
+  /* Soft fade out to white at the bottom */
+  .dialogue-section::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 120px;
+    background: linear-gradient(to top, #ffffff 0%, rgba(26,26,26,0) 100%);
+    z-index: 1; pointer-events: none;
+  }
+  /* Subtle vignette glow */
+  .dialogue-glow {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 60%, rgba(99,102,241,0.18) 0%, transparent 55%);
     pointer-events: none;
+    z-index: 0;
+  }
+  .dialogue-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 32px;
   }
   .dialogue-inner {
-    max-width: 880px; margin: 0 auto;
-    text-align: center; position: relative; z-index: 1;
+    max-width: 760px; margin: 0 auto;
+    text-align: center;
+    position: relative; z-index: 2;
+    width: 100%;
   }
+  .dialogue-inner .eyebrow { color: rgba(255,255,255,0.5); }
   .dialogue-inner h2 { color: #fff; margin-bottom: 18px; }
   .dialogue-inner .lead { color: rgba(255,255,255,0.65); margin: 0 auto 56px; }
-  .dialogue-list { display: flex; flex-direction: column; gap: 16px; text-align: left; max-width: 720px; margin: 0 auto; }
+
+  /* Bubble stage — fixed-height container so receding messages have somewhere to go */
+  .dialogue-stage {
+    position: relative;
+    height: 360px;
+    margin: 0 auto;
+    max-width: 720px;
+    perspective: 1200px;
+  }
   .dialogue-bubble {
-    padding: 18px 22px; border-radius: 16px;
+    position: absolute;
+    left: 0; right: 0;
+    margin: 0 auto;
+    padding: 18px 22px;
+    border-radius: 16px;
     font-size: 15px; line-height: 1.55;
-    backdrop-filter: blur(10px);
+    text-align: left;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    /* Initial state: hidden below the stage, ready to slide up */
+    opacity: 0;
+    transform: translateY(180px);
+    /* Springy ease for the slide-in feel */
+    transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, opacity;
   }
   .dialogue-bubble.you {
-    background: rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.06);
     border: 1px solid rgba(255,255,255,0.12);
-    align-self: flex-end; max-width: 75%;
+    max-width: 70%;
+    margin-left: auto; margin-right: 0;
+    right: 0; left: auto;
   }
   .dialogue-bubble.slima {
-    background: rgba(99,102,241,0.18);
+    background: rgba(99,102,241,0.16);
     border: 1px solid rgba(99,102,241,0.3);
-    align-self: flex-start; max-width: 80%;
+    max-width: 78%;
+    margin-right: auto; margin-left: 0;
+    left: 0; right: auto;
   }
-  .dialogue-bubble.you::before, .dialogue-bubble.slima::before {
+  .dialogue-bubble::before {
     content: attr(data-from);
     display: block;
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
     margin-bottom: 8px;
   }
+  /* In-focus: bubble sits at its resting position */
+  .dialogue-bubble.in {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  /* Receding stages — each step further toward "horizon" */
+  .dialogue-bubble.r1 { opacity: 0.85; transform: translateY(-70px) scale(0.94); }
+  .dialogue-bubble.r2 { opacity: 0.55; transform: translateY(-130px) scale(0.86); filter: blur(0.5px); }
+  .dialogue-bubble.r3 { opacity: 0.25; transform: translateY(-180px) scale(0.78); filter: blur(1.5px); }
+  .dialogue-bubble.r4 { opacity: 0; transform: translateY(-220px) scale(0.72); filter: blur(2.5px); }
+  /* Hint cursor when scrolling through the section */
+  .dialogue-cursor {
+    position: absolute;
+    bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255,255,255,0.4);
+    font-size: 11px; letter-spacing: 0.16em;
+    text-transform: uppercase;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    z-index: 3;
+    transition: opacity 0.4s;
+  }
+  .dialogue-cursor svg { width: 18px; height: 18px; }
+  .dialogue-cursor.hide { opacity: 0; }
+  @keyframes dialogueArrow {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+  .dialogue-cursor svg { animation: dialogueArrow 1.6s ease-in-out infinite; }
 
   /* ══════════════════════════════════════
      5. VALUE PROPOSITION CARDS
@@ -1793,21 +1881,28 @@
   </div>
 </section>
 
-<!-- ════ 4. AI DIALOGUE ════ -->
-<section class="dialogue-section">
-  <div class="dialogue-inner">
-    <div class="eyebrow">Always-on companion</div>
-    <h2 class="headline">Ask anything. About <em>your</em> book.</h2>
-    <p class="lead">Because Slima already has your manuscript in memory, the answers are about your characters, your plot, your draft — not generic writing advice.</p>
+<!-- ════ 4. AI DIALOGUE — scroll-driven, messages recede toward horizon ════ -->
+<section class="dialogue-section" id="dialogueSection">
+  <div class="dialogue-glow"></div>
+  <div class="dialogue-sticky">
+    <div class="dialogue-inner">
+      <div class="eyebrow">Always-on companion</div>
+      <h2 class="headline">Ask anything. About <em>your</em> book.</h2>
+      <p class="lead">Because Slima already has your manuscript in memory, the answers are about your characters, your plot, your draft — not generic writing advice.</p>
 
-    <div class="dialogue-list">
-      <div class="dialogue-bubble you" data-from="You">What's the emotional tone of Chapter 3 right now?</div>
-      <div class="dialogue-bubble slima" data-from="Slima">Reflective and slightly distant. It picks up the prologue's grief but doesn't restate it — Elias is still avoiding the memory of Aleppo. Want me to flag the three lines where the tone slips into nostalgia?</div>
-      <div class="dialogue-bubble you" data-from="You">Where have I been inconsistent with Inspector Rivière's age?</div>
-      <div class="dialogue-bubble slima" data-from="Slima">Two places. Chapter 1 calls her "early forties." Chapter 6 references her "fifteen years on the force" but Chapter 9 says she joined in 2008, which would put her at 18 years. I'd reconcile to 17 years to keep the early-forties read.</div>
-      <div class="dialogue-bubble you" data-from="You">Suggest three ways to open Chapter 8 that don't repeat the rooftop motif.</div>
-      <div class="dialogue-bubble slima" data-from="Slima">1. Start in Rivière's apartment as she rereads the dossier. 2. Open mid-conversation in the café Elias has been avoiding. 3. A close-third on Victor for the first time — show the target as a person.</div>
+      <div class="dialogue-stage" id="dialogueStage">
+        <div class="dialogue-bubble you"  data-from="You">What's the emotional tone of Chapter 3 right now?</div>
+        <div class="dialogue-bubble slima" data-from="Slima">Reflective and slightly distant. It picks up the prologue's grief but doesn't restate it — Elias is still avoiding the memory of Aleppo. Want me to flag the three lines where the tone slips into nostalgia?</div>
+        <div class="dialogue-bubble you"  data-from="You">Where have I been inconsistent with Inspector Rivière's age?</div>
+        <div class="dialogue-bubble slima" data-from="Slima">Two places. Chapter 1 calls her early forties; Chapter 6 references fifteen years on the force; Chapter 9 says she joined in 2008. Reconcile to seventeen years to keep the early-forties read.</div>
+        <div class="dialogue-bubble you"  data-from="You">Suggest three ways to open Chapter 8 without repeating the rooftop motif.</div>
+        <div class="dialogue-bubble slima" data-from="Slima">One — open in Rivière's apartment, mid-rereading. Two — drop us into the café Elias has been avoiding. Three — first close-third on Victor; let the target read as a person.</div>
+      </div>
     </div>
+  </div>
+  <div class="dialogue-cursor" id="dialogueCursor">
+    Scroll to continue
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
   </div>
 </section>
 
@@ -2218,6 +2313,79 @@
       if (!wasOpen) item.classList.add('open');
     });
   });
+
+  /* Dialogue section — scroll-driven message reveal toward the horizon */
+  (function() {
+    const section = document.getElementById('dialogueSection');
+    const stage = document.getElementById('dialogueStage');
+    const cursor = document.getElementById('dialogueCursor');
+    if (!section || !stage) return;
+    const bubbles = Array.from(stage.querySelectorAll('.dialogue-bubble'));
+    if (!bubbles.length) return;
+
+    // Each bubble reveals over a fraction of the section's scroll length.
+    // After it's fully in, the next bubble starts; this one recedes toward horizon.
+    const REVEAL_PORTION = 0.85;          // bottom 85% of scroll drives reveals
+    const REVEAL_HEAD = (1 - REVEAL_PORTION) / 2;
+    const STEP_PER_BUBBLE = REVEAL_PORTION / bubbles.length;
+
+    function update() {
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // Progress: 0 when section top hits viewport top, 1 when section bottom leaves viewport top
+      const total = rect.height - vh;
+      let p = -rect.top / total;
+      p = Math.max(0, Math.min(1, p));
+
+      // Hide the scroll-hint once we're past the first reveal
+      if (cursor) cursor.classList.toggle('hide', p > 0.05);
+
+      bubbles.forEach((b, i) => {
+        // Where this bubble starts revealing in the global progress
+        const start = REVEAL_HEAD + i * STEP_PER_BUBBLE;
+        const end = start + STEP_PER_BUBBLE;
+        // Local progress for this bubble: 0 = not yet, 1 = fully in, >1 = receding
+        const local = (p - start) / STEP_PER_BUBBLE;
+
+        // Clear previous staged classes
+        b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
+
+        if (local < 0) {
+          // Not revealed yet — initial state from CSS handles it
+          return;
+        }
+        if (local < 1.0) {
+          // Sliding in — currently active
+          b.classList.add('in');
+          // Smooth slide via inline transform override during reveal
+          const t = local; // 0→1
+          b.style.opacity = t;
+          b.style.transform = `translateY(${(1 - t) * 180}px) scale(1)`;
+          return;
+        }
+
+        // Past the reveal — receding stages based on how far behind active bubble we are
+        b.style.opacity = '';
+        b.style.transform = '';
+        const behind = local - 1; // how many bubble-cycles behind we are
+        if (behind < 1) b.classList.add('r1');
+        else if (behind < 2) b.classList.add('r2');
+        else if (behind < 3) b.classList.add('r3');
+        else b.classList.add('r4');
+      });
+    }
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => { update(); ticking = false; });
+        ticking = true;
+      }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  })();
 </script>
 </body>
 </html>
