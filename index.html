@@ -112,8 +112,9 @@
   }
   .nav-links a {
     color: inherit; text-decoration: none;
-    font-size: 13px; font-weight: 600;
-    letter-spacing: 0.06em; text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    font-size: 15px; font-weight: 500;
+    letter-spacing: -0.005em;
     transition: opacity 0.2s;
   }
   .nav-links a:hover { opacity: 0.55; }
@@ -502,171 +503,257 @@
   }
   .gc-cite-pill .num { font-weight: 600; }
   .gc-cite-pill .lbl { color: rgba(255,255,255,0.6); font-weight: 400; }
-  /* ── Realistic app preview window in each card ── */
-  .gc-app {
-    margin-top: auto;
-    margin-right: -26px;
-    margin-bottom: -1px;
-    background: #fafafa;
-    border-top-left-radius: 10px;
+  /* ── ARTIFACTS: each card shows the kind of work you'll produce ── */
+
+  /* Generic floating page — base for paper/dissertation/screenplay title pages */
+  .gc-page {
+    position: absolute;
+    background: #fbfaf6;
+    color: #1a1a1a;
+    border-radius: 3px;
+    box-shadow: 0 28px 50px -10px rgba(0,0,0,0.45), 0 4px 14px rgba(0,0,0,0.18);
     overflow: hidden;
-    box-shadow: 0 -10px 40px -10px rgba(0,0,0,0.35);
-    height: 230px;
+  }
+  /* Subtle "second page" peeking behind the front page for stack depth */
+  .gc-page-back {
+    position: absolute;
+    width: 76%; height: 86%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(3deg);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 3px;
+    pointer-events: none;
+  }
+
+  /* ── Book cover ── */
+  .gc-cover {
+    position: absolute;
+    width: 58%; height: 80%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-3deg);
+    border-radius: 3px;
+    box-shadow:
+      0 28px 50px -10px rgba(0,0,0,0.5),
+      inset -6px 0 12px -8px rgba(0,0,0,0.25), /* spine shadow on right */
+      inset 6px 0 0 0 rgba(0,0,0,0.18);        /* spine ridge on left */
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    padding: 30px 22px 22px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .gc-cover.novel { background: linear-gradient(165deg, #5e2733 0%, #3d1620 100%); color: #f1e0c5; }
+  .gc-cover.novel::after {
+    content: ''; position: absolute; inset: 14px;
+    border: 1px solid rgba(241,224,197,0.18);
+    border-radius: 1px; pointer-events: none;
+  }
+  .gc-cover.nf {
+    background: #f0e9da; color: #1a1a1a;
+    box-shadow:
+      0 28px 50px -10px rgba(0,0,0,0.5),
+      inset -6px 0 12px -8px rgba(0,0,0,0.10),
+      inset 6px 0 0 0 rgba(0,0,0,0.05);
+  }
+  .gc-cover-tag {
+    font-family: 'Inter', sans-serif;
+    font-size: 8px; font-weight: 600;
+    letter-spacing: 0.32em; text-transform: uppercase;
+    opacity: 0.6;
+  }
+  .gc-cover-mid {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 12px;
+  }
+  .gc-cover-title {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 22px; font-weight: 500;
+    line-height: 1.05; letter-spacing: -0.01em;
+  }
+  .gc-cover.nf .gc-cover-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; font-size: 20px;
+    text-transform: uppercase; letter-spacing: -0.005em;
+  }
+  .gc-cover-rule {
+    width: 28px; height: 1px;
+    background: currentColor; opacity: 0.4;
+  }
+  .gc-cover-sub {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 10px; font-style: italic; opacity: 0.75;
+    letter-spacing: 0.04em;
+  }
+  .gc-cover.nf .gc-cover-sub {
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    text-transform: none;
+  }
+  .gc-cover-author {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; opacity: 0.85;
+  }
+  .gc-cover.nf .gc-cover-author {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500; opacity: 1;
+  }
+
+  /* Slight back-cover effect for layered depth */
+  .gc-cover-back {
+    position: absolute;
+    width: 56%; height: 78%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(4deg);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 3px;
+    box-shadow: 0 18px 30px -10px rgba(0,0,0,0.25);
+    pointer-events: none;
+  }
+
+  /* ── Academic journal paper ── */
+  .gc-paper-page {
+    width: 80%; height: 90%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-1.5deg);
+    padding: 22px 26px 18px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 9.5px;
+    line-height: 1.55;
+  }
+  .gc-paper-h {
+    font-size: 13px; font-weight: 700;
+    line-height: 1.2; margin-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+  .gc-paper-authors {
+    font-size: 9px; color: #444;
+    margin-bottom: 14px; line-height: 1.45;
+  }
+  .gc-paper-authors sup { font-size: 7px; }
+  .gc-paper-abstract-h {
+    font-size: 9px; font-weight: 700;
+    text-align: center;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .gc-paper-abstract {
+    font-style: italic; font-size: 9px; color: #333;
+    text-align: justify; line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .gc-paper-keywords {
+    font-size: 8.5px; color: #555; line-height: 1.5;
+  }
+  .gc-paper-keywords strong { color: #111; }
+
+  /* ── Dissertation title page ── */
+  .gc-diss {
+    width: 78%; height: 92%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 28px 26px 22px;
+    font-family: 'IBM Plex Serif', serif;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .gc-diss-uni {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px; font-weight: 600;
+    letter-spacing: 0.24em; text-transform: uppercase;
+    color: #555;
+    line-height: 1.6;
+  }
+  .gc-diss-uni-rule {
+    width: 32px; height: 1px;
+    background: #c9c5b8;
+    margin: 14px auto 0;
+  }
+  .gc-diss-spacer { flex: 0.6; }
+  .gc-diss-title {
+    font-size: 17px; font-weight: 500;
+    line-height: 1.15; letter-spacing: -0.01em;
     color: #1a1a1a;
+    margin-bottom: 6px;
+  }
+  .gc-diss-sub {
+    font-size: 11px; font-style: italic;
+    color: #555; margin-bottom: 22px;
+  }
+  .gc-diss-fulfill {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px; font-style: italic;
+    color: #6b6b6b; line-height: 1.55;
+    max-width: 84%; margin: 0 auto 18px;
+  }
+  .gc-diss-by {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: #888;
+    margin-bottom: 6px;
+  }
+  .gc-diss-author {
+    font-size: 13px; color: #1a1a1a;
+    margin-bottom: 18px;
+  }
+  .gc-diss-spacer-2 { flex: 1; }
+  .gc-diss-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #555;
+  }
+
+  /* ── Screenplay title page (industry-standard format) ── */
+  .gc-screen-tp {
+    width: 78%; height: 92%;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-1deg);
+    padding: 28px 26px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+  }
+  .gc-screen-tp .top-spacer { flex: 0.5; }
+  .gc-screen-tp .title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 0.06em; margin-bottom: 26px;
+  }
+  .gc-screen-tp .by { font-size: 10px; margin-bottom: 14px; }
+  .gc-screen-tp .author { font-size: 10px; margin-bottom: 26px; }
+  .gc-screen-tp .mid-spacer { flex: 1; }
+  .gc-screen-tp .meta {
+    text-align: right;
+    font-size: 8.5px; line-height: 1.7;
+    color: #444;
+  }
+
+  /* Floating context badges (used over artifacts) */
+  .gc-badge {
+    position: absolute;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 7px 12px;
+    border-radius: 100px;
     font-family: 'Inter', sans-serif;
     font-size: 11px;
+    font-weight: 500;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.3);
+    display: flex; align-items: center; gap: 6px;
+    transform: rotate(-3deg);
   }
-  .gc-app-bar {
-    background: #fff;
-    border-bottom: 1px solid #ececea;
-    padding: 8px 12px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .gc-app-dots { display: flex; gap: 4px; }
-  .gc-app-dots span {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: #d4d4d4;
-  }
-  .gc-app-dots span:nth-child(1) { background: #ec6961; }
-  .gc-app-dots span:nth-child(2) { background: #f3bd4f; }
-  .gc-app-dots span:nth-child(3) { background: #62c454; }
-  .gc-app-title {
-    font-size: 10px; color: #6b6b6b; font-weight: 500;
-    margin-left: 6px;
-    overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-  }
-  .gc-app-body {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    overflow: hidden;
-  }
-  .gc-side {
-    background: #f3f3f0;
-    border-right: 1px solid #ececea;
-    padding: 10px 8px;
-  }
-  .gc-side-h {
-    font-size: 9px; font-weight: 600;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    color: #999; margin-bottom: 8px;
-    padding: 0 4px;
-  }
-  .gc-side-row {
-    display: flex; align-items: center; gap: 5px;
-    padding: 4px 6px; border-radius: 4px;
-    color: #4a4a4a; font-size: 11px;
-  }
-  .gc-side-row.active { background: #e6e6e2; color: #111; font-weight: 500; }
-  .gc-side-dot {
-    width: 4px; height: 4px; border-radius: 50%;
-    background: #b0b0b0;
-  }
-  .gc-side-row.active .gc-side-dot { background: #1a1a1a; }
-  .gc-main { padding: 12px 14px; overflow: hidden; }
-  .gc-h1 {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 14px; font-weight: 500;
-    color: #111; margin-bottom: 8px;
-    letter-spacing: -0.01em;
-  }
-  .gc-prose {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 10px; line-height: 1.55;
-    color: #3a3a3a;
-  }
-  .gc-prose p { margin-bottom: 6px; }
-  .gc-prose em { font-style: italic; color: #6b6b6b; }
-  /* Variant: timeline list */
-  .gc-list { display: flex; flex-direction: column; gap: 7px; }
-  .gc-list-item {
-    display: flex; align-items: flex-start; gap: 7px;
-    font-size: 10px; color: #3a3a3a;
-  }
-  .gc-list-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #6366f1; flex-shrink: 0; margin-top: 4px;
-  }
-  .gc-list-item .meta { font-size: 8.5px; color: #999; margin-top: 1px; }
-  /* Variant: source citations */
-  .gc-cite {
-    background: #fff; border: 1px solid #ececea;
-    border-radius: 5px; padding: 6px 8px;
-    font-size: 10px; color: #3a3a3a;
-    margin-bottom: 5px;
-  }
-  .gc-cite .src { font-size: 9px; color: #999; }
-  /* Variant: scene/beat sheet */
-  .gc-beat {
-    display: grid;
-    grid-template-columns: 24px 1fr;
-    gap: 6px; align-items: start;
-    padding: 5px 0;
-    font-size: 10px;
-    border-bottom: 1px dashed #ececea;
-  }
-  .gc-beat:last-child { border-bottom: none; }
-  .gc-beat .num {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 11px; color: #6b6b6b;
-    font-style: italic;
-  }
-  .gc-beat .label { color: #111; font-weight: 500; }
-  .gc-beat .desc { color: #6b6b6b; font-size: 9px; }
-  /* Variant: series bible — book covers */
-  .gc-books { display: flex; gap: 8px; padding: 4px 0; }
-  .gc-book {
-    flex: 1; aspect-ratio: 2/3;
-    border-radius: 3px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.18);
-    position: relative;
-    overflow: hidden;
-    display: flex; align-items: end;
-    padding: 6px;
-  }
-  .gc-book .gc-book-title {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 7.5px; color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-    line-height: 1.1;
-  }
-  .gc-books-meta {
-    margin-top: 8px;
-    display: flex; gap: 6px;
-    font-size: 9px; color: #6b6b6b;
-  }
-  .gc-books-meta strong { color: #111; }
-  /* Variant: footnoted academic */
-  .gc-foot {
-    border-top: 1px solid #ececea;
-    padding-top: 6px; margin-top: 6px;
-    font-size: 9px; color: #6b6b6b;
-    display: flex; flex-direction: column; gap: 3px;
-  }
-  .gc-foot sup { color: #6366f1; font-weight: 500; margin-right: 3px; }
-  /* Variant: collection grid */
-  .gc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 6px;
-  }
-  .gc-tile {
-    background: #fff;
-    border: 1px solid #ececea;
-    border-radius: 5px;
-    padding: 8px;
-  }
-  .gc-tile.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-  .gc-tile.active .gc-tile-meta { color: rgba(255,255,255,0.5); }
-  .gc-tile-name {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 10px; line-height: 1.2; margin-bottom: 4px;
-  }
-  .gc-tile-meta { font-size: 8.5px; color: #999; }
+  .gc-badge.tr { top: 20px; right: 16px; transform: rotate(4deg); }
+  .gc-badge.bl { bottom: 22px; left: 18px; }
+  .gc-badge.br { bottom: 22px; right: 16px; transform: rotate(2deg); }
+  .gc-badge .num { font-weight: 600; }
+  .gc-badge .lbl { color: rgba(255,255,255,0.6); font-weight: 400; }
+  .gc-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #d97706; }
+  .gc-badge svg { width: 12px; height: 12px; }
 
   /* ══════════════════════════════════════
      2. WHO WRITES — CATEGORY GRID
@@ -1352,101 +1439,134 @@
   <div class="genre-track-wrap">
     <div class="genre-track" id="genreTrack">
       <!-- Card 1: Fiction — manuscript editor view -->
-      <!-- 1. Fiction · Novels -->
-      <div class="genre-card tone-1">
+      <!-- 1. Screenplays & scripts (Slima's Script Studio) -->
+      <div class="genre-card tone-4">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-panel gc-ms">
-              <div class="ms-meta">Chapter 7 · Draft v3</div>
-              <div class="ms-h">A Quiet Inheritance</div>
-              <div class="ms-p">She had not gone back to the house in eleven years. The key, when she finally turned it, gave easily — <em>as if no one had locked it since.</em></div>
+            <div class="gc-page-back"></div>
+            <div class="gc-page gc-screen-tp">
+              <div class="top-spacer"></div>
+              <div class="title">THE QUIET ROOM</div>
+              <div class="by">Written by</div>
+              <div class="author">M. R. Castelló</div>
+              <div class="mid-spacer"></div>
+              <div class="meta">Pilot · Draft 4<br>Apr 14, 2026<br>117 pp.</div>
             </div>
-            <div class="gc-panel gc-note">
-              <div class="nt-h">Character</div>
-              <div class="nt-name">Inés Vallejo</div>
-              <div class="nt-line">Fled the village in '14. Returns reluctantly.</div>
+            <div class="gc-badge tr">
+              <span class="dot"></span>Rev. blue
             </div>
           </div>
           <div class="gc-text">
-            <div class="gc-tag">Writing Studio</div>
-            <div class="gc-headline">Finish your novel.</div>
-            <div class="gc-desc">Long-form narrative with characters, arcs, and worlds Slima keeps in memory.</div>
+            <div class="gc-tag">Screenplay / TV pilot</div>
+            <div class="gc-headline">Sell the screenplay.</div>
+            <div class="gc-desc">Industry-format scripts in Slima's Script Studio — scene branching and revision colors built in.</div>
           </div>
         </div>
       </div>
 
-      <!-- 2. Nonfiction · Books, essays, longform -->
-      <div class="genre-card tone-3">
-        <div class="genre-card-inner">
-          <div class="gc-stage">
-            <div class="gc-panel gc-outline">
-              <div class="ol-h">Chapter outline</div>
-              <div class="ol-row"><span class="num">1.0</span>The case for slow work</div>
-              <div class="ol-row indent"><span class="num">1.1</span>Origins of the productivity myth</div>
-              <div class="ol-row indent"><span class="num">1.2</span>What we lose to speed</div>
-              <div class="ol-row active"><span class="num">2.0</span>The cost of distraction</div>
-              <div class="ol-row indent"><span class="num">2.1</span>Knowledge work after Slack</div>
-              <div class="ol-row"><span class="num">3.0</span>Reclaiming attention</div>
-            </div>
-            <div class="gc-pill-float">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v4a1 1 0 001 1h4M17 21H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z"/></svg>
-              <span class="num">47</span><span class="lbl">sources cited</span>
-            </div>
-          </div>
-          <div class="gc-text">
-            <div class="gc-tag">Research workspace</div>
-            <div class="gc-headline">Ship your nonfiction book.</div>
-            <div class="gc-desc">Sources, citations, and arguments organized inside one connected workspace.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. Screenplay · Script Studio -->
-      <div class="genre-card tone-4" id="feat-script-card">
-        <div class="genre-card-inner">
-          <div class="gc-stage">
-            <div class="gc-panel gc-script">
-              <div class="sc-meta">Pilot · Sc. 14</div>
-              <div class="slug">INT. PRECINCT — NIGHT</div>
-              <div class="action">Rivière reads the file under the desk lamp. The captain enters.</div>
-              <div class="character">CAPTAIN</div>
-              <div class="dialogue">You're off this one.</div>
-              <div class="character">RIVIÈRE</div>
-              <div class="dialogue">By whose order?</div>
-            </div>
-            <div class="gc-revision-pill">
-              <span class="rev-dot"></span>Rev. blue · Apr 14
-            </div>
-          </div>
-          <div class="gc-text">
-            <div class="gc-tag">Script Studio</div>
-            <div class="gc-headline">Sell your screenplay.</div>
-            <div class="gc-desc">Industry-format scripts with scene branching and revision-color tracking built in.</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. Research & Papers -->
+      <!-- 2. Theses & dissertations -->
       <div class="genre-card tone-6">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-panel gc-paper">
-              <div class="pp-section">Chapter 4 · Lit Review</div>
-              <div class="pp-h">4.2 Frames of analysis</div>
-              <div class="pp-p">The boundary between observation and intervention<sup>¹</sup> is rarely as clean as the methodological literature implies.<sup>²</sup></div>
-              <div class="pp-foot">
-                <div><sup>¹</sup> See López (2018) on the field-observation paradox.</div>
-                <div><sup>²</sup> Cf. Reinhold (2021); Park (2024), §3.</div>
-              </div>
+            <div class="gc-page-back"></div>
+            <div class="gc-page gc-diss">
+              <div class="gc-diss-uni">University of Coimbra<br>Faculdade de Letras</div>
+              <div class="gc-diss-uni-rule"></div>
+              <div class="gc-diss-spacer"></div>
+              <div class="gc-diss-title">Frames of Analysis</div>
+              <div class="gc-diss-sub">Toward a methodology of attention</div>
+              <div class="gc-diss-fulfill">A dissertation submitted in partial fulfillment of the requirements for the degree of Doctor of Philosophy</div>
+              <div class="gc-diss-by">By</div>
+              <div class="gc-diss-author">Camila R. Andrade</div>
+              <div class="gc-diss-spacer-2"></div>
+              <div class="gc-diss-date">May 2026</div>
             </div>
-            <div class="gc-cite-pill">
+            <div class="gc-badge bl">
+              <span class="num">8</span><span class="lbl">years · 4 advisors</span>
+            </div>
+          </div>
+          <div class="gc-text">
+            <div class="gc-tag">Doctoral / Master's</div>
+            <div class="gc-headline">Defend the thesis.</div>
+            <div class="gc-desc">Years-long scholarship with version control, full-document memory, and citations that never break.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Research & papers -->
+      <div class="genre-card tone-2">
+        <div class="genre-card-inner">
+          <div class="gc-stage">
+            <div class="gc-page-back"></div>
+            <div class="gc-page gc-paper-page">
+              <div class="gc-paper-h">Attention without intervention: A field study of slow knowledge work</div>
+              <div class="gc-paper-authors">M. López<sup>1</sup>, J. Reinhold<sup>2</sup>, A. Park<sup>1</sup><br>
+                <span style="font-size:8px"><sup>1</sup>University of Coimbra · <sup>2</sup>ETH Zürich</span>
+              </div>
+              <div class="gc-paper-abstract-h">Abstract</div>
+              <div class="gc-paper-abstract">We examine how sustained attention reorganizes itself in the absence of structured interruption, drawing on a 14-month embedded study of a research team. Three patterns recur, each with implications for how knowledge work is measured.</div>
+              <div class="gc-paper-keywords"><strong>Keywords:</strong> attention, ethnography, knowledge work, slow research, methodology</div>
+            </div>
+            <div class="gc-badge br">
               <span class="num">184</span><span class="lbl">refs · synced</span>
             </div>
           </div>
           <div class="gc-text">
-            <div class="gc-tag">Academic workspace</div>
-            <div class="gc-headline">Defend your dissertation.</div>
-            <div class="gc-desc">Research, papers, and theses with version control built for years-long projects.</div>
+            <div class="gc-tag">Journal article</div>
+            <div class="gc-headline">Publish the paper.</div>
+            <div class="gc-desc">Sources, citations, and arguments organized inside one connected workspace — submission-ready.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Novels & literary fiction -->
+      <div class="genre-card tone-1">
+        <div class="genre-card-inner">
+          <div class="gc-stage">
+            <div class="gc-cover-back"></div>
+            <div class="gc-cover novel">
+              <div class="gc-cover-tag">A Novel</div>
+              <div class="gc-cover-mid">
+                <div class="gc-cover-title">A Quiet<br>Inheritance</div>
+                <div class="gc-cover-rule"></div>
+                <div class="gc-cover-sub">stories of a returning daughter</div>
+              </div>
+              <div class="gc-cover-author">M. R. Castelló</div>
+            </div>
+            <div class="gc-badge bl">
+              <span class="num">98,400</span><span class="lbl">words · Draft 4</span>
+            </div>
+          </div>
+          <div class="gc-text">
+            <div class="gc-tag">Long-form fiction</div>
+            <div class="gc-headline">Write the novel.</div>
+            <div class="gc-desc">Long-form narrative with characters, arcs, and worlds Slima keeps in memory across years of drafts.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Non-fiction -->
+      <div class="genre-card tone-3">
+        <div class="genre-card-inner">
+          <div class="gc-stage">
+            <div class="gc-cover-back"></div>
+            <div class="gc-cover nf">
+              <div class="gc-cover-tag" style="opacity:0.55">Non-Fiction</div>
+              <div class="gc-cover-mid">
+                <div class="gc-cover-title">The Slow<br>Work</div>
+                <div class="gc-cover-rule"></div>
+                <div class="gc-cover-sub">on attention, depth, and the books that take years</div>
+              </div>
+              <div class="gc-cover-author">M. R. Castelló</div>
+            </div>
+            <div class="gc-badge br">
+              <span class="num">47</span><span class="lbl">sources cited</span>
+            </div>
+          </div>
+          <div class="gc-text">
+            <div class="gc-tag">Long-form nonfiction</div>
+            <div class="gc-headline">Ship the book.</div>
+            <div class="gc-desc">From research to a finished nonfiction book — kept connected, organized, and progressing across drafts.</div>
           </div>
         </div>
       </div>
