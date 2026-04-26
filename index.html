@@ -919,36 +919,23 @@
   .mock-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
 
   /* ══════════════════════════════════════
-     4. AI DIALOGUE — scroll-driven, messages recede toward horizon
+     4. AI DIALOGUE — scroll-driven, white→dark→white background animation
      ══════════════════════════════════════ */
   .dialogue-section {
-    background: #1a1a1a;
-    color: #fff;
+    background: #ffffff;     /* starts white, JS animates it to #1a1a1a as you scroll in */
+    color: #ffffff;
     position: relative;
     overflow: hidden;
-    /* tall track gives us scroll space for the sticky animation */
-    min-height: 220vh;
+    min-height: 240vh;        /* tall track for the sticky animation */
+    transition: background-color 0.05s linear;
   }
-  /* Soft fade from the previous (white) section into the dark one */
-  .dialogue-section::before {
-    content: ''; position: absolute;
-    top: 0; left: 0; right: 0; height: 120px;
-    background: linear-gradient(to bottom, #ffffff 0%, rgba(26,26,26,0) 100%);
-    z-index: 1; pointer-events: none;
-  }
-  /* Soft fade out to white at the bottom */
-  .dialogue-section::after {
-    content: ''; position: absolute;
-    bottom: 0; left: 0; right: 0; height: 120px;
-    background: linear-gradient(to top, #ffffff 0%, rgba(26,26,26,0) 100%);
-    z-index: 1; pointer-events: none;
-  }
-  /* Subtle vignette glow */
+  /* Subtle indigo vignette glow that fades in with the dark bg */
   .dialogue-glow {
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 60%, rgba(99,102,241,0.18) 0%, transparent 55%);
+    background: radial-gradient(ellipse at 50% 60%, rgba(99,102,241,0.25) 0%, transparent 55%);
     pointer-events: none;
     z-index: 0;
+    opacity: 0;               /* JS fades this in with bg */
   }
   .dialogue-sticky {
     position: sticky;
@@ -960,73 +947,71 @@
     padding: 0 32px;
   }
   .dialogue-inner {
-    max-width: 760px; margin: 0 auto;
+    max-width: 780px; margin: 0 auto;
     text-align: center;
     position: relative; z-index: 2;
     width: 100%;
+    opacity: 0;               /* JS fades content in with bg */
   }
   .dialogue-inner .eyebrow { color: rgba(255,255,255,0.5); }
   .dialogue-inner h2 { color: #fff; margin-bottom: 18px; }
-  .dialogue-inner .lead { color: rgba(255,255,255,0.65); margin: 0 auto 56px; }
+  .dialogue-inner .lead { color: rgba(255,255,255,0.65); margin: 0 auto 64px; }
 
-  /* Bubble stage — fixed-height container so receding messages have somewhere to go */
+  /* Bubble stage — fixed-height container, bubbles anchored at bottom */
   .dialogue-stage {
     position: relative;
-    height: 360px;
+    height: 240px;            /* the "active" bubble lives at the bottom of this */
     margin: 0 auto;
     max-width: 720px;
     perspective: 1200px;
   }
   .dialogue-bubble {
     position: absolute;
-    left: 0; right: 0;
-    margin: 0 auto;
+    bottom: 0;                /* anchor to bottom of stage so they "rise from below" */
     padding: 18px 22px;
     border-radius: 16px;
     font-size: 15px; line-height: 1.55;
     text-align: left;
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    /* Initial state: hidden below the stage, ready to slide up */
+    /* Initial: hidden below the stage */
     opacity: 0;
-    transform: translateY(180px);
-    /* Springy ease for the slide-in feel */
-    transition: opacity 0.55s ease, transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translateY(140px);
+    transition: opacity 0.55s ease, transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
     will-change: transform, opacity;
   }
   .dialogue-bubble.you {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
+    right: 0;
     max-width: 70%;
-    margin-left: auto; margin-right: 0;
-    right: 0; left: auto;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.14);
   }
   .dialogue-bubble.slima {
-    background: rgba(99,102,241,0.16);
-    border: 1px solid rgba(99,102,241,0.3);
+    left: 0;
     max-width: 78%;
-    margin-right: auto; margin-left: 0;
-    left: 0; right: auto;
+    background: rgba(99,102,241,0.18);
+    border: 1px solid rgba(99,102,241,0.32);
   }
   .dialogue-bubble::before {
     content: attr(data-from);
     display: block;
     font-size: 10px; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
+    color: rgba(255,255,255,0.5);
     margin-bottom: 8px;
   }
-  /* In-focus: bubble sits at its resting position */
+  /* In-focus: bubble at rest at bottom */
   .dialogue-bubble.in {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-  /* Receding stages — each step further toward "horizon" */
-  .dialogue-bubble.r1 { opacity: 0.85; transform: translateY(-70px) scale(0.94); }
-  .dialogue-bubble.r2 { opacity: 0.55; transform: translateY(-130px) scale(0.86); filter: blur(0.5px); }
-  .dialogue-bubble.r3 { opacity: 0.25; transform: translateY(-180px) scale(0.78); filter: blur(1.5px); }
-  .dialogue-bubble.r4 { opacity: 0; transform: translateY(-220px) scale(0.72); filter: blur(2.5px); }
-  /* Hint cursor when scrolling through the section */
+  /* Receding stages — bubble slides UP from its bottom anchor toward the "horizon" */
+  .dialogue-bubble.r1 { opacity: 0.78; transform: translateY(-100px) scale(0.92); }
+  .dialogue-bubble.r2 { opacity: 0.45; transform: translateY(-180px) scale(0.84); filter: blur(0.5px); }
+  .dialogue-bubble.r3 { opacity: 0.18; transform: translateY(-240px) scale(0.76); filter: blur(1.5px); }
+  .dialogue-bubble.r4 { opacity: 0;    transform: translateY(-280px) scale(0.7);  filter: blur(2.5px); }
+
+  /* Scroll hint — only visible when fully dark */
   .dialogue-cursor {
     position: absolute;
     bottom: 30px; left: 50%;
@@ -1036,10 +1021,11 @@
     text-transform: uppercase;
     display: flex; flex-direction: column; align-items: center; gap: 8px;
     z-index: 3;
+    opacity: 0;                /* JS fades in/out */
     transition: opacity 0.4s;
+    pointer-events: none;
   }
   .dialogue-cursor svg { width: 18px; height: 18px; }
-  .dialogue-cursor.hide { opacity: 0; }
   @keyframes dialogueArrow {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(4px); }
@@ -2314,64 +2300,101 @@
     });
   });
 
-  /* Dialogue section — scroll-driven message reveal toward the horizon */
+  /* Dialogue section — scroll-driven background fade (white→dark→white)
+     plus sequential bubble reveal that recedes toward the horizon */
   (function() {
     const section = document.getElementById('dialogueSection');
     const stage = document.getElementById('dialogueStage');
     const cursor = document.getElementById('dialogueCursor');
     if (!section || !stage) return;
+    const inner = section.querySelector('.dialogue-inner');
+    const glow = section.querySelector('.dialogue-glow');
     const bubbles = Array.from(stage.querySelectorAll('.dialogue-bubble'));
     if (!bubbles.length) return;
 
-    // Each bubble reveals over a fraction of the section's scroll length.
-    // After it's fully in, the next bubble starts; this one recedes toward horizon.
-    const REVEAL_PORTION = 0.85;          // bottom 85% of scroll drives reveals
-    const REVEAL_HEAD = (1 - REVEAL_PORTION) / 2;
-    const STEP_PER_BUBBLE = REVEAL_PORTION / bubbles.length;
+    // Curves
+    const FADE_IN_END  = 0.18;   // 0–18% scroll: white → dark, content fades in
+    const FADE_OUT_START = 0.88; // 88–100% scroll: dark → white, content fades out
+    const REVEAL_START = 0.20;   // bubbles begin revealing once we're fully dark
+    const REVEAL_END   = 0.86;
+    const STEP = (REVEAL_END - REVEAL_START) / bubbles.length;
+
+    // Lerp helper
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
     function update() {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      // Progress: 0 when section top hits viewport top, 1 when section bottom leaves viewport top
       const total = rect.height - vh;
       let p = -rect.top / total;
-      p = Math.max(0, Math.min(1, p));
+      p = clamp(p, 0, 1);
 
-      // Hide the scroll-hint once we're past the first reveal
-      if (cursor) cursor.classList.toggle('hide', p > 0.05);
+      // ── 1. Background color: white (#ffffff = 255) → dark (#1a1a1a = 26) → white
+      let darkness;
+      if (p < FADE_IN_END) {
+        darkness = p / FADE_IN_END;                       // 0 → 1
+      } else if (p > FADE_OUT_START) {
+        darkness = (1 - p) / (1 - FADE_OUT_START);        // 1 → 0
+      } else {
+        darkness = 1;                                     // full dark
+      }
+      darkness = clamp(darkness, 0, 1);
+      const c = Math.round(lerp(255, 26, darkness));
+      section.style.backgroundColor = `rgb(${c},${c},${c})`;
+
+      // Content (heading + bubbles) and glow fade in/out with the bg
+      // Make them appear slightly later/leave earlier than the bg, so text never sits on near-white
+      const contentOpacity = clamp((darkness - 0.35) / 0.5, 0, 1);
+      if (inner) inner.style.opacity = contentOpacity;
+      if (glow) glow.style.opacity = darkness * 0.9;
+
+      // Scroll-hint: visible only briefly at start of dark zone
+      if (cursor) {
+        const hintOp = clamp(darkness, 0, 1) * (1 - clamp((p - 0.22) / 0.06, 0, 1));
+        cursor.style.opacity = hintOp;
+      }
+
+      // ── 2. Bubble reveal — only meaningful once we're in the dark zone
+      if (p < REVEAL_START - 0.02 || p > REVEAL_END + 0.05) {
+        // Reset all bubbles to hidden (initial CSS state)
+        bubbles.forEach(b => {
+          b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
+          b.style.opacity = '';
+          b.style.transform = '';
+        });
+        return;
+      }
 
       bubbles.forEach((b, i) => {
-        // Where this bubble starts revealing in the global progress
-        const start = REVEAL_HEAD + i * STEP_PER_BUBBLE;
-        const end = start + STEP_PER_BUBBLE;
-        // Local progress for this bubble: 0 = not yet, 1 = fully in, >1 = receding
-        const local = (p - start) / STEP_PER_BUBBLE;
+        const start = REVEAL_START + i * STEP;
+        const local = (p - start) / STEP; // 0 = not yet, 1 = fully in, >1 = receding
 
-        // Clear previous staged classes
         b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
 
         if (local < 0) {
-          // Not revealed yet — initial state from CSS handles it
+          // Not revealed yet
+          b.style.opacity = '';
+          b.style.transform = '';
           return;
         }
         if (local < 1.0) {
-          // Sliding in — currently active
+          // Sliding in
           b.classList.add('in');
-          // Smooth slide via inline transform override during reveal
-          const t = local; // 0→1
+          const t = local;
           b.style.opacity = t;
-          b.style.transform = `translateY(${(1 - t) * 180}px) scale(1)`;
+          b.style.transform = `translateY(${(1 - t) * 140}px) scale(1)`;
           return;
         }
 
-        // Past the reveal — receding stages based on how far behind active bubble we are
+        // Receding stages (clear inline overrides, let CSS classes handle)
         b.style.opacity = '';
         b.style.transform = '';
-        const behind = local - 1; // how many bubble-cycles behind we are
-        if (behind < 1) b.classList.add('r1');
+        const behind = local - 1;
+        if (behind < 1)      b.classList.add('r1');
         else if (behind < 2) b.classList.add('r2');
         else if (behind < 3) b.classList.add('r3');
-        else b.classList.add('r4');
+        else                  b.classList.add('r4');
       });
     }
 
