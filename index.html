@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slima — Where books get finished</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --white: #ffffff;
+    --black: #0a0a0a;
+    --ink: #111111;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --bg: #ffffff;
+    --bg-soft: #f7f7f5;
+  }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: var(--ink);
+  }
+
+  /* ══════════════════════════════════════
+     PROMO BAR (top of hero)
+     ══════════════════════════════════════ */
+  .promo {
+    position: relative;
+    z-index: 10;
+    background: linear-gradient(90deg, #5b6cff 0%, #8a5bff 50%, #c45bff 100%);
+    color: #fff;
+    text-align: center;
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+  .promo a {
+    color: #fff;
+    text-decoration: none;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 4px 14px;
+    border-radius: 100px;
+    font-size: 12px;
+    transition: background 0.2s;
+  }
+  .promo a:hover { background: rgba(255,255,255,0.25); }
+
+  /* ══════════════════════════════════════
+     NAVBAR (Runway-style)
+     ══════════════════════════════════════ */
+  .nav {
+    position: absolute;
+    top: 44px;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    color: #fff;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+  }
+  .nav-logo svg {
+    height: 24px;
+    width: auto;
+    margin-right: 2px;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    list-style: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .nav-links a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 0.6; }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .nav-right a {
+    color: inherit;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+  .nav-right a:hover { opacity: 0.7; }
+  .nav-cta {
+    background: #fff;
+    color: #0a0a0a !important;
+    padding: 10px 20px;
+    border-radius: 100px;
+    font-weight: 500;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
+    opacity: 1 !important;
+  }
+
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 22px;
+    height: 16px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  .nav-hamburger span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: currentColor;
+    border-radius: 2px;
+    transition: all 0.25s ease;
+  }
+
+  /* ══════════════════════════════════════
+     HERO (Runway-style — dark, full-bleed)
+     ══════════════════════════════════════ */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 720px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 50%, #050505 100%);
+    color: #fff;
+  }
+
+  /* Animated diagonal line field — keeps the cinematic feel */
+  .hero-lines {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-lines svg { width: 100%; height: 100%; display: block; }
+  .hero-line {
+    fill: none;
+    stroke-linecap: round;
+    will-change: transform, opacity;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(91,108,255,0.25) 0%, rgba(138,91,255,0.10) 30%, transparent 60%);
+    filter: blur(80px);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-glow-2 {
+    position: absolute;
+    bottom: -20%;
+    right: -10%;
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,91,255,0.18) 0%, rgba(91,108,255,0.08) 35%, transparent 60%);
+    filter: blur(90px);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-size: 220px 220px;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background:
+      linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 25%, transparent 70%, rgba(0,0,0,0.6) 100%),
+      linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+  }
+
+  .hero-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .hero-headline {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 400;
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    color: #fff;
+    max-width: 800px;
+  }
+  .hero-headline em { font-style: italic; }
+
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 36px;
+    padding: 14px 22px;
+    background: #fff;
+    color: #0a0a0a;
+    border-radius: 100px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: transform 0.2s, background 0.2s;
+  }
+  .hero-cta svg { width: 14px; height: 14px; transition: transform 0.2s; }
+  .hero-cta:hover { background: #f0f0f0; transform: translateY(-1px); }
+  .hero-cta:hover svg { transform: translateX(3px); }
+
+  .hero-categories {
+    list-style: none;
+    text-align: right;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    line-height: 2.2;
+    padding-bottom: 8px;
+  }
+  .hero-categories a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hero-categories a:hover { color: #fff; }
+
+  /* ══════════════════════════════════════
+     SECTION SHARED
+     ══════════════════════════════════════ */
+  .section {
+    padding: 140px 32px;
+    background: #fff;
+  }
+  .section-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #6b6b6b;
+    margin-bottom: 18px;
+  }
+  .section-headline {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: clamp(40px, 5vw, 68px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #0a0a0a;
+    max-width: 14ch;
+  }
+  .section-sub {
+    font-size: 17px;
+    line-height: 1.55;
+    color: #555;
+    max-width: 520px;
+    margin-top: 22px;
+  }
+
+  /* ══════════════════════════════════════
+     FEATURES (Durable-style alternating)
+     ══════════════════════════════════════ */
+  .features {
+    padding: 140px 32px 120px;
+    background: #fff;
+  }
+  .features-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .features-header {
+    margin-bottom: 100px;
+    max-width: 720px;
+  }
+
+  .feature-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    align-items: center;
+    padding: 60px 0;
+  }
+  .feature-row.reverse .feature-text { order: 2; }
+  .feature-row.reverse .feature-visual { order: 1; }
+
+  .feature-text {
+    max-width: 480px;
+  }
+  .feature-eyebrow {
+    display: inline-block;
+    padding: 6px 12px;
+    background: #f3f3f1;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #444;
+    margin-bottom: 22px;
+  }
+  .feature-headline {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: clamp(34px, 3.5vw, 48px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #0a0a0a;
+    margin-bottom: 20px;
+  }
+  .feature-description {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 28px;
+  }
+  .feature-bullets {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+  .feature-bullets li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 15px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .feature-bullets svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: #4ea87a;
+  }
+  .feature-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #0a0a0a;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    border-bottom: 1px solid #0a0a0a;
+    padding-bottom: 2px;
+    transition: gap 0.2s;
+  }
+  .feature-link:hover { gap: 12px; }
+
+  /* Visual containers — large, soft-shadow product mockups */
+  .feature-visual {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fafaf9;
+    border: 1px solid #ececea;
+    box-shadow:
+      0 1px 2px rgba(0,0,0,0.04),
+      0 24px 60px -12px rgba(0,0,0,0.12);
+    aspect-ratio: 4/3;
+  }
+
+  /* ── Mockup 1: Writing Studio ── */
+  .mock-studio {
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    display: grid;
+    grid-template-columns: 50px 200px 1fr;
+    font-family: 'Inter', sans-serif;
+    color: #111;
+  }
+  .mock-studio-rail {
+    background: #f3f4f6;
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 8px;
+  }
+  .mock-rail-icon {
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 6px;
+    color: #9ca3af;
+  }
+  .mock-rail-icon.active { background: #e5e7eb; color: #111; }
+  .mock-studio-side {
+    background: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+    padding: 14px 10px;
+    overflow: hidden;
+  }
+  .mock-side-title {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #111;
+    padding: 0 8px 12px;
+    border-bottom: 1px solid #e5e7eb;
+    margin-bottom: 10px;
+  }
+  .mock-folder, .mock-file {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #374151;
+  }
+  .mock-folder { font-weight: 500; }
+  .mock-file { padding-left: 22px; color: #6b7280; }
+  .mock-file.active { background: #eaeaea; color: #111; font-weight: 500; }
+  .mock-folder svg, .mock-file svg { width: 12px; height: 12px; }
+  .mock-studio-editor {
+    background: #fff;
+    padding: 24px 32px;
+    overflow: hidden;
+    position: relative;
+  }
+  .mock-editor-toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 18px;
+    color: #9ca3af;
+    font-size: 11px;
+  }
+  .mock-editor-toolbar span { font-weight: 600; }
+  .mock-editor-toolbar .wc { margin-left: auto; font-weight: 400; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .mock-chapter-h {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 22px;
+    font-weight: 500;
+    color: #0a0a0a;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .mock-editor-text {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #333;
+  }
+  .mock-editor-text p { margin-bottom: 10px; }
+
+  /* ── Mockup 2: Beta Reader ── */
+  .mock-beta {
+    width: 100%; height: 100%;
+    background: #fff;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-family: 'Inter', sans-serif;
+  }
+  .mock-beta-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .mock-beta-title { font-size: 13px; font-weight: 600; color: #111; }
+  .mock-beta-pills { display: flex; gap: 6px; }
+  .mock-pill {
+    font-size: 10px;
+    padding: 4px 10px;
+    background: #f3f4f6;
+    border-radius: 100px;
+    color: #6b7280;
+    font-weight: 500;
+  }
+  .mock-pill.active { background: #111; color: #fff; }
+  .mock-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .mock-metric {
+    background: #fafaf9;
+    border: 1px solid #ececea;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .mock-metric-label { font-size: 10px; color: #9ca3af; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .mock-metric-value {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 22px;
+    color: #111;
+    line-height: 1;
+  }
+  .mock-metric-value .u { font-family: 'Inter', sans-serif; font-size: 11px; color: #9ca3af; margin-left: 2px; }
+  .mock-metric-value.amber { color: #d97706; }
+  .mock-curve {
+    flex: 1;
+    background: #fafaf9;
+    border: 1px solid #ececea;
+    border-radius: 10px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-curve-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 8px;
+  }
+  .mock-curve-title { font-size: 12px; font-weight: 600; color: #111; }
+  .mock-curve-legend { font-size: 10px; color: #9ca3af; }
+  .mock-curve-svg { flex: 1; min-height: 0; }
+  .mock-curve-svg svg { width: 100%; height: 100%; display: block; }
+
+  /* ── Mockup 3: Memory ── */
+  .mock-memory {
+    width: 100%; height: 100%;
+    background: #fff;
+    padding: 24px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-mem-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 18px;
+  }
+  .mock-mem-title {
+    font-size: 13px; font-weight: 600; color: #111;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mock-mem-meta { font-size: 10px; color: #9ca3af; letter-spacing: 0.04em; }
+  .mock-mem-day-label {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: #9ca3af;
+    margin-bottom: 8px;
+  }
+  .mock-mem-day { margin-bottom: 16px; }
+  .mock-entry {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 12px;
+    background: #fafaf9;
+    border: 1px solid #ececea;
+    border-radius: 8px;
+    margin-bottom: 6px;
+  }
+  .mock-entry-dot {
+    width: 6px; height: 6px;
+    background: #6366f1;
+    border-radius: 50%;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .mock-entry-title { font-size: 12px; color: #111; font-weight: 500; }
+  .mock-entry-meta { font-size: 10px; color: #9ca3af; margin-top: 2px; }
+  .mock-mem-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+    font-size: 11px;
+    color: #6b7280;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mock-mem-footer-dot {
+    width: 6px; height: 6px;
+    background: #4ea87a;
+    border-radius: 50%;
+  }
+
+  /* ── Mockup 4: Versions ── */
+  .mock-versions {
+    width: 100%; height: 100%;
+    background: #fff;
+    padding: 24px;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    flex-direction: column;
+  }
+  .mock-ver-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .mock-ver-title {
+    font-size: 13px; font-weight: 600; color: #111;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mock-ver-meta { font-size: 10px; color: #9ca3af; }
+  .mock-ver-diagram {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 0;
+  }
+  .mock-ver-diagram svg { width: 100%; height: 100%; max-height: 240px; display: block; }
+  .mock-ver-chips {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding-top: 12px;
+    border-top: 1px solid #f0f0f0;
+  }
+  .mock-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px;
+    background: #fafaf9;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    font-size: 11px;
+    color: #555;
+  }
+  .mock-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+  /* ══════════════════════════════════════
+     SOCIAL PROOF / LOGOS BAR
+     ══════════════════════════════════════ */
+  .proof {
+    padding: 60px 32px;
+    background: #fff;
+    border-top: 1px solid #ececea;
+    border-bottom: 1px solid #ececea;
+  }
+  .proof-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 56px;
+    flex-wrap: wrap;
+  }
+  .proof-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9ca3af;
+  }
+  .proof-name {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #6b6b6b;
+    letter-spacing: -0.01em;
+  }
+
+  /* ══════════════════════════════════════
+     CTA STRIP
+     ══════════════════════════════════════ */
+  .cta-strip {
+    padding: 140px 32px;
+    background: #0a0a0a;
+    color: #fff;
+    text-align: center;
+  }
+  .cta-strip-inner { max-width: 800px; margin: 0 auto; }
+  .cta-strip h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: clamp(40px, 5vw, 64px);
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+  }
+  .cta-strip h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
+  .cta-strip p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+    line-height: 1.55;
+  }
+  .cta-strip-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: #0a0a0a;
+    padding: 16px 28px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 15px;
+    transition: transform 0.2s;
+  }
+  .cta-strip-btn:hover { transform: translateY(-2px); }
+
+  /* ══════════════════════════════════════
+     FOOTER
+     ══════════════════════════════════════ */
+  footer {
+    padding: 60px 32px 40px;
+    background: #fff;
+    border-top: 1px solid #ececea;
+  }
+  .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .footer-logo {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #0a0a0a;
+  }
+  .footer-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .footer-links a {
+    color: #6b6b6b;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: #0a0a0a; }
+  .footer-copy {
+    font-size: 13px;
+    color: #9ca3af;
+  }
+
+  /* ══════════════════════════════════════
+     RESPONSIVE
+     ══════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; color: #fff; }
+    .nav-right .nav-cta { padding: 8px 16px; font-size: 13px; }
+    .nav-right a:not(.nav-cta) { display: none; }
+
+    .hero-content { padding: 0 24px 60px; }
+    .hero-row { flex-direction: column; align-items: flex-start; gap: 32px; }
+    .hero-categories { text-align: left; line-height: 1.8; }
+
+    .section, .features, .cta-strip { padding: 80px 20px; }
+    .features-header { margin-bottom: 56px; }
+    .feature-row {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 32px 0;
+    }
+    .feature-row.reverse .feature-text { order: 1; }
+    .feature-row.reverse .feature-visual { order: 2; }
+    .feature-visual { aspect-ratio: 16/11; }
+    .mock-studio { grid-template-columns: 40px 140px 1fr; }
+    .mock-studio-editor { padding: 16px 18px; }
+    .mock-chapter-h { font-size: 18px; }
+
+    .proof-inner { gap: 28px; }
+    .footer-inner { justify-content: center; text-align: center; flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PROMO BAR
+     ═══════════════════════════════════════ -->
+<div class="promo">
+  <span>New: Beta Reader feedback engine — get structured edits on every chapter.</span>
+  <a href="#features">Try it free →</a>
+</div>
+
+<!-- ═══════════════════════════════════════
+     HERO (Runway-style)
+     ═══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow-2"></div>
+  <div class="hero-lines">
+    <svg id="heroSvg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+
+  <!-- Nav (sits inside the hero, dark theme) -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <svg viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+        <path d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z" fill="currentColor"/>
+      </svg>
+      slima
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#product">Product</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#community">Community</a></li>
+      <li><a href="#company">Company</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="#pricing">Pricing</a>
+      <a href="https://app.slima.ai">Log in</a>
+      <a href="https://app.slima.ai" class="nav-cta">Try Slima</a>
+
+      <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="hero-content">
+    <div class="hero-row">
+      <div>
+        <h1 class="hero-headline">
+          Where books<br>
+          <em>get finished.</em>
+        </h1>
+        <a href="https://app.slima.ai" class="hero-cta">
+          Get Started
+          <svg viewBox="0 0 14 14" fill="none">
+            <path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <ul class="hero-categories">
+        <li><a href="#feat-studio">Writing Studio</a></li>
+        <li><a href="#feat-beta">Beta Reader Feedback</a></li>
+        <li><a href="#feat-memory">Full-Book Memory</a></li>
+        <li><a href="#feat-versions">Version Control</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     PROOF / SEEN AT
+     ═══════════════════════════════════════ -->
+<section class="proof">
+  <div class="proof-inner">
+    <span class="proof-label">As seen at</span>
+    <span class="proof-name">TEDx</span>
+    <span class="proof-name">Product Hunt</span>
+    <span class="proof-name">Indie Hackers</span>
+    <span class="proof-name">The Writers' Guild</span>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FEATURES (Durable-style alternating)
+     ═══════════════════════════════════════ -->
+<section class="features" id="features">
+  <div class="features-inner">
+
+    <header class="features-header">
+      <div class="section-eyebrow">The Slima Ecosystem</div>
+      <h2 class="section-headline">Everything you need to finish your book.</h2>
+      <p class="section-sub">A writing environment that keeps your full manuscript in memory. Every note, draft, and fragment stays connected — so your book moves forward instead of starting over.</p>
+    </header>
+
+    <!-- Feature 1: Writing Studio -->
+    <article class="feature-row" id="feat-studio">
+      <div class="feature-text">
+        <span class="feature-eyebrow">Writing Studio</span>
+        <h3 class="feature-headline">Your manuscript as a living project.</h3>
+        <p class="feature-description">Chapters, character notes, outlines, timelines, and research — all organized inside one structured workspace that remembers every file across every session.</p>
+        <ul class="feature-bullets">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Distraction-free serif editor</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Folder-based project structure</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Daily word-count goals built in</li>
+        </ul>
+        <a href="#" class="feature-link">Explore the Studio
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="feature-visual">
+        <div class="mock-studio">
+          <aside class="mock-studio-rail">
+            <div class="mock-rail-icon" style="color:#111">
+              <svg viewBox="0 0 130 130" style="width:18px;height:18px"><path d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z" fill="currentColor"/></svg>
+            </div>
+            <div class="mock-rail-icon active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><path d="M3 7l2-2h5l2 2h8v12H3z"/></svg>
+            </div>
+            <div class="mock-rail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><path d="M5 4h14v16H5z"/><path d="M8 10h8M8 14h5"/></svg>
+            </div>
+            <div class="mock-rail-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><circle cx="12" cy="8" r="3"/><path d="M5 20c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>
+            </div>
+          </aside>
+          <aside class="mock-studio-side">
+            <div class="mock-side-title">The Assassin</div>
+            <div class="mock-folder">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:#c77a1a"><path d="M10 4l2 2h8v12H4V4z"/></svg>
+              Chapters
+            </div>
+            <div class="mock-file active">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2h9l5 5v15H6z"/></svg>
+              Prologue
+            </div>
+            <div class="mock-file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2h9l5 5v15H6z"/></svg>
+              Chapter 1
+            </div>
+            <div class="mock-file">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2h9l5 5v15H6z"/></svg>
+              Chapter 2
+            </div>
+            <div class="mock-folder" style="margin-top:8px">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:#c77a1a"><path d="M10 4l2 2h8v12H4V4z"/></svg>
+              People
+            </div>
+            <div class="mock-folder" style="margin-top:8px">
+              <svg viewBox="0 0 24 24" fill="currentColor" style="color:#c77a1a"><path d="M10 4l2 2h8v12H4V4z"/></svg>
+              Timeline
+            </div>
+          </aside>
+          <main class="mock-studio-editor">
+            <div class="mock-editor-toolbar">
+              <span style="font-weight:700">B</span>
+              <span style="font-style:italic">I</span>
+              <span style="text-decoration:line-through">S</span>
+              <span style="margin-left:6px">H1</span>
+              <span class="wc">219 Words</span>
+            </div>
+            <h1 class="mock-chapter-h">Prologue</h1>
+            <div class="mock-editor-text">
+              <p>The City of Light burned below like a glittering web of deceit. Elias Kane crouched on the zinc rooftop of a Haussmann building in the 7th arrondissement.</p>
+              <p>His burner phone vibrated once. Encrypted ping. <em>Target: Victor Langlois. 72 hours. Clean.</em></p>
+            </div>
+          </main>
+        </div>
+      </div>
+    </article>
+
+    <!-- Feature 2: Beta Reader -->
+    <article class="feature-row reverse" id="feat-beta">
+      <div class="feature-text">
+        <span class="feature-eyebrow">Beta Reader Feedback</span>
+        <h3 class="feature-headline">Editor-grade reads, on demand.</h3>
+        <p class="feature-description">Get structured reader reports on every chapter — attention curves, DNF risk, prose-level notes, and specific revision actions, all tied back to the draft.</p>
+        <ul class="feature-bullets">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Attention curve per chapter</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Multiple reader personas</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Action items you can check off</li>
+        </ul>
+        <a href="#" class="feature-link">See a sample report
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="feature-visual">
+        <div class="mock-beta">
+          <div class="mock-beta-head">
+            <div class="mock-beta-title">Reading Report — Chapter 1</div>
+            <div class="mock-beta-pills">
+              <span class="mock-pill active">Overview</span>
+              <span class="mock-pill">Feedback</span>
+              <span class="mock-pill">Letter</span>
+            </div>
+          </div>
+          <div class="mock-metrics">
+            <div class="mock-metric">
+              <div class="mock-metric-label">Continue</div>
+              <div class="mock-metric-value">6.0<span class="u">/10</span></div>
+            </div>
+            <div class="mock-metric">
+              <div class="mock-metric-label">DNF Risk</div>
+              <div class="mock-metric-value amber">Medium</div>
+            </div>
+            <div class="mock-metric">
+              <div class="mock-metric-label">Kindle</div>
+              <div class="mock-metric-value">★3.2</div>
+            </div>
+          </div>
+          <div class="mock-curve">
+            <div class="mock-curve-head">
+              <div class="mock-curve-title">Attention Curve</div>
+              <div class="mock-curve-legend">12 sections</div>
+            </div>
+            <div class="mock-curve-svg">
+              <svg viewBox="0 0 600 160" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.18"/>
+                    <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <line x1="0" y1="20" x2="600" y2="20" stroke="#e5e7eb" stroke-dasharray="3,3"/>
+                <line x1="0" y1="80" x2="600" y2="80" stroke="#e5e7eb" stroke-dasharray="3,3"/>
+                <line x1="0" y1="140" x2="600" y2="140" stroke="#e5e7eb" stroke-dasharray="3,3"/>
+                <path d="M 0,20 L 200,20 C 230,20 250,20 280,80 C 310,130 340,110 370,50 C 400,20 420,40 450,100 C 480,130 510,30 540,15 L 600,15 L 600,150 L 0,150 Z" fill="url(#cg)"/>
+                <path d="M 0,20 L 200,20 C 230,20 250,20 280,80 C 310,130 340,110 370,50 C 400,20 420,40 450,100 C 480,130 510,30 540,15 L 600,15" fill="none" stroke="#6366f1" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Feature 3: Full-Book Memory -->
+    <article class="feature-row" id="feat-memory">
+      <div class="feature-text">
+        <span class="feature-eyebrow">Full-Book Memory</span>
+        <h3 class="feature-headline">Context that never starts over.</h3>
+        <p class="feature-description">Session after session, Slima remembers what came before. No re-uploading. No re-explaining. Your characters, settings, and decisions stay intact across the entire manuscript.</p>
+        <ul class="feature-bullets">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Persistent project memory</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Character & timeline awareness</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Searchable history of every change</li>
+        </ul>
+        <a href="#" class="feature-link">How memory works
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="feature-visual">
+        <div class="mock-memory">
+          <div class="mock-mem-head">
+            <div class="mock-mem-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+              Project Memory
+            </div>
+            <div class="mock-mem-meta">12,847 tokens · synced</div>
+          </div>
+          <div class="mock-mem-day">
+            <div class="mock-mem-day-label">Today</div>
+            <div class="mock-entry">
+              <span class="mock-entry-dot"></span>
+              <div>
+                <div class="mock-entry-title">Prologue revised — Elias Kane backstory</div>
+                <div class="mock-entry-meta">2h ago · Chapter file updated</div>
+              </div>
+            </div>
+            <div class="mock-entry">
+              <span class="mock-entry-dot"></span>
+              <div>
+                <div class="mock-entry-title">New character: Inspector Rivière</div>
+                <div class="mock-entry-meta">4h ago · People folder</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-mem-day">
+            <div class="mock-mem-day-label">Yesterday</div>
+            <div class="mock-entry">
+              <span class="mock-entry-dot"></span>
+              <div>
+                <div class="mock-entry-title">Chapter 3 draft completed (2,340 words)</div>
+                <div class="mock-entry-meta">1d ago · Chapters</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-mem-footer">
+            <span class="mock-mem-footer-dot"></span>
+            Slima remembers every change — context carries across sessions.
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Feature 4: Versions -->
+    <article class="feature-row reverse" id="feat-versions">
+      <div class="feature-text">
+        <span class="feature-eyebrow">Version Control</span>
+        <h3 class="feature-headline">Try a different ending — keep the original.</h3>
+        <p class="feature-description">Every draft preserved as a branch you can walk back to, compare, or merge. Experiment freely without ever losing the version you started with.</p>
+        <ul class="feature-bullets">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Unlimited branches per chapter</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Compare versions side-by-side</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Restore any draft, any time</li>
+        </ul>
+        <a href="#" class="feature-link">See version control
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div class="feature-visual">
+        <div class="mock-versions">
+          <div class="mock-ver-head">
+            <div class="mock-ver-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M6 8v3a3 3 0 0 0 3 3h6a3 3 0 0 0 3-3V8M12 14v2"/></svg>
+              Chapter 7 · Versions
+            </div>
+            <div class="mock-ver-meta">3 branches</div>
+          </div>
+          <div class="mock-ver-diagram">
+            <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMid meet">
+              <line x1="60" y1="30" x2="60" y2="220" stroke="#d1d5db" stroke-width="2"/>
+              <path d="M 60 90 Q 60 115 100 115 L 200 115" stroke="#6366f1" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="200" y1="115" x2="340" y2="115" stroke="#6366f1" stroke-width="2"/>
+              <path d="M 60 150 Q 60 175 100 175 L 200 175" stroke="#d97706" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="200" y1="175" x2="340" y2="175" stroke="#d97706" stroke-width="2"/>
+
+              <circle cx="60" cy="50" r="6" fill="#111"/>
+              <circle cx="60" cy="90" r="6" fill="#111"/>
+              <circle cx="60" cy="150" r="6" fill="#111"/>
+              <circle cx="60" cy="210" r="6" fill="#4ea87a" stroke="rgba(78,168,122,0.25)" stroke-width="6"/>
+
+              <circle cx="200" cy="115" r="5" fill="#6366f1"/>
+              <circle cx="340" cy="115" r="5" fill="#6366f1"/>
+              <circle cx="200" cy="175" r="5" fill="#d97706"/>
+              <circle cx="340" cy="175" r="5" fill="#d97706"/>
+
+              <text x="78" y="54" fill="#111" font-size="11" font-family="Inter">v1 · First draft</text>
+              <text x="78" y="94" fill="#6b7280" font-size="11" font-family="Inter">v2 · Beta notes applied</text>
+              <text x="78" y="154" fill="#6b7280" font-size="11" font-family="Inter">v3 · Pacing tightened</text>
+              <text x="78" y="214" fill="#4ea87a" font-size="11" font-family="Inter" font-weight="600">v4 · Current</text>
+              <text x="352" y="118" fill="#6366f1" font-size="10" font-family="Inter">alt-ending</text>
+              <text x="352" y="178" fill="#d97706" font-size="10" font-family="Inter">dark-version</text>
+            </svg>
+          </div>
+          <div class="mock-ver-chips">
+            <span class="mock-chip"><span class="mock-chip-dot" style="background:#4ea87a"></span>main · v4</span>
+            <span class="mock-chip"><span class="mock-chip-dot" style="background:#6366f1"></span>alt-ending</span>
+            <span class="mock-chip"><span class="mock-chip-dot" style="background:#d97706"></span>dark-version</span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CTA STRIP
+     ═══════════════════════════════════════ -->
+<section class="cta-strip">
+  <div class="cta-strip-inner">
+    <h2>Stop starting over.<br><em>Start finishing.</em></h2>
+    <p>Join writers who use Slima to keep their manuscripts moving — across sessions, across drafts, across years.</p>
+    <a href="https://app.slima.ai" class="cta-strip-btn">
+      Start writing free
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">slima</span>
+    <ul class="footer-links">
+      <li><a href="#">Product</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+    </ul>
+    <span class="footer-copy">© 2026 Slima</span>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+  /* ── Animated diagonal line field in hero ── */
+  const svg = document.getElementById('heroSvg');
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const LINE_COUNT = 32;
+  const W = 1600, H = 900;
+
+  for (let i = 0; i < LINE_COUNT; i++) {
+    const t = i / (LINE_COUNT - 1);
+    const baseX = -200 + t * (W + 400);
+    const x1 = baseX + 150, y1 = -50;
+    const x2 = baseX - 150, y2 = H + 50;
+    const cx = baseX - 50 + Math.sin(t * Math.PI * 1.5) * 100;
+    const cy = H/2 + Math.cos(t * Math.PI) * 80;
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('class', 'hero-line');
+    path.setAttribute('d', `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`);
+
+    const brightness = Math.floor(60 + t * 110);
+    path.setAttribute('stroke', `rgb(${brightness},${brightness},${brightness + 20})`);
+    path.setAttribute('stroke-width', 1 + (i % 3) * 0.4);
+    path.setAttribute('opacity', 0.08 + t * 0.30);
+    svg.appendChild(path);
+
+    if (typeof gsap !== 'undefined') {
+      const phase = i * 0.08;
+      gsap.set(path, { transformOrigin: '50% 50%', svgOrigin: '800 450' });
+      gsap.to(path, {
+        rotation: (4 + (i % 4)) * (i % 2 === 0 ? 1 : -1),
+        duration: 2.5 + (i % 4) * 0.6,
+        ease: 'sine.inOut', yoyo: true, repeat: -1, delay: phase * 0.2
+      });
+      gsap.to(path, {
+        y: Math.sin(phase) * 14,
+        duration: 3 + (i % 3) * 0.4,
+        ease: 'sine.inOut', yoyo: true, repeat: -1, delay: phase * 0.15
+      });
+    }
+  }
+
+  if (typeof gsap !== 'undefined') {
+    gsap.to('.hero-glow', { x: '5vw', y: '4vh', duration: 14, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    gsap.to('.hero-glow-2', { x: '-4vw', y: '-3vh', duration: 16, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+  }
+</script>
+
+</body>
+</html>
