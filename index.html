@@ -919,14 +919,14 @@
   .mock-chip-dot { width: 7px; height: 7px; border-radius: 50%; }
 
   /* ══════════════════════════════════════
-     4. AI DIALOGUE — scroll-driven, white→dark→white background animation
+     4. AI DIALOGUE — bg animates white→dark on entry, chat auto-plays
      ══════════════════════════════════════ */
   .dialogue-section {
-    background: #ffffff;     /* starts white, JS animates it to #1a1a1a as you scroll in */
+    background: #ffffff;     /* starts white, JS animates to #1a1a1a quickly on entry */
     color: #ffffff;
     position: relative;
     overflow: hidden;
-    min-height: 240vh;        /* tall track for the sticky animation */
+    min-height: 150vh;        /* shorter track — bg transition is quick now */
     transition: background-color 0.05s linear;
   }
   /* Subtle indigo vignette glow that fades in with the dark bg */
@@ -2300,8 +2300,11 @@
     });
   });
 
-  /* Dialogue section — scroll-driven background fade (white→dark→white)
-     plus sequential bubble reveal that recedes toward the horizon */
+  /* Dialogue section
+     - Background + content fade: scroll-driven (quick, so the title is
+       readable as soon as the section enters the viewport)
+     - Chat sequence: timer-driven, plays automatically while the section
+       is on screen and loops continuously */
   (function() {
     const section = document.getElementById('dialogueSection');
     const stage = document.getElementById('dialogueStage');
@@ -2312,102 +2315,117 @@
     const bubbles = Array.from(stage.querySelectorAll('.dialogue-bubble'));
     if (!bubbles.length) return;
 
-    // Curves
-    const FADE_IN_END  = 0.18;   // 0–18% scroll: white → dark, content fades in
-    const FADE_OUT_START = 0.88; // 88–100% scroll: dark → white, content fades out
-    const REVEAL_START = 0.20;   // bubbles begin revealing once we're fully dark
-    const REVEAL_END   = 0.86;
-    const STEP = (REVEAL_END - REVEAL_START) / bubbles.length;
-
-    // Lerp helper
     const lerp = (a, b, t) => a + (b - a) * t;
     const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 
-    function update() {
+    /* ── A. Scroll-driven bg + content opacity ──────────────────────── */
+    // Quick fade-in: bg fully dark by 6% of section scroll (so the title is
+    // immediately readable). Same speed on the way out.
+    const FADE_IN_END = 0.06;
+    const FADE_OUT_START = 0.94;
+
+    function updateBg() {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      const total = rect.height - vh;
-      let p = -rect.top / total;
-      p = clamp(p, 0, 1);
+      const total = Math.max(1, rect.height - vh);
 
-      // ── 1. Background color: white (#ffffff = 255) → dark (#1a1a1a = 26) → white
+      // Start animating earlier — when the section's top enters the viewport,
+      // not when it reaches the top of the viewport.
+      // p = 0 when section top is at viewport bottom; p = 1 when section bottom
+      // is at viewport top.
+      let p;
+      if (rect.top >= vh) p = -0.1;                          // not visible yet
+      else if (rect.bottom <= 0) p = 1.1;                    // scrolled past
+      else if (rect.top > 0) p = (vh - rect.top) / vh * 0.08; // entering: 0–6% based on visibility
+      else p = 0.08 + (-rect.top / total) * 0.86;            // 8–94% during sticky body
+      // Once rect.top is very negative, bg starts fading out via the FADE_OUT logic.
+
       let darkness;
-      if (p < FADE_IN_END) {
-        darkness = p / FADE_IN_END;                       // 0 → 1
-      } else if (p > FADE_OUT_START) {
-        darkness = (1 - p) / (1 - FADE_OUT_START);        // 1 → 0
-      } else {
-        darkness = 1;                                     // full dark
-      }
+      if (p <= 0) darkness = 0;
+      else if (p < FADE_IN_END) darkness = p / FADE_IN_END;
+      else if (p > FADE_OUT_START) darkness = clamp((1 - p) / (1 - FADE_OUT_START), 0, 1);
+      else darkness = 1;
       darkness = clamp(darkness, 0, 1);
+
       const c = Math.round(lerp(255, 26, darkness));
       section.style.backgroundColor = `rgb(${c},${c},${c})`;
 
-      // Content (heading + bubbles) and glow fade in/out with the bg
-      // Make them appear slightly later/leave earlier than the bg, so text never sits on near-white
-      const contentOpacity = clamp((darkness - 0.35) / 0.5, 0, 1);
-      if (inner) inner.style.opacity = contentOpacity;
+      // Content + glow follow bg darkness directly — title fades in with bg
+      if (inner) inner.style.opacity = darkness;
       if (glow) glow.style.opacity = darkness * 0.9;
-
-      // Scroll-hint: visible only briefly at start of dark zone
-      if (cursor) {
-        const hintOp = clamp(darkness, 0, 1) * (1 - clamp((p - 0.22) / 0.06, 0, 1));
-        cursor.style.opacity = hintOp;
-      }
-
-      // ── 2. Bubble reveal — only meaningful once we're in the dark zone
-      if (p < REVEAL_START - 0.02 || p > REVEAL_END + 0.05) {
-        // Reset all bubbles to hidden (initial CSS state)
-        bubbles.forEach(b => {
-          b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
-          b.style.opacity = '';
-          b.style.transform = '';
-        });
-        return;
-      }
-
-      bubbles.forEach((b, i) => {
-        const start = REVEAL_START + i * STEP;
-        const local = (p - start) / STEP; // 0 = not yet, 1 = fully in, >1 = receding
-
-        b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
-
-        if (local < 0) {
-          // Not revealed yet
-          b.style.opacity = '';
-          b.style.transform = '';
-          return;
-        }
-        if (local < 1.0) {
-          // Sliding in
-          b.classList.add('in');
-          const t = local;
-          b.style.opacity = t;
-          b.style.transform = `translateY(${(1 - t) * 140}px) scale(1)`;
-          return;
-        }
-
-        // Receding stages (clear inline overrides, let CSS classes handle)
-        b.style.opacity = '';
-        b.style.transform = '';
-        const behind = local - 1;
-        if (behind < 1)      b.classList.add('r1');
-        else if (behind < 2) b.classList.add('r2');
-        else if (behind < 3) b.classList.add('r3');
-        else                  b.classList.add('r4');
-      });
     }
 
     let ticking = false;
     function onScroll() {
       if (!ticking) {
-        requestAnimationFrame(() => { update(); ticking = false; });
+        requestAnimationFrame(() => { updateBg(); ticking = false; });
         ticking = true;
       }
     }
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', update);
-    update();
+    window.addEventListener('resize', updateBg);
+    updateBg();
+
+    /* ── B. Timer-driven chat sequence ─────────────────────────────── */
+    // Each bubble has a lifecycle: hidden → in → r1 → r2 → r3 → r4 (gone)
+    // Older bubbles step further back as new ones come in.
+    const STEP_MS = 2400;     // time between each new message
+    const HOLD_MS = 1500;     // pause at the end before looping
+    let activeIdx = -1;       // index of the bubble currently "in"
+    let timer = null;
+    let isPlaying = false;
+
+    function applyState() {
+      bubbles.forEach((b, i) => {
+        b.classList.remove('in', 'r1', 'r2', 'r3', 'r4');
+        const offset = activeIdx - i;
+        if (offset < 0) return;             // not yet revealed
+        if (offset === 0) b.classList.add('in');
+        else if (offset === 1) b.classList.add('r1');
+        else if (offset === 2) b.classList.add('r2');
+        else if (offset === 3) b.classList.add('r3');
+        else b.classList.add('r4');
+      });
+      // Hide the scroll-hint cursor once the chat starts
+      if (cursor) cursor.style.opacity = activeIdx < 0 ? '' : 0;
+    }
+
+    function tick() {
+      activeIdx++;
+      if (activeIdx >= bubbles.length + 4) {
+        // All done + receded — pause then reset
+        applyState();
+        timer = setTimeout(() => {
+          activeIdx = -1;
+          applyState();
+          if (isPlaying) timer = setTimeout(tick, STEP_MS / 2);
+        }, HOLD_MS);
+        return;
+      }
+      applyState();
+      if (isPlaying) timer = setTimeout(tick, STEP_MS);
+    }
+
+    function start() {
+      if (isPlaying) return;
+      isPlaying = true;
+      activeIdx = -1;
+      applyState();
+      timer = setTimeout(tick, 600); // brief delay before first bubble
+    }
+    function stop() {
+      isPlaying = false;
+      if (timer) clearTimeout(timer);
+    }
+
+    // Trigger when section enters the viewport
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && entry.intersectionRatio > 0.25) start();
+        else if (entry.intersectionRatio < 0.05) stop();
+      });
+    }, { threshold: [0, 0.05, 0.25, 0.5, 0.75, 1] });
+    observer.observe(section);
   })();
 </script>
 </body>
