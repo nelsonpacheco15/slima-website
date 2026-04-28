@@ -1,0 +1,1917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Writing Studio — Slima</title>
+<meta name="description" content="A long-form writing studio with project structure, full-book memory, and an AI coach that has actually read your manuscript.">
+<link rel="stylesheet" href="assets/marketing.css">
+<style>
+  /* ──────────────────────────────────────────────────────
+     WRITING STUDIO — page-specific design
+     editorial / literary magazine voice on a cream paper bg
+     ────────────────────────────────────────────────────── */
+  :root {
+    --paper:    #faf9f6;
+    --paper-2:  #f3f1ec;
+    --rule:     #ececea;
+    --ink-2:    #2a2a2e;
+    --green:    #2f9e6b;
+    --green-bg: #e6f4ec;
+    /* Legacy aliases — all map to brand green/neutral */
+    --warm:     #2f9e6b;
+    --warm-bg:  #e6f4ec;
+    --leaf:     #2f9e6b;
+    --leaf-bg:  #e6f4ec;
+  }
+  body { background: var(--paper); }
+
+  /* Editorial section number */
+  .sec-num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--warm);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .sec-num::before {
+    content: '— ';
+    margin-right: 4px;
+    font-style: normal;
+  }
+
+  /* ── HERO ── */
+  .ws-hero {
+    position: relative;
+    background: var(--paper);
+    padding: 96px 32px 120px;
+    overflow: hidden;
+  }
+  .ws-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(ellipse at 90% 10%, rgba(47,158,107,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 0% 90%, rgba(47,158,107,0.05) 0%, transparent 45%);
+    pointer-events: none;
+  }
+  .ws-hero-grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 980px) {
+    .ws-hero-grid { grid-template-columns: 1fr; gap: 56px; }
+    .ws-hero { padding: 72px 22px 84px; }
+  }
+  .ws-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--warm);
+    margin-bottom: 22px;
+  }
+  .ws-hero-eyebrow::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--warm);
+  }
+  .ws-hero h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(46px, 6.5vw, 88px);
+    letter-spacing: -0.028em;
+    line-height: 0.96;
+    color: #0a0a0a;
+    margin-bottom: 28px;
+  }
+  .ws-hero h1 em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ink-2);
+  }
+  .ws-hero p.lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: #3a3631;
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+  .ws-hero-cta {
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .ws-hero-meta {
+    margin-top: 28px;
+    display: flex; gap: 24px;
+    font-size: 13px;
+    color: #6b6258;
+    font-family: 'Inter', sans-serif;
+  }
+  .ws-hero-meta .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--leaf);
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Editor mockup (white) */
+  .editor-mock {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    box-shadow:
+      0 30px 60px -20px rgba(58, 50, 35, 0.18),
+      0 12px 24px -12px rgba(58, 50, 35, 0.10);
+    overflow: hidden;
+    transform: rotate(0.4deg);
+    transition: transform 0.5s ease;
+  }
+  .editor-mock:hover { transform: rotate(0deg); }
+  .em-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    background: #fcfaf5;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+  }
+  .em-bar .left {
+    display: flex; align-items: center; gap: 10px;
+    color: #6b6258;
+  }
+  .em-bar .pulse {
+    width: 7px; height: 7px;
+    background: var(--leaf);
+    border-radius: 50%;
+    box-shadow: 0 0 0 4px rgba(74, 107, 79, 0.12);
+  }
+  .em-bar .center {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    background: #fff;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 12.5px;
+    color: #2a2620;
+  }
+  .em-bar .kebab { color: #b8ad9c; font-size: 16px; letter-spacing: 1px; }
+  .em-toolbar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 10px 18px;
+    border-bottom: 1px solid var(--rule);
+    color: #6b6258;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .em-toolbar span { padding: 4px 8px; border-radius: 6px; }
+  .em-toolbar span.bold { font-weight: 700; color: #0a0a0a; }
+  .em-toolbar span.it { font-style: italic; }
+  .em-toolbar span.s { text-decoration: line-through; }
+  .em-toolbar .sep { width: 1px; height: 16px; background: var(--rule); margin: 0 4px; }
+  .em-toolbar .right { margin-left: auto; color: #b8ad9c; font-size: 12px; }
+  .em-page {
+    padding: 32px 40px 40px;
+    background: #ffffff;
+    position: relative;
+  }
+  .em-page-meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #b8ad9c;
+    margin-bottom: 18px;
+  }
+  .em-page h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin-bottom: 14px;
+    color: #0a0a0a;
+  }
+  .em-page p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14.5px;
+    line-height: 1.78;
+    color: #2a2620;
+    margin-bottom: 12px;
+  }
+  .em-page p.dropcap::first-letter {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 52px;
+    font-weight: 500;
+    float: left;
+    line-height: 0.85;
+    padding: 6px 8px 0 0;
+    color: var(--warm);
+  }
+  .em-suggest {
+    position: absolute;
+    bottom: 22px; right: 22px;
+    background: #0a0a0a;
+    color: #fff;
+    padding: 10px 14px;
+    border-radius: 12px 12px 12px 4px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.4;
+    max-width: 220px;
+    box-shadow: 0 14px 28px rgba(10,10,11,0.16);
+  }
+  .em-suggest .star {
+    color: var(--warm);
+    margin-right: 6px;
+    font-size: 14px;
+  }
+  .em-suggest .meta {
+    margin-top: 4px;
+    color: rgba(255,255,255,0.55);
+    font-size: 10.5px;
+  }
+
+  /* Annotation marks (decorative around hero mockup) */
+  .ws-hero-annot {
+    position: absolute;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    color: var(--warm);
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  .ws-hero-annot.a1 {
+    top: -18px; right: 40px;
+    transform: rotate(-3deg);
+  }
+  .ws-hero-annot.a1::after {
+    content: ''; display: block;
+    width: 26px; height: 18px;
+    border: 1.5px solid var(--warm);
+    border-top: 0; border-right: 0;
+    border-radius: 0 0 0 12px;
+    margin-left: 30px;
+    margin-top: 4px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 2 — Editorial statement
+     ══════════════════════════════════════════════ */
+  .ws-statement {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 140px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ws-statement::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(47,158,107,0.10) 0%, transparent 40%);
+  }
+  .ws-statement-inner {
+    max-width: 1100px; margin: 0 auto;
+    text-align: center;
+    position: relative;
+  }
+  .ws-statement .number {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(80px, 12vw, 180px);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: #fff;
+    display: block;
+    margin-bottom: 22px;
+  }
+  .ws-statement .number .pct {
+    font-style: italic;
+    color: rgba(255,255,255,0.45);
+    font-size: 0.5em;
+    vertical-align: super;
+    margin-left: 12px;
+  }
+  .ws-statement .body {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1.35;
+    color: rgba(255,255,255,0.85);
+    max-width: 780px;
+    margin: 0 auto;
+  }
+  .ws-statement .body em {
+    font-style: italic;
+    color: var(--warm);
+  }
+  .ws-statement .source {
+    margin-top: 32px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 3 — Studio tour (centered mockup)
+     ══════════════════════════════════════════════ */
+  .ws-tour {
+    background: var(--paper);
+    padding: 140px 32px 80px;
+    text-align: center;
+    position: relative;
+  }
+  .ws-tour-inner { max-width: 1180px; margin: 0 auto; }
+  .ws-tour h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #0a0a0a;
+    margin: 14px auto 18px;
+    max-width: 900px;
+  }
+  .ws-tour h2 em { font-style: italic; }
+  .ws-tour .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.55;
+    max-width: 600px;
+    margin: 0 auto 60px;
+  }
+  .ws-tour-mock {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  /* "Browser" style frame for a wider editor view */
+  .browser-frame {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 60px 120px -40px rgba(40, 30, 15, 0.25),
+      0 20px 40px -20px rgba(40, 30, 15, 0.12);
+  }
+  .bf-titlebar {
+    display: flex; align-items: center;
+    padding: 14px 18px;
+    background: #f3f0e7;
+    border-bottom: 1px solid var(--rule);
+    gap: 14px;
+  }
+  .bf-titlebar .dots {
+    display: flex; gap: 7px;
+  }
+  .bf-titlebar .dots span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #d4ccba;
+  }
+  .bf-titlebar .dots span:nth-child(1) { background: #e29e94; }
+  .bf-titlebar .dots span:nth-child(2) { background: #e3c97a; }
+  .bf-titlebar .dots span:nth-child(3) { background: #95b893; }
+  .bf-titlebar .url {
+    flex: 1; text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #6b6258;
+    background: #ffffff;
+    padding: 4px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .bf-body {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    min-height: 520px;
+  }
+  @media (max-width: 880px) {
+    .bf-body { grid-template-columns: 1fr; }
+    .bf-body > .sidebar, .bf-body > .panel { display: none; }
+  }
+  .bf-body .sidebar {
+    background: #fcfaf5;
+    border-right: 1px solid var(--rule);
+    padding: 22px 18px;
+    font-family: 'Inter', sans-serif;
+  }
+  .bf-body .sidebar h5 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 13.5px;
+    letter-spacing: 0.04em;
+    color: #6b6258;
+    margin-bottom: 14px;
+  }
+  .bf-body .sidebar ul {
+    list-style: none;
+    display: flex; flex-direction: column;
+    gap: 4px;
+    margin-bottom: 22px;
+  }
+  .bf-body .sidebar li {
+    font-size: 13px;
+    padding: 7px 10px;
+    border-radius: 8px;
+    color: #2a2620;
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .bf-body .sidebar li.active {
+    background: var(--paper-2);
+    color: #0a0a0a;
+    font-weight: 500;
+  }
+  .bf-body .sidebar li .ic {
+    width: 14px; height: 14px;
+    color: #b8ad9c;
+    flex-shrink: 0;
+  }
+  .bf-body .sidebar li .wc {
+    margin-left: auto;
+    font-size: 11px;
+    color: #b8ad9c;
+  }
+  .bf-body .sidebar li.active .wc { color: var(--warm); }
+
+  .bf-body .editor {
+    padding: 36px 56px 36px;
+    text-align: left;
+    overflow: hidden;
+  }
+  .bf-body .editor .crumb {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #b8ad9c;
+    margin-bottom: 14px;
+  }
+  .bf-body .editor h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: #0a0a0a;
+    margin-bottom: 22px;
+  }
+  .bf-body .editor h1 em { font-style: italic; }
+  .bf-body .editor p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    line-height: 1.78;
+    color: #2a2620;
+    margin-bottom: 14px;
+  }
+  .bf-body .editor p.dropcap::first-letter {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 64px;
+    line-height: 0.85;
+    float: left;
+    padding: 6px 12px 0 0;
+    color: var(--warm);
+    font-weight: 500;
+  }
+  .bf-body .editor .typewriter {
+    border-bottom: 2px solid var(--warm);
+    padding-bottom: 1px;
+    animation: blink 1.4s infinite;
+  }
+  @keyframes blink {
+    0%, 100% { border-color: var(--warm); }
+    50% { border-color: transparent; }
+  }
+  .bf-body .editor .footnote {
+    margin-top: 28px;
+    padding-top: 14px;
+    border-top: 1px solid var(--rule);
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12.5px;
+    color: #6b6258;
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .bf-body .editor .footnote sup {
+    color: var(--warm);
+    font-style: normal;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .bf-body .panel {
+    background: #fcfaf5;
+    border-left: 1px solid var(--rule);
+    padding: 22px 18px;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+  }
+  .bf-body .panel h5 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 13.5px;
+    color: #6b6258;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bf-body .panel .star { color: var(--warm); }
+  .bf-body .panel .session {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    font-size: 12.5px;
+    color: #2a2620;
+    line-height: 1.5;
+  }
+  .bf-body .panel .session.coach { background: #fcfaf5; border-color: var(--warm-bg); }
+  .bf-body .panel .session strong { font-family: 'IBM Plex Serif', serif; font-weight: 500; }
+  .bf-body .panel .session .meta {
+    color: #b8ad9c; font-size: 10.5px;
+    margin-top: 6px; letter-spacing: 0.05em;
+  }
+  .bf-body .panel .goal {
+    margin-top: 22px;
+    padding: 14px;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+  }
+  .bf-body .panel .goal .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 1;
+    color: #0a0a0a;
+  }
+  .bf-body .panel .goal .num .of {
+    font-size: 13px; color: #b8ad9c; font-style: italic;
+  }
+  .bf-body .panel .goal .lbl {
+    font-size: 11px; color: #6b6258;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .bf-body .panel .goal .bar {
+    height: 6px;
+    background: var(--paper-2);
+    border-radius: 100px;
+    margin-top: 10px;
+    overflow: hidden;
+  }
+  .bf-body .panel .goal .bar div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--leaf), #6ec79a);
+    width: 84%;
+    border-radius: 100px;
+  }
+  .bf-body .panel .goal .streak {
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--leaf);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .bf-body .panel .goal .streak .flame { font-size: 14px; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 4 — features trio
+     ══════════════════════════════════════════════ */
+  .ws-trio {
+    background: #ffffff;
+    padding: 120px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ws-trio-inner {
+    max-width: 1280px; margin: 0 auto;
+  }
+  .ws-trio-head {
+    display: flex; align-items: end; justify-content: space-between;
+    gap: 56px;
+    margin-bottom: 64px;
+  }
+  @media (max-width: 880px) {
+    .ws-trio-head { flex-direction: column; align-items: flex-start; gap: 16px; margin-bottom: 40px; }
+  }
+  .ws-trio h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    max-width: 720px;
+    margin: 8px 0 0;
+  }
+  .ws-trio h2 em { font-style: italic; }
+  .ws-trio-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #4a4338;
+    max-width: 320px;
+  }
+  .ws-trio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  @media (max-width: 880px) {
+    .ws-trio-grid { grid-template-columns: 1fr; }
+  }
+  .trio-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 36px 32px 32px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .trio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 24px 48px -16px rgba(40,30,15,0.12);
+  }
+  .trio-card .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--warm);
+    margin-bottom: 18px;
+  }
+  .trio-card h3 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+    color: #0a0a0a;
+  }
+  .trio-card h3 em { font-style: italic; }
+  .trio-card p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    line-height: 1.6;
+    color: #4a4338;
+  }
+  .trio-card .visual {
+    margin-top: 28px;
+    padding: 18px;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    min-height: 130px;
+  }
+
+  /* trio-card visual: Project structure */
+  .vis-folders {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #2a2620;
+  }
+  .vis-folders div {
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .vis-folders .root { font-weight: 500; }
+  .vis-folders .ind { padding-left: 22px; color: #6b6258; }
+  .vis-folders .active { background: var(--warm-bg); color: var(--warm); font-weight: 500; }
+  .vis-folders .ic { font-size: 11px; color: #b8ad9c; }
+
+  /* trio-card visual: Streak */
+  .vis-streak {
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .vis-streak .num {
+    font-size: 32px; font-weight: 500;
+    color: #0a0a0a;
+    line-height: 1; margin-bottom: 4px;
+    display: block;
+  }
+  .vis-streak .lbl {
+    font-size: 12px; color: #6b6258;
+    font-family: 'Inter', sans-serif;
+    margin-bottom: 14px;
+  }
+  .vis-streak .week {
+    display: flex; gap: 4px;
+    justify-content: space-between;
+  }
+  .vis-streak .week span {
+    flex: 1;
+    height: 28px;
+    border-radius: 4px;
+    background: var(--paper-2);
+    display: flex; align-items: end; justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px; color: #b8ad9c;
+    padding-bottom: 2px;
+  }
+  .vis-streak .week .on { background: var(--leaf); color: #fff; }
+  .vis-streak .week .rest { background: var(--warm-bg); color: var(--warm); }
+
+  /* trio-card visual: Versions */
+  .vis-versions {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+  }
+  .vis-versions .row {
+    display: flex; align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .vis-versions .row:last-child { border-bottom: 0; }
+  .vis-versions .dot {
+    width: 8px; height: 8px;
+    background: var(--rule); border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .vis-versions .row.active .dot { background: var(--warm); }
+  .vis-versions .label {
+    flex: 1;
+    font-family: 'IBM Plex Serif', serif;
+    color: #2a2620;
+  }
+  .vis-versions .row.active .label { color: var(--warm); font-style: italic; }
+  .vis-versions .time { color: #b8ad9c; font-size: 10.5px; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 5 — Memory comparison (split)
+     ══════════════════════════════════════════════ */
+  .ws-memory {
+    background: var(--paper);
+    padding: 120px 32px;
+  }
+  .ws-memory-inner { max-width: 1280px; margin: 0 auto; }
+  .ws-memory h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    margin: 14px 0 18px;
+    color: #0a0a0a;
+    max-width: 880px;
+  }
+  .ws-memory h2 em { font-style: italic; color: var(--warm); }
+  .ws-memory > .ws-memory-inner > .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    max-width: 580px;
+    margin-bottom: 56px;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 880px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+  .compare-card {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 28px;
+    min-height: 380px;
+    position: relative;
+    overflow: hidden;
+  }
+  .compare-card.b {
+    background: linear-gradient(180deg, #ffffff 0%, #fcfaf5 100%);
+    border-color: var(--warm-bg);
+  }
+  .compare-card .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #b8ad9c;
+    margin-bottom: 18px;
+  }
+  .compare-card.b .label { color: var(--warm); }
+  .compare-card h3 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 22px;
+    margin-bottom: 22px;
+    letter-spacing: -0.01em;
+  }
+  .compare-card .blur-list {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #2a2620;
+  }
+  .compare-card .blur-list .ch {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--rule);
+    color: #b8ad9c;
+    font-style: italic;
+  }
+  .compare-card .blur-list .ch.in {
+    color: #0a0a0a;
+    font-weight: 500;
+    font-style: normal;
+  }
+  .compare-card .blur-list .ch.in::after {
+    content: '✓';
+    color: var(--leaf);
+  }
+  .compare-card .blur-list .ch.out::after {
+    content: '◌';
+    color: #d6cfb8;
+  }
+  .compare-card .quote {
+    margin-top: 24px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    color: #6b6258;
+    font-size: 14px;
+    line-height: 1.5;
+    padding-left: 14px;
+    border-left: 2px solid var(--rule);
+  }
+  .compare-card.b .quote {
+    border-left-color: var(--warm);
+    color: #2a2620;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 6 — AI Coach (centered conversation)
+     ══════════════════════════════════════════════ */
+  .ws-coach {
+    background: linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+    padding: 140px 32px 120px;
+    text-align: center;
+  }
+  .ws-coach-inner {
+    max-width: 760px; margin: 0 auto;
+  }
+  .ws-coach h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4.2vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: #0a0a0a;
+    margin: 14px 0 18px;
+  }
+  .ws-coach h2 em { font-style: italic; }
+  .ws-coach .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.55;
+    max-width: 560px;
+    margin: 0 auto 56px;
+  }
+  .chat-mock {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 28px;
+    text-align: left;
+    box-shadow: 0 30px 60px -20px rgba(40,30,15,0.10);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .chat-msg {
+    display: flex; gap: 12px;
+    align-items: flex-start;
+  }
+  .chat-msg .av {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .chat-msg.user .av {
+    background: var(--paper-2);
+    color: #2a2620;
+  }
+  .chat-msg.coach .av {
+    background: #0a0a0a;
+    color: var(--warm);
+  }
+  .chat-msg .bubble {
+    flex: 1;
+  }
+  .chat-msg .who {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #b8ad9c;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+  .chat-msg.coach .who { color: var(--warm); }
+  .chat-msg .text {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2a2620;
+  }
+  .chat-msg .ctx {
+    margin-top: 8px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--leaf);
+    background: var(--leaf-bg);
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .chat-msg .ctx::before { content: '✓'; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 7 — Stats row (editorial numbers)
+     ══════════════════════════════════════════════ */
+  .ws-stats-row {
+    background: #ffffff;
+    padding: 120px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ws-stats-inner { max-width: 1280px; margin: 0 auto; }
+  .ws-stats-head {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .ws-stats-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.018em;
+    color: #0a0a0a;
+    line-height: 1.1;
+  }
+  .ws-stats-head h2 em { font-style: italic; color: var(--warm); }
+  .ws-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  @media (max-width: 880px) {
+    .ws-stats-grid { grid-template-columns: 1fr; }
+    .ws-stats-grid .stat { border-right: 0; border-bottom: 1px solid var(--rule); padding: 32px 0; }
+    .ws-stats-grid .stat:last-child { border-bottom: 0; }
+  }
+  .ws-stats-grid .stat {
+    text-align: center;
+    padding: 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .ws-stats-grid .stat:last-child { border-right: 0; }
+  .ws-stats-grid .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(64px, 8vw, 120px);
+    line-height: 0.9;
+    color: #0a0a0a;
+    letter-spacing: -0.04em;
+  }
+  .ws-stats-grid .num em {
+    font-style: italic;
+    color: var(--warm);
+  }
+  .ws-stats-grid .lbl {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #4a4338;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+  .ws-stats-grid .lbl small {
+    display: block;
+    font-size: 12px;
+    color: #b8ad9c;
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 8 — Feature mosaic (asymmetric)
+     ══════════════════════════════════════════════ */
+  .ws-mosaic {
+    background: var(--paper);
+    padding: 140px 32px;
+  }
+  .ws-mosaic-inner { max-width: 1280px; margin: 0 auto; }
+  .ws-mosaic-head {
+    max-width: 720px;
+    margin-bottom: 64px;
+  }
+  .ws-mosaic-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: #0a0a0a;
+    margin: 14px 0 16px;
+  }
+  .ws-mosaic-head h2 em { font-style: italic; }
+  .ws-mosaic-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    line-height: 1.55;
+  }
+  .mosaic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 180px;
+    gap: 18px;
+  }
+  @media (max-width: 980px) { .mosaic-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .mosaic-grid { grid-template-columns: 1fr; } }
+  .mosaic-cell {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 22px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s ease;
+  }
+  .mosaic-cell:hover { transform: translateY(-3px); }
+  .mosaic-cell .ic {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--warm-bg);
+    color: var(--warm);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: auto;
+  }
+  .mosaic-cell .ic svg { width: 16px; height: 16px; }
+  .mosaic-cell h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+    margin-top: 18px;
+    margin-bottom: 4px;
+    color: #0a0a0a;
+  }
+  .mosaic-cell h4 em { font-style: italic; }
+  .mosaic-cell p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b6258;
+  }
+
+  /* Mosaic span overrides */
+  .mosaic-cell.wide { grid-column: span 2; }
+  .mosaic-cell.tall { grid-row: span 2; }
+  .mosaic-cell.dark {
+    background: #0a0a0a;
+    color: #faf8f3;
+    border-color: #0a0a0a;
+  }
+  .mosaic-cell.dark h4 { color: #fff; }
+  .mosaic-cell.dark p { color: rgba(255,255,255,0.6); }
+  .mosaic-cell.dark .ic { background: rgba(47,158,107,0.18); color: var(--warm); }
+  .mosaic-cell.warm {
+    background: var(--warm-bg);
+    border-color: #e8d8af;
+  }
+  .mosaic-cell.warm .ic { background: var(--warm); color: #fff; }
+  .mosaic-cell.leaf { background: var(--leaf-bg); border-color: #cbd9cb; }
+  .mosaic-cell.leaf .ic { background: var(--leaf); color: #fff; }
+
+  /* Mosaic featured cells with specific content */
+  .mosaic-feat-themes {
+    display: flex; gap: 6px; margin-top: 16px;
+  }
+  .mosaic-feat-themes span {
+    flex: 1; height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--rule);
+  }
+  .mosaic-feat-themes .light { background: #fff; }
+  .mosaic-feat-themes .sepia { background: #f3eadc; }
+  .mosaic-feat-themes .dark { background: #0a0a0a; border-color: #0a0a0a; }
+
+  .mosaic-export {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+  }
+  .mosaic-export span {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--paper-2);
+    border-radius: 100px;
+    color: #2a2620;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 9 — Pull quote testimonial
+     ══════════════════════════════════════════════ */
+  .ws-quote {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ws-quote::before {
+    content: '"';
+    position: absolute;
+    top: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 240px;
+    color: var(--warm);
+    opacity: 0.18;
+    line-height: 1;
+    user-select: none;
+  }
+  .ws-quote-inner {
+    max-width: 880px; margin: 0 auto;
+    position: relative;
+  }
+  .ws-quote blockquote {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1.3;
+    letter-spacing: -0.012em;
+    color: #fff;
+    margin-bottom: 36px;
+  }
+  .ws-quote blockquote em {
+    color: var(--warm);
+    font-style: italic;
+  }
+  .ws-quote .byline {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+  }
+  .ws-quote .byline .who {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #fff;
+    font-size: 16px;
+  }
+  .ws-quote .byline .role {
+    color: var(--warm);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 10 — FAQ
+     ══════════════════════════════════════════════ */
+  .ws-faq {
+    background: var(--paper);
+    padding: 140px 32px 120px;
+  }
+  .ws-faq-inner {
+    max-width: 880px; margin: 0 auto;
+  }
+  .ws-faq-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .ws-faq-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    margin: 14px 0 8px;
+    color: #0a0a0a;
+  }
+  .ws-faq-head h2 em { font-style: italic; }
+  .ws-faq-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+  }
+  .faq-list { border-top: 1px solid var(--rule); }
+  .faq-list details {
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 0;
+  }
+  .faq-list summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #0a0a0a;
+    display: flex;
+    justify-content: space-between; align-items: flex-start;
+    gap: 24px;
+    transition: color 0.2s;
+  }
+  .faq-list summary:hover { color: var(--warm); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: '＋';
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--warm);
+    font-size: 22px;
+    line-height: 1;
+    transition: transform 0.2s;
+  }
+  .faq-list details[open] summary::after { content: '−'; }
+  .faq-list details p {
+    margin-top: 14px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    color: #4a4338;
+    line-height: 1.65;
+    padding-right: 40px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 11 — CTA
+     ══════════════════════════════════════════════ */
+  .ws-cta {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ws-cta-inner {
+    max-width: 800px; margin: 0 auto;
+    position: relative;
+  }
+  .ws-cta h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 22px;
+  }
+  .ws-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
+  .ws-cta p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+  }
+  .ws-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff;
+    color: #0a0a0a;
+    padding: 18px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    font-weight: 500;
+    transition: transform 0.2s;
+  }
+  .ws-cta-btn:hover { transform: translateY(-2px); }
+  .ws-cta-meta {
+    display: flex; gap: 28px; justify-content: center;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+  .ws-cta-meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Reveal-on-load animations */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.05s; }
+    .reveal.d2 { animation-delay: 0.15s; }
+    .reveal.d3 { animation-delay: 0.25s; }
+    .reveal.d4 { animation-delay: 0.35s; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* Language toggle (shared) */
+  .lang-toggle {
+    background: none; border: none; cursor: pointer;
+    color: inherit;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .lang-toggle:hover { opacity: 0.65; }
+  .lang-toggle .sep { color: #cfcdc6; }
+  .lang-toggle .lang.is-active { color: #0a0a0a; font-weight: 600; }
+  .lang-toggle .lang { color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<!-- PROMO -->
+<div class="promo">
+  <span>New: Beta Reader feedback engine — get structured edits on every chapter.</span>
+  <a href="beta-reader.html">Learn more →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="Slima — home">
+    <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="writing-studio.html" class="is-current" data-i18n="nav.writing">Writing Studio</a></li>
+    <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
+    <li><a href="script-studio.html" data-i18n="nav.script">Script Studio</a></li>
+    <li><a href="plan.html" data-i18n="nav.plans">Plans</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html" data-i18n="nav.login">Log in</a>
+    <a href="register.html" class="nav-cta" data-i18n="nav.cta">Try Slima</a>
+    <button class="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     1. HERO — asymmetric, large display
+     ════════════════════════════════════════ -->
+<section class="ws-hero">
+  <div class="ws-hero-grid">
+    <div class="reveal d1">
+      <div class="ws-hero-eyebrow" data-i18n="ws.hero.eyebrow">The Writing Studio</div>
+      <h1>The studio<br>writers <em>come back to.</em></h1>
+      <p class="lead">A long-form editor with project structure, full-book memory, and an AI coach that has actually read your manuscript. Built for the writers who actually plan to finish.</p>
+      <div class="ws-hero-cta">
+        <a href="register.html" class="btn btn-primary">
+          Start writing free
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#tour" class="btn btn-secondary">Tour the studio</a>
+      </div>
+      <div class="ws-hero-meta">
+        <span><span class="dot"></span>No credit card</span>
+        <span><span class="dot"></span>Your work stays yours</span>
+        <span><span class="dot"></span>Cancel any time</span>
+      </div>
+    </div>
+
+    <div class="reveal d2" style="position:relative;">
+      <div class="editor-mock">
+        <div class="em-bar">
+          <div class="left"><span class="pulse"></span> The Lighthouse Keepers</div>
+          <div class="center">Chapter VII <span style="opacity:0.5;">▾</span></div>
+          <span class="kebab">⋯</span>
+        </div>
+        <div class="em-toolbar">
+          <span class="bold">B</span>
+          <span class="it">I</span>
+          <span class="s">S</span>
+          <span class="sep"></span>
+          <span>H1</span><span>H2</span>
+          <span class="sep"></span>
+          <span>≡</span><span>1.</span><span>" "</span>
+          <span class="sep"></span>
+          <span>↶</span><span>↷</span>
+          <span class="right">1,247 words</span>
+        </div>
+        <div class="em-page">
+          <div class="em-page-meta">Chapter VII · A Lamp That Will Not Go Out</div>
+          <h2>Eleanor and the Boats</h2>
+          <p class="dropcap">She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down, and sitting down was something she had decided that morning she would not do.</p>
+          <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about, and that thinking about it was what kept the lighthouse keeper's daughters from getting any sleep…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     2. EDITORIAL STATEMENT (full-bleed dark)
+     ════════════════════════════════════════ -->
+<section class="ws-statement">
+  <div class="ws-statement-inner">
+    <span class="number">97<span class="pct">/100</span></span>
+    <p class="body">Of every hundred manuscripts started this year, ninety-seven will be abandoned by April. <em>Slima exists to be the studio that helps the other three finish.</em></p>
+    <div class="source">— National Writing Survey, 2025</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     3. STUDIO TOUR (centered browser-frame mockup)
+     ════════════════════════════════════════ -->
+<section class="ws-tour" id="tour">
+  <div class="ws-tour-inner">
+    <span class="sec-num">01 · Inside the studio</span>
+    <h2>Your manuscript, on a page<br>that <em>knows what to do.</em></h2>
+    <p class="lead">Sidebar for project files, editor in the middle, coach on the right. The kind of layout you'd ask for if you'd ever tried to write a book in a notes app.</p>
+
+    <div class="ws-tour-mock">
+      <div class="browser-frame">
+        <div class="bf-titlebar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url">app.slima.ai / lighthouse-keepers / chapter-vii</div>
+        </div>
+        <div class="bf-body">
+          <!-- Sidebar -->
+          <aside class="sidebar">
+            <h5>The Lighthouse Keepers</h5>
+            <ul>
+              <li><span class="ic">📖</span> Manuscript<span class="wc"></span></li>
+              <li><span class="ic">　</span> Prologue<span class="wc">820</span></li>
+              <li><span class="ic">　</span> I. Salt &amp; Iron<span class="wc">2,144</span></li>
+              <li><span class="ic">　</span> II. The Captain's List<span class="wc">3,012</span></li>
+              <li><span class="ic">　</span> III–VI. (4 chapters)<span class="wc">9,830</span></li>
+              <li class="active"><span class="ic">　</span> VII. A Lamp…<span class="wc">1,247</span></li>
+              <li><span class="ic">　</span> VIII. Drafted<span class="wc">412</span></li>
+            </ul>
+            <h5>Reference</h5>
+            <ul>
+              <li><span class="ic">📚</span> Lighthouse history</li>
+              <li><span class="ic">🗒</span> Maine 1947 timeline</li>
+              <li><span class="ic">👤</span> Characters (4)</li>
+              <li><span class="ic">🗺</span> Coast map</li>
+            </ul>
+            <h5>Trash</h5>
+            <ul>
+              <li><span class="ic">🗑</span> 3 drafts</li>
+            </ul>
+          </aside>
+
+          <!-- Editor -->
+          <div class="editor">
+            <div class="crumb">Chapter VII · A Lamp That Will Not Go Out</div>
+            <h1>Eleanor <em>and the Boats</em></h1>
+            <p class="dropcap">She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down, and sitting down was something she had decided that morning she would not do.</p>
+            <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about, and that thinking about it was what kept the lighthouse keeper's daughters from getting any sleep<sup style="color:var(--warm); font-size:11px;">¹</sup>.</p>
+            <p>Eleanor was not yet a lighthouse keeper's daughter. She was the lighthouse keeper's <em>niece</em>, which was a different rank, and which entitled her<span class="typewriter"></span></p>
+            <div class="footnote"><sup>1.</sup> See reference: <em>"On Insomnia in Coastal Communities,"</em> 1953.</div>
+          </div>
+
+          <!-- Right panel — Coach + goals -->
+          <aside class="panel">
+            <h5><span class="star">✦</span> AI Coach</h5>
+            <div class="session coach">
+              <strong>Eleanor's voice in this chapter</strong> is more cautious than chapter III, where she was almost defiant. Was that intentional? If yes — perfect. If not, the shift happens off-page.
+              <div class="meta">— knows chapters 1–7</div>
+            </div>
+            <div class="session">
+              <strong>Continuity:</strong> Mr. Halberg has a beard in chapter II and is clean-shaven here. Worth a check.
+              <div class="meta">— continuity scan</div>
+            </div>
+
+            <div class="goal">
+              <div class="num">1,247<span class="of"> / 1,000</span></div>
+              <div class="lbl">Today's goal</div>
+              <div class="bar"><div></div></div>
+              <div class="streak"><span class="flame">🔥</span> 14-day streak · 2 rests left</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     4. FEATURE TRIO
+     ════════════════════════════════════════ -->
+<section class="ws-trio">
+  <div class="ws-trio-inner">
+    <div class="ws-trio-head">
+      <div>
+        <span class="sec-num">02 · The fundamentals</span>
+        <h2 data-i18n="ws.trio.h2">Three things that change<br>how writing <em>feels.</em></h2>
+      </div>
+      <p>Most apps give you a text box. Slima gives you a project, a streak, and a way to never lose a sentence you wrote at 2 a.m.</p>
+    </div>
+
+    <div class="ws-trio-grid">
+      <article class="trio-card">
+        <div class="num">i.</div>
+        <h3>Your <em>project.</em></h3>
+        <p>Manuscript, references, characters, archive — all in one workspace. Drag chapters to reorder. Word counts update live. Drafts you don't love yet go to a folder, never the trash.</p>
+        <div class="visual vis-folders">
+          <div class="root">📖 The Lighthouse Keepers</div>
+          <div class="ind">Prologue</div>
+          <div class="ind active">VII. A Lamp That Will Not Go Out</div>
+          <div class="ind">VIII. (drafted)</div>
+          <div class="root">📚 Reference</div>
+          <div class="ind">Maine 1947 timeline</div>
+          <div class="ind">Characters (4)</div>
+        </div>
+      </article>
+
+      <article class="trio-card">
+        <div class="num">ii.</div>
+        <h3>Memory that <em>travels with you.</em></h3>
+        <p>Open Slima on any device — your manuscript, notes, and the AI's understanding of your story are already there. No re-uploading. No re-explaining.</p>
+        <div class="visual vis-folders">
+          <div class="root">☁ Eleanor and the Boats</div>
+          <div class="ind">Last edited · iPad · 11 min ago</div>
+          <div class="ind active">Now open · Mac · 2 sec ago</div>
+          <div class="ind">Synced · Phone · this morning</div>
+          <div class="root">↺ Context preserved</div>
+          <div class="ind">28 chapters · 412 notes · 4 readers</div>
+        </div>
+      </article>
+
+      <article class="trio-card">
+        <div class="num">iii.</div>
+        <h3>Every save is <em>a checkpoint.</em></h3>
+        <p>Auto-versioning, every save. Open a snapshot from last Tuesday in two clicks — the rewrite, the redo, the bit you cut and now miss. Nothing is ever truly gone.</p>
+        <div class="visual vis-versions">
+          <div class="row active"><span class="dot"></span><span class="label">"Eleanor and the Boats"</span><span class="time">now</span></div>
+          <div class="row"><span class="dot"></span><span class="label">— before cut paragraph</span><span class="time">2h ago</span></div>
+          <div class="row"><span class="dot"></span><span class="label">— Tuesday revision</span><span class="time">2d ago</span></div>
+          <div class="row"><span class="dot"></span><span class="label">— first complete draft</span><span class="time">12d ago</span></div>
+          <div class="row"><span class="dot"></span><span class="label">— opening line landed</span><span class="time">28d ago</span></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     5. MEMORY COMPARISON (split before / after)
+     ════════════════════════════════════════ -->
+<section class="ws-memory">
+  <div class="ws-memory-inner">
+    <span class="sec-num">03 · Full-book memory</span>
+    <h2 data-i18n="ws.memory.h2">Slima sees and understands <em>your whole book.</em></h2>
+    <p class="lead">When you ask the coach a question about chapter seven, it has actually read chapters one through six.</p>
+
+    <div class="compare-grid">
+      <article class="compare-card">
+        <div class="label">Standard AI editors</div>
+        <h3>Reads only what's on screen.</h3>
+        <div class="blur-list">
+          <div class="ch out">Prologue</div>
+          <div class="ch out">I. Salt &amp; Iron</div>
+          <div class="ch out">II. The Captain's List</div>
+          <div class="ch out">III–VI. (4 chapters)</div>
+          <div class="ch in">VII. A Lamp That Will Not Go Out</div>
+          <div class="ch out">VIII. (drafted)</div>
+        </div>
+        <div class="quote">"Try varying your sentence length here." — Generic advice that ignores the seven chapters of cadence you've already established.</div>
+      </article>
+
+      <article class="compare-card b">
+        <div class="label">Slima Coach</div>
+        <h3>Reads the whole manuscript.</h3>
+        <div class="blur-list">
+          <div class="ch in">Prologue</div>
+          <div class="ch in">I. Salt &amp; Iron</div>
+          <div class="ch in">II. The Captain's List</div>
+          <div class="ch in">III–VI. (4 chapters)</div>
+          <div class="ch in">VII. A Lamp That Will Not Go Out</div>
+          <div class="ch in">VIII. (drafted)</div>
+        </div>
+        <div class="quote">"Eleanor's cadence in chapters I–III runs in long, salt-water sentences. Here she's clipped — fitting, given the boats, but consider one long breath in paragraph two to anchor her voice."</div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     6. AI COACH (centered chat mock)
+     ════════════════════════════════════════ -->
+<section class="ws-coach">
+  <div class="ws-coach-inner">
+    <span class="sec-num">04 · AI Coach</span>
+    <h2>The first writing assistant<br>that has <em>actually read your book.</em></h2>
+    <p class="lead">Ask about pacing. Ask about a character you wrote in chapter three. Ask if the ending lands. The coach answers from inside the work.</p>
+
+    <div class="chat-mock">
+      <div class="chat-msg user">
+        <div class="av">E</div>
+        <div class="bubble">
+          <div class="who">You · drafting Ch. VII</div>
+          <div class="text">Is Eleanor's voice consistent here? She felt sharper in chapter three.</div>
+        </div>
+      </div>
+
+      <div class="chat-msg coach">
+        <div class="av">✦</div>
+        <div class="bubble">
+          <div class="who">Slima Coach</div>
+          <div class="text">She is sharper in III, yes — but that scene took place after the storm, when she was angry. In VII she's afraid. The voice you've written is consistent with a frightened Eleanor: shorter sentences, more hedging, fewer first-person verbs. If you want her sharpness back, the catalyst probably isn't dialogue — it's the moment she decides the boats aren't coming back.</div>
+          <div class="ctx">Reading 7 chapters · 12,565 words</div>
+        </div>
+      </div>
+
+      <div class="chat-msg user">
+        <div class="av">E</div>
+        <div class="bubble">
+          <div class="who">You</div>
+          <div class="text">Where would that decision land best, structurally?</div>
+        </div>
+      </div>
+
+      <div class="chat-msg coach">
+        <div class="av">✦</div>
+        <div class="bubble">
+          <div class="who">Slima Coach</div>
+          <div class="text">Two-thirds in. Right after she counts them the second time. Right now your paragraph break does the work; let her say it instead.</div>
+          <div class="ctx">Suggesting in chapter VII</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     7. STATS ROW (editorial numbers)
+     ════════════════════════════════════════ -->
+<section class="ws-stats-row">
+  <div class="ws-stats-inner">
+    <div class="ws-stats-head">
+      <span class="sec-num">05 · The numbers</span>
+      <h2>What the studio gives you<br><em>that "AI writing" doesn't.</em></h2>
+    </div>
+    <div class="ws-stats-grid">
+      <div class="stat">
+        <div class="num">100<em>K</em></div>
+        <div class="lbl">Words of context per AI request<small>The whole book, not the last paragraph.</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">280<em>×</em></div>
+        <div class="lbl">Coach conversations per week, on Pro<small>(84/week on Starter — plenty either way.)</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="lbl">Active drafts and project files<small>Write four books at once. We won't tell.</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     8. FEATURE MOSAIC (asymmetric grid)
+     ════════════════════════════════════════ -->
+<section class="ws-mosaic">
+  <div class="ws-mosaic-inner">
+    <div class="ws-mosaic-head">
+      <span class="sec-num">06 · Everything else</span>
+      <h2 data-i18n="ws.mosaic.h2">The studio for you to <em>get work done.</em></h2>
+      <p>Quiet by default. Every tool here shows up when you need it and disappears when you don't.</p>
+    </div>
+
+    <div class="mosaic-grid">
+      <!-- Outline view (wide) -->
+      <div class="mosaic-cell wide">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h16"/></svg></div>
+        <h4>Outline view</h4>
+        <p>One screen, every chapter and section, drag to reorder. The manuscript follows.</p>
+      </div>
+
+      <!-- Snapshots -->
+      <div class="mosaic-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <h4>Snapshots</h4>
+        <p>Every save is restorable. Browse versions like chapters in a history.</p>
+      </div>
+
+      <!-- Footnotes & citations -->
+      <div class="mosaic-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <h4>Footnotes &amp; citations</h4>
+        <p>Academic-grade. Numbered, linked, and exported in any common style.</p>
+      </div>
+
+      <!-- Reference panel (wide, dark) -->
+      <div class="mosaic-cell wide dark">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+        <h4>The reference desk, <em>at your right hand.</em></h4>
+        <p>Research, character bibles, world rules — open while you write, never in another tab.</p>
+      </div>
+
+      <!-- Focus modes -->
+      <div class="mosaic-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M3 12h3M18 12h3M12 3v3M12 18v3"/></svg></div>
+        <h4>Typewriter focus</h4>
+        <p>Active line locked to the screen center. Everything around it dims.</p>
+      </div>
+
+      <!-- Smart find -->
+      <div class="mosaic-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg></div>
+        <h4>Find across project</h4>
+        <p>Search every chapter, note, and reference. Replace once, propagated everywhere.</p>
+      </div>
+
+      <!-- Reader mode (tall) -->
+      <div class="mosaic-cell tall">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+        <h4>Reader mode.</h4>
+        <p>See the manuscript the way readers will. Justified, paginated, page numbers and all.</p>
+      </div>
+
+      <!-- Export -->
+      <div class="mosaic-cell wide">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 21h14"/></svg></div>
+        <h4>Export anywhere — keep nothing hostage.</h4>
+        <p>Submit to anyone, in any format. Your manuscript is yours; we just give it a good home.</p>
+        <div class="mosaic-export">
+          <span>PDF</span><span>EPUB</span><span>Word</span><span>Markdown</span><span>Final Draft</span><span>Fountain</span>
+        </div>
+      </div>
+
+      <!-- Read-only sharing -->
+      <div class="mosaic-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg></div>
+        <h4>Share with your editor</h4>
+        <p>Read-only links with optional comments. Pull notes back into your draft with one click.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     9. PULL QUOTE (testimonial)
+     ════════════════════════════════════════ -->
+<section class="ws-quote">
+  <div class="ws-quote-inner">
+    <blockquote data-i18n="t.weston1">
+      "This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits <em>never veered off.</em> Superb."
+    </blockquote>
+    <div class="byline">
+      <span class="who" data-i18n="t.weston.name">Weston</span>
+      <span class="role" data-i18n="t.weston.role">Writer · ACE</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     10. FAQ
+     ════════════════════════════════════════ -->
+<section class="ws-faq">
+  <div class="ws-faq-inner">
+    <div class="ws-faq-head">
+      <span class="sec-num">07 · Common questions</span>
+      <h2>The <em>"but what about…"</em> list.</h2>
+      <p>If you don't see your question, write to us. A human reads everything.</p>
+    </div>
+
+    <div class="faq-list">
+      <details>
+        <summary>Will Slima train its AI on my book?</summary>
+        <p>No. Your drafts are encrypted, never used for training, and never shown to anyone else. Each AI request reads your work, answers, and forgets — your manuscript stays in your account, full stop.</p>
+      </details>
+
+      <details>
+        <summary>Can I use Slima offline?</summary>
+        <p>You can keep writing if your connection drops — Slima continues to save locally and syncs when you're back online. AI features need the network, but the editor doesn't.</p>
+      </details>
+
+      <details>
+        <summary>What's the longest manuscript Slima can handle?</summary>
+        <p>The editor itself has no limit. Coach context tops out at 100,000 words per request — long enough for the entire book in most cases. Past that, you can scope the coach to specific chapters.</p>
+      </details>
+
+      <details>
+        <summary>How is this different from Scrivener or Google Docs?</summary>
+        <p>Scrivener is great at structure but doesn't have a coach who has read the whole book. Google Docs is great at collaboration but treats every doc the same. Slima brings the structure, the typography, and the in-context AI together — for the long-form writer specifically.</p>
+      </details>
+
+      <details>
+        <summary>Can I import a manuscript I've already started?</summary>
+        <p>Yes. Drop in a Word, Markdown, or plain-text file and Slima will detect chapter breaks, build the project tree, and pick up wherever you left off.</p>
+      </details>
+
+      <details>
+        <summary>Is there a free tier?</summary>
+        <p>The Free trial gives you the full Studio for two weeks, including 30 coach conversations and one beta-reader report. After that, Starter is $9/month.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     11. CTA STRIP
+     ════════════════════════════════════════ -->
+<section class="ws-cta">
+  <div class="ws-cta-inner">
+    <h2>Where books <em>get finished.</em></h2>
+    <p>Bring the draft you've been dragging around. The studio knows where it lives.</p>
+    <a href="register.html" class="ws-cta-btn">
+      Open the studio
+      <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="ws-cta-meta">
+      <span>Free for 14 days</span>
+      <span>No credit card</span>
+      <span>Your manuscript, always yours</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+        </a>
+        <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="writing-studio.html">Writing Studio</a></li>
+          <li><a href="beta-reader.html">Beta Readers</a></li>
+          <li><a href="script-studio.html">Script Studio</a></li>
+          <li><a href="plan.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slima. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/marketing.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>

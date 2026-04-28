@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Script Studio — Slima</title>
+<meta name="description" content="A screenwriting studio with scene-based structure, Hollywood ↔ Taiwan format switching, character bibles, beat boards, and runtime estimation.">
+<link rel="stylesheet" href="assets/marketing.css">
+<style>
+  /* ──────────────────────────────────────────────
+     SCRIPT STUDIO — page-specific design
+     "Soundstage": cinematic teal + soft gold accents
+     ────────────────────────────────────────────── */
+  :root {
+    --paper:    #faf9f6;
+    --paper-2:  #f3f1ec;
+    --rule:     #ececea;
+    --ink-2:    #2a2a2e;
+    --green:    #2f9e6b;
+    --green-bg: #e6f4ec;
+    /* Legacy aliases — collapsed to brand neutrals/green */
+    --teal:     #2f9e6b;
+    --teal-bg:  #e6f4ec;
+    --teal-2:   #5a5a64;
+    --gold:     #2f9e6b;
+    --gold-bg:  #e6f4ec;
+  }
+  body { background: var(--paper); }
+
+  .sec-num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--teal);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .sec-num::before {
+    content: '— ';
+    margin-right: 4px;
+    font-style: normal;
+  }
+
+  /* ══════════════════════════════════════════════
+     1. HERO — vertical centered, screenplay page
+     ══════════════════════════════════════════════ */
+  .ss-hero {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 100% 0%, rgba(47,158,107,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 0% 100%, rgba(47,158,107,0.05) 0%, transparent 45%),
+      var(--paper);
+    padding: 96px 32px 0;
+    overflow: hidden;
+    text-align: center;
+  }
+  .ss-hero-inner {
+    max-width: 1080px; margin: 0 auto;
+  }
+  .ss-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--teal);
+    margin-bottom: 22px;
+  }
+  .ss-hero-eyebrow::before, .ss-hero-eyebrow::after {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--teal);
+  }
+  .ss-hero h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(48px, 7vw, 96px);
+    letter-spacing: -0.028em;
+    line-height: 0.96;
+    color: #0a0a0a;
+    margin-bottom: 24px;
+    max-width: 920px;
+    margin-left: auto; margin-right: auto;
+  }
+  .ss-hero h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+  .ss-hero p.lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: #3a3631;
+    max-width: 620px;
+    margin: 0 auto 32px;
+  }
+  .ss-hero-cta {
+    display: inline-flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 56px;
+    justify-content: center;
+  }
+  .ss-hero-meta {
+    display: flex; gap: 24px; justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 64px;
+    font-size: 13px;
+    color: #6b6258;
+    font-family: 'Inter', sans-serif;
+  }
+  .ss-hero-meta .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Screenplay page mockup */
+  .screenplay-page {
+    max-width: 720px;
+    margin: 0 auto;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 12px 12px 0 0;
+    box-shadow:
+      0 60px 120px -40px rgba(40, 30, 15, 0.30),
+      0 20px 40px -20px rgba(40, 30, 15, 0.14);
+    text-align: left;
+    transform: perspective(1400px) rotateX(2deg);
+    transition: transform 0.6s ease;
+  }
+  .screenplay-page:hover { transform: perspective(1400px) rotateX(0deg); }
+  .sp-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  .sp-bar .left {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #6b6258;
+  }
+  .sp-bar .clap {
+    width: 22px; height: 22px;
+    border-radius: 4px;
+    background: #0a0a0a;
+    color: var(--gold);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .sp-bar .toggle {
+    display: inline-flex;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 3px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+  }
+  .sp-bar .toggle span {
+    padding: 4px 12px;
+    border-radius: 100px;
+    color: #6b6258;
+  }
+  .sp-bar .toggle span.on {
+    background: var(--teal);
+    color: #fff;
+  }
+  .sp-bar .pages {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #6b6258;
+  }
+  .sp-body {
+    padding: 36px 56px 32px;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    color: #0a0a0a;
+    min-height: 360px;
+  }
+  @media (max-width: 720px) { .sp-body { padding: 28px 22px; } }
+  .sp-body .scene {
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+    margin-bottom: 18px;
+    display: flex; justify-content: space-between;
+  }
+  .sp-body .scene .num { color: var(--gold); }
+  .sp-body .action { margin-bottom: 14px; color: #2a2620; }
+  .sp-body .character {
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .sp-body .paren {
+    text-align: center;
+    color: #6b6258;
+    font-style: italic;
+    margin-bottom: 2px;
+  }
+  .sp-body .dialog {
+    text-align: center;
+    max-width: 60%;
+    margin: 0 auto 14px;
+  }
+
+  /* ══════════════════════════════════════════════
+     2. INDUSTRY STAT (cinema-marquee feel)
+     ══════════════════════════════════════════════ */
+  .ss-stat {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 130px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ss-stat::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--teal-2), var(--gold), transparent);
+    opacity: 0.55;
+  }
+  .ss-stat-inner {
+    max-width: 1100px; margin: 0 auto;
+    text-align: center;
+  }
+  .ss-stat .marquee {
+    display: inline-block;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .ss-stat .marquee::before,
+  .ss-stat .marquee::after {
+    content: '✦';
+    margin: 0 14px;
+    color: var(--gold);
+  }
+  .ss-stat h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 5vw, 72px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: #fff;
+    max-width: 920px;
+    margin: 0 auto 28px;
+  }
+  .ss-stat h2 em { font-style: italic; color: var(--gold); }
+  .ss-stat .body {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.55;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ══════════════════════════════════════════════
+     3. LIVE STUDIO TOUR (browser frame)
+     ══════════════════════════════════════════════ */
+  .ss-tour {
+    background: var(--paper);
+    padding: 140px 32px 96px;
+    text-align: center;
+  }
+  .ss-tour-inner { max-width: 1180px; margin: 0 auto; }
+  .ss-tour h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #0a0a0a;
+    margin: 14px auto 18px;
+    max-width: 880px;
+  }
+  .ss-tour h2 em { font-style: italic; }
+  .ss-tour .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.55;
+    max-width: 580px;
+    margin: 0 auto 56px;
+  }
+  .ss-frame {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 60px 120px -40px rgba(40, 30, 15, 0.22),
+      0 20px 40px -20px rgba(40, 30, 15, 0.12);
+    text-align: left;
+  }
+  .ss-frame-bar {
+    display: flex; align-items: center;
+    padding: 14px 18px;
+    background: var(--paper-2);
+    border-bottom: 1px solid var(--rule);
+    gap: 14px;
+  }
+  .ss-frame-bar .dots { display: flex; gap: 7px; }
+  .ss-frame-bar .dots span {
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: #d4ccba;
+  }
+  .ss-frame-bar .dots span:nth-child(1) { background: #e29e94; }
+  .ss-frame-bar .dots span:nth-child(2) { background: #e3c97a; }
+  .ss-frame-bar .dots span:nth-child(3) { background: #95b893; }
+  .ss-frame-bar .url {
+    flex: 1; text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #6b6258;
+    background: #ffffff;
+    padding: 4px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .ss-frame-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--rule);
+    background: #ffffff;
+  }
+  .ss-frame-tabs button {
+    background: transparent;
+    border: 0;
+    padding: 14px 22px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #6b6258;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .ss-frame-tabs button.is-active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    font-weight: 500;
+  }
+  .ss-frame-tabs button svg { width: 14px; height: 14px; }
+
+  /* Corkboard grid */
+  .corkboard {
+    padding: 28px 32px;
+    background: var(--paper);
+    background-image:
+      radial-gradient(circle at 50% 50%, rgba(47,158,107,0.04) 0%, transparent 70%);
+    min-height: 460px;
+  }
+  .corkboard-act {
+    margin-bottom: 22px;
+  }
+  .corkboard-act .label {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--teal);
+    margin-bottom: 12px;
+    letter-spacing: 0.04em;
+  }
+  .corkboard-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 14px;
+  }
+  .scene-card {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #2a2620;
+    cursor: grab;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px -4px rgba(40,30,15,0.08);
+  }
+  .scene-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -8px rgba(40,30,15,0.12);
+  }
+  .scene-card.active {
+    background: #0a0a0a;
+    color: #faf8f3;
+    border-color: #0a0a0a;
+  }
+  .scene-card .top {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    color: #b8ad9c;
+    margin-bottom: 6px;
+  }
+  .scene-card.active .top { color: rgba(255,255,255,0.5); }
+  .scene-card.active .top .num { color: var(--gold); }
+  .scene-card .heading {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.005em;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+  .scene-card .meta {
+    font-size: 11px;
+    color: #6b6258;
+  }
+  .scene-card.active .meta { color: rgba(255,255,255,0.6); }
+  .scene-card.empty {
+    background: var(--paper-2);
+    border: 1px dashed var(--rule);
+    color: #b8ad9c;
+    text-align: center;
+    font-style: italic;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+  }
+
+  /* ══════════════════════════════════════════════
+     4. FORMAT TOGGLE (Hollywood ↔ Taiwan)
+     ══════════════════════════════════════════════ */
+  .ss-format {
+    background: #ffffff;
+    padding: 130px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ss-format-inner { max-width: 1180px; margin: 0 auto; }
+  .ss-format-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 880px) {
+    .ss-format-head { grid-template-columns: 1fr; gap: 18px; margin-bottom: 36px; }
+  }
+  .ss-format h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 8px 0 0;
+  }
+  .ss-format h2 em { font-style: italic; color: var(--teal); }
+  .ss-format-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #4a4338;
+  }
+  .format-pair {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 28px;
+    align-items: stretch;
+  }
+  @media (max-width: 880px) {
+    .format-pair { grid-template-columns: 1fr; }
+    .format-pair .swap-btn { display: none; }
+  }
+  .format-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .format-card .head {
+    padding: 16px 22px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .format-card .head .name {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #0a0a0a;
+  }
+  .format-card .head .name small {
+    color: #6b6258;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 13px;
+    margin-left: 6px;
+  }
+  .format-card .head .badge {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--teal);
+    background: var(--teal-bg);
+    padding: 4px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.08em;
+  }
+  .format-card .body {
+    padding: 26px 32px;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.85;
+    color: #0a0a0a;
+    min-height: 280px;
+  }
+  .format-card .body.taiwan {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    line-height: 1.95;
+  }
+  .format-card .body .scene-row {
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex; justify-content: space-between;
+  }
+  .format-card .body .scene-row .num { color: var(--gold); }
+  .format-card .body.taiwan .scene-row {
+    text-transform: none;
+  }
+  .format-card .body .character {
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+  .format-card .body .dialog {
+    text-align: center;
+    max-width: 60%;
+    margin: 0 auto 12px;
+  }
+  /* Taiwan format uses table-like rows */
+  .format-card .body.taiwan .twrow {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+  .format-card .body.taiwan .twrow .role {
+    color: var(--teal);
+    font-style: italic;
+  }
+  .format-card .body.taiwan .twrow .text {
+    color: #0a0a0a;
+  }
+  .swap-btn {
+    align-self: center;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #0a0a0a;
+    color: var(--gold);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 22px;
+    border: 0;
+    cursor: pointer;
+    box-shadow: 0 14px 28px -8px rgba(40,30,15,0.20);
+    transition: transform 0.3s ease;
+  }
+  .swap-btn:hover { transform: rotate(180deg); }
+
+  .ss-format-foot {
+    margin-top: 36px;
+    padding: 18px 22px;
+    background: var(--paper-2);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #4a4338;
+    line-height: 1.55;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .ss-format-foot strong {
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  /* ══════════════════════════════════════════════
+     5. CHARACTER BIBLE (centered)
+     ══════════════════════════════════════════════ */
+  .ss-bible {
+    background: linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+    padding: 130px 32px;
+    text-align: center;
+  }
+  .ss-bible-inner { max-width: 920px; margin: 0 auto; }
+  .ss-bible h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4.2vw, 56px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 14px 0 18px;
+  }
+  .ss-bible h2 em { font-style: italic; color: var(--teal); }
+  .ss-bible .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.55;
+    max-width: 580px;
+    margin: 0 auto 56px;
+  }
+  .bible-card {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -20px rgba(40,30,15,0.12);
+    overflow: hidden;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+  }
+  @media (max-width: 720px) {
+    .bible-card { grid-template-columns: 1fr; }
+  }
+  .bible-card .col-1 { padding: 32px 36px; }
+  .bible-card .role {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 14px;
+  }
+  .bible-card h3 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 32px;
+    letter-spacing: -0.015em;
+    color: #0a0a0a;
+    margin-bottom: 6px;
+  }
+  .bible-card h3 em { font-style: italic; }
+  .bible-card .age {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    color: #6b6258;
+    margin-bottom: 22px;
+    font-size: 15px;
+  }
+  .bible-card dl {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 14px 22px;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .bible-card dt {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding-top: 4px;
+  }
+  .bible-card dd {
+    margin: 0;
+    font-size: 15px;
+    color: #2a2620;
+    line-height: 1.55;
+  }
+  .bible-card dd em { font-style: italic; color: #6b6258; }
+
+  .bible-card .col-2 {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .bible-card .col-2 .av {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--teal-2);
+    color: #fff;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 26px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+  }
+  .bible-card .col-2 .h {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+  .bible-card .col-2 .voice-sample {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 16px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.92);
+    border-left: 2px solid var(--gold);
+    padding-left: 14px;
+    margin-bottom: 18px;
+  }
+  .bible-card .col-2 .voice-sample::before {
+    content: '"';
+    color: var(--gold);
+    font-size: 30px;
+    line-height: 0;
+    vertical-align: -8px;
+    margin-right: 4px;
+  }
+  .bible-card .col-2 .ai-note {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.5;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.10);
+  }
+  .bible-card .col-2 .ai-note strong {
+    color: var(--gold);
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  /* ══════════════════════════════════════════════
+     6. BEAT SHEET / FEATURES MOSAIC
+     ══════════════════════════════════════════════ */
+  .ss-features {
+    background: var(--paper);
+    padding: 140px 32px;
+  }
+  .ss-features-inner { max-width: 1280px; margin: 0 auto; }
+  .ss-features-head {
+    max-width: 720px;
+    margin-bottom: 64px;
+  }
+  .ss-features-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    color: #0a0a0a;
+    margin: 14px 0 16px;
+  }
+  .ss-features-head h2 em { font-style: italic; }
+  .ss-features-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    line-height: 1.55;
+  }
+  .ss-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 200px;
+    gap: 18px;
+  }
+  @media (max-width: 980px) { .ss-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) { .ss-grid { grid-template-columns: 1fr; } }
+  .ss-cell {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 22px;
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s ease;
+  }
+  .ss-cell:hover { transform: translateY(-3px); }
+  .ss-cell .ic {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--teal-bg);
+    color: var(--teal);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: auto;
+  }
+  .ss-cell .ic svg { width: 16px; height: 16px; }
+  .ss-cell h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 17px;
+    letter-spacing: -0.005em;
+    margin-top: 18px;
+    margin-bottom: 4px;
+    color: #0a0a0a;
+  }
+  .ss-cell h4 em { font-style: italic; }
+  .ss-cell p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #6b6258;
+  }
+  .ss-cell.wide { grid-column: span 2; }
+  .ss-cell.tall { grid-row: span 2; }
+  .ss-cell.dark {
+    background: #0a0a0a;
+    color: #faf8f3;
+    border-color: #0a0a0a;
+  }
+  .ss-cell.dark h4 { color: #fff; }
+  .ss-cell.dark p { color: rgba(255,255,255,0.6); }
+  .ss-cell.dark .ic { background: rgba(47,158,107,0.18); color: var(--gold); }
+  .ss-cell.gold { background: var(--gold-bg); border-color: #e8d8af; }
+  .ss-cell.gold .ic { background: var(--gold); color: #fff; }
+  .ss-cell.teal { background: var(--teal-bg); border-color: #cbd9dd; }
+  .ss-cell.teal .ic { background: var(--teal); color: #fff; }
+
+  /* Beat sheet visual inside one cell */
+  .beats-mini {
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 4px;
+    height: 64px;
+  }
+  .beats-mini i {
+    border-radius: 3px;
+    background: rgba(255,255,255,0.18);
+  }
+  .beats-mini i.act-1 { background: var(--gold); }
+  .beats-mini i.act-2a { background: rgba(47,158,107,0.55); }
+  .beats-mini i.mid { background: #fff; }
+  .beats-mini i.act-2b { background: rgba(47,158,107,0.55); }
+  .beats-mini i.act-3 { background: var(--gold); }
+
+  /* Runtime visual */
+  .runtime-mini {
+    margin-top: 14px;
+    display: flex; align-items: center; gap: 12px;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .runtime-mini .num {
+    font-size: 36px; font-weight: 500;
+    color: #0a0a0a;
+    line-height: 1;
+  }
+  .runtime-mini .unit {
+    font-size: 14px; color: #6b6258;
+    font-style: italic;
+  }
+  .runtime-mini .arrow {
+    color: var(--teal); font-size: 14px;
+  }
+
+  /* Export pills */
+  .export-pills {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 14px;
+  }
+  .export-pills span {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    padding: 4px 10px;
+    background: var(--paper-2);
+    border-radius: 100px;
+    color: #2a2620;
+  }
+
+  /* ══════════════════════════════════════════════
+     7. STATS row
+     ══════════════════════════════════════════════ */
+  .ss-stats {
+    background: #ffffff;
+    padding: 120px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .ss-stats-inner { max-width: 1280px; margin: 0 auto; }
+  .ss-stats-head { text-align: center; margin-bottom: 80px; }
+  .ss-stats-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.018em;
+    color: #0a0a0a;
+    line-height: 1.1;
+  }
+  .ss-stats-head h2 em { font-style: italic; color: var(--teal); }
+  .ss-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  @media (max-width: 880px) {
+    .ss-stats-grid { grid-template-columns: 1fr; }
+    .ss-stats-grid .stat { border-right: 0; border-bottom: 1px solid var(--rule); padding: 32px 0; }
+    .ss-stats-grid .stat:last-child { border-bottom: 0; }
+  }
+  .ss-stats-grid .stat {
+    text-align: center;
+    padding: 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .ss-stats-grid .stat:last-child { border-right: 0; }
+  .ss-stats-grid .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(64px, 8vw, 120px);
+    line-height: 0.9;
+    color: #0a0a0a;
+    letter-spacing: -0.04em;
+  }
+  .ss-stats-grid .num em { font-style: italic; color: var(--teal); }
+  .ss-stats-grid .lbl {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #4a4338;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+  .ss-stats-grid .lbl small {
+    display: block;
+    font-size: 12px;
+    color: #b8ad9c;
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  /* ══════════════════════════════════════════════
+     8. PULL QUOTE
+     ══════════════════════════════════════════════ */
+  .ss-quote {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ss-quote::before {
+    content: '"';
+    position: absolute;
+    top: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 240px;
+    color: var(--teal-2);
+    opacity: 0.20;
+    line-height: 1;
+    user-select: none;
+  }
+  .ss-quote-inner { max-width: 880px; margin: 0 auto; position: relative; }
+  .ss-quote blockquote {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 36px;
+    letter-spacing: -0.012em;
+  }
+  .ss-quote blockquote em { color: var(--green); }
+  .ss-quote .byline {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+  }
+  .ss-quote .byline .who {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #fff;
+    font-size: 16px;
+  }
+  .ss-quote .byline .role {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════════════
+     9. FAQ
+     ══════════════════════════════════════════════ */
+  .ss-faq { background: var(--paper); padding: 140px 32px 120px; }
+  .ss-faq-inner { max-width: 880px; margin: 0 auto; }
+  .ss-faq-head { text-align: center; margin-bottom: 56px; }
+  .ss-faq-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    margin: 14px 0 8px;
+    color: #0a0a0a;
+  }
+  .ss-faq-head h2 em { font-style: italic; color: var(--teal); }
+  .ss-faq-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+  }
+  .faq-list { border-top: 1px solid var(--rule); }
+  .faq-list details {
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 0;
+  }
+  .faq-list summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #0a0a0a;
+    display: flex;
+    justify-content: space-between; align-items: flex-start;
+    gap: 24px;
+    transition: color 0.2s;
+  }
+  .faq-list summary:hover { color: var(--teal); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: '＋';
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--teal);
+    font-size: 22px;
+    line-height: 1;
+  }
+  .faq-list details[open] summary::after { content: '−'; }
+  .faq-list details p {
+    margin-top: 14px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    color: #4a4338;
+    line-height: 1.65;
+    padding-right: 40px;
+  }
+
+  /* ══════════════════════════════════════════════
+     10. CTA
+     ══════════════════════════════════════════════ */
+  .ss-cta {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .ss-cta::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, var(--gold), var(--teal-2), var(--gold), transparent);
+    opacity: 0.55;
+  }
+  .ss-cta-inner { max-width: 800px; margin: 0 auto; position: relative; }
+  .ss-cta h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 22px;
+  }
+  .ss-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
+  .ss-cta p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+  }
+  .ss-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #0a0a0a;
+    padding: 18px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    font-weight: 500;
+    transition: transform 0.2s;
+  }
+  .ss-cta-btn:hover { transform: translateY(-2px); }
+  .ss-cta-meta {
+    display: flex; gap: 28px; justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* Reveal-on-load */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.05s; }
+    .reveal.d2 { animation-delay: 0.15s; }
+    .reveal.d3 { animation-delay: 0.25s; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* Language toggle (shared) */
+  .lang-toggle {
+    background: none; border: none; cursor: pointer;
+    color: inherit;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .lang-toggle:hover { opacity: 0.65; }
+  .lang-toggle .sep { color: #cfcdc6; }
+  .lang-toggle .lang.is-active { color: #0a0a0a; font-weight: 600; }
+  .lang-toggle .lang { color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<!-- PROMO -->
+<div class="promo">
+  <span>New: Beta Reader feedback engine — get structured edits on every chapter.</span>
+  <a href="beta-reader.html">Learn more →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="Slima — home">
+    <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="writing-studio.html" data-i18n="nav.writing">Writing Studio</a></li>
+    <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
+    <li><a href="script-studio.html" class="is-current" data-i18n="nav.script">Script Studio</a></li>
+    <li><a href="plan.html" data-i18n="nav.plans">Plans</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html" data-i18n="nav.login">Log in</a>
+    <a href="register.html" class="nav-cta" data-i18n="nav.cta">Try Slima</a>
+    <button class="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     1. HERO — centered display + screenplay page
+     ════════════════════════════════════════ -->
+<section class="ss-hero">
+  <div class="ss-hero-inner">
+    <div class="reveal d1">
+      <div class="ss-hero-eyebrow" data-i18n="ss.hero.eyebrow">Script Studio</div>
+      <h1>Screenplay<br><em>made easy.</em></h1>
+      <p class="lead">Scene-based structure with auto-numbering. One-click switching between Hollywood and Taiwan formats. A Character Bible the AI mentor reads before every line.</p>
+      <div class="ss-hero-cta">
+        <a href="register.html" class="btn btn-primary">
+          Open the Script Studio
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#tour" class="btn btn-secondary">See the corkboard</a>
+      </div>
+      <div class="ss-hero-meta">
+        <span><span class="dot"></span>Industry-standard PDF</span>
+        <span><span class="dot"></span>FDX &amp; Fountain export</span>
+        <span><span class="dot"></span>Hollywood ↔ Taiwan format</span>
+      </div>
+    </div>
+
+    <div class="reveal d2">
+      <div class="screenplay-page">
+        <div class="sp-bar">
+          <div class="left"><span class="clap">✦</span> The Last Ferry · Pilot</div>
+          <div class="toggle"><span class="on">Hollywood</span><span>Taiwan</span></div>
+          <div class="pages">12 / 58 pp.</div>
+        </div>
+        <div class="sp-body">
+          <div class="scene"><span>INT. APARTMENT — NIGHT</span><span class="num">12</span></div>
+          <div class="action">Maya stands in the hallway, keys still in her hand. The cat hasn't moved. Outside, the elevator finishes a long sigh and gives up.</div>
+          <div class="character">MAYA</div>
+          <div class="dialog">You weren't supposed to be home.</div>
+          <div class="character">DAVID (O.S.)</div>
+          <div class="paren">(quiet)</div>
+          <div class="dialog">Neither were you.</div>
+          <div class="action">A long pause. Maya sets the keys down — quietly, like the sound matters.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     2. INDUSTRY STAT
+     ════════════════════════════════════════ -->
+<section class="ss-stat">
+  <div class="ss-stat-inner">
+    <div class="marquee">Now showing</div>
+    <h2>The format is half the gatekeeper.<br><em>Slima opens the door.</em></h2>
+    <p class="body">Eight out of ten reader-coverage rejections cite formatting in the first paragraph. Your story shouldn't lose to a margin.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     3. STUDIO TOUR — corkboard view
+     ════════════════════════════════════════ -->
+<section class="ss-tour" id="tour">
+  <div class="ss-tour-inner">
+    <span class="sec-num">01 · The corkboard</span>
+    <h2>Every scene, on a card.<br><em>The whole script, at a glance.</em></h2>
+    <p class="lead">One scene per card, organized by act. Page counts, characters, and beats — visible all at once, so structural decisions don't get lost in the page.</p>
+
+    <div class="ss-frame">
+      <div class="ss-frame-bar">
+        <div class="dots"><span></span><span></span><span></span></div>
+        <div class="url">app.slima.ai / the-last-ferry / corkboard</div>
+      </div>
+      <div class="ss-frame-tabs">
+        <button>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          Screenplay
+        </button>
+        <button class="is-active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+          Corkboard
+        </button>
+        <button>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 20v-6M6 20V10M18 20V4"/></svg>
+          Beat sheet
+        </button>
+        <button>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M5 21c0-3.5 3-7 7-7s7 3.5 7 7"/></svg>
+          Characters
+        </button>
+      </div>
+
+      <div class="corkboard">
+        <div class="corkboard-act">
+          <div class="label">Act One · Setup</div>
+          <div class="corkboard-row">
+            <div class="scene-card">
+              <div class="top"><span class="num">01</span><span>EXT · Day</span></div>
+              <div class="heading">Harbor — Maya boards the ferry</div>
+              <div class="meta">¾ pg · Maya alone</div>
+            </div>
+            <div class="scene-card">
+              <div class="top"><span class="num">02</span><span>INT · Day</span></div>
+              <div class="heading">Ferry deck — the man with the cat carrier</div>
+              <div class="meta">1¼ pg · Maya, David</div>
+            </div>
+            <div class="scene-card">
+              <div class="top"><span class="num">03</span><span>INT · Day</span></div>
+              <div class="heading">Harbor café — phone call she doesn't take</div>
+              <div class="meta">⅔ pg · Maya alone</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="corkboard-act">
+          <div class="label">Act Two · Rising</div>
+          <div class="corkboard-row">
+            <div class="scene-card">
+              <div class="top"><span class="num">04</span><span>EXT · Dusk</span></div>
+              <div class="heading">Rooftop — Maya, alone again</div>
+              <div class="meta">¼ pg · mood</div>
+            </div>
+            <div class="scene-card active">
+              <div class="top"><span class="num">12</span><span>INT · Night</span></div>
+              <div class="heading">Apartment — "you weren't supposed to be home"</div>
+              <div class="meta">2 pg · Maya, David</div>
+            </div>
+            <div class="scene-card">
+              <div class="top"><span class="num">13</span><span>INT · Morning</span></div>
+              <div class="heading">Diner — Maya tells Pia what happened</div>
+              <div class="meta">1 pg · Maya, Pia</div>
+            </div>
+            <div class="scene-card empty">+ drop a card here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     4. FORMAT TOGGLE — Hollywood ↔ Taiwan
+     ════════════════════════════════════════ -->
+<section class="ss-format">
+  <div class="ss-format-inner">
+    <div class="ss-format-head">
+      <div>
+        <span class="sec-num">02 · Format switching</span>
+        <h2>Hollywood ↔ Taiwan,<br><em>one click.</em></h2>
+      </div>
+      <p>Same content, different page. Submit to a US production company in industry-standard format; send the same draft to a Taiwan crew in 場 / 景 layout.</p>
+    </div>
+
+    <div class="format-pair">
+      <div class="format-card">
+        <div class="head">
+          <div class="name">Hollywood <small>· Courier 12pt</small></div>
+          <span class="badge">Standard</span>
+        </div>
+        <div class="body">
+          <div class="scene-row"><span>INT. APARTMENT — NIGHT</span><span class="num">12</span></div>
+          <div>Maya stands in the hallway, keys still in her hand. The cat hasn't moved.</div>
+          <br>
+          <div class="character">MAYA</div>
+          <div class="dialog">You weren't supposed to be home.</div>
+          <div class="character">DAVID (O.S.)</div>
+          <div class="dialog">Neither were you.</div>
+        </div>
+      </div>
+
+      <button class="swap-btn" aria-label="Swap formats">⇌</button>
+
+      <div class="format-card">
+        <div class="head">
+          <div class="name">台灣電視劇 <small>· Plex Serif</small></div>
+          <span class="badge" style="color: var(--gold); background: var(--gold-bg);">Taiwan</span>
+        </div>
+        <div class="body taiwan">
+          <div class="scene-row"><span>場 12 ／ 內景 ／ 公寓走廊 ／ 夜</span><span class="num">12</span></div>
+          <div style="margin-bottom: 14px; color: #4a4338;">Maya 站在走廊。手裡還握著鑰匙。貓沒有動。</div>
+          <div class="twrow"><span class="role">Maya</span><span class="text">你不該在家的。</span></div>
+          <div class="twrow"><span class="role">David（O.S.）</span><span class="text">你也是。</span></div>
+          <div style="margin-top: 14px; color: #4a4338;">沉默很長。Maya 把鑰匙放下——輕輕地，像聲音很重要。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ss-format-foot">
+      <strong>Export both:</strong>&nbsp;PDF, Final Draft (.fdx), Fountain (.fountain), and plain text. Title page, watermark, page count — handled.
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     5. CHARACTER BIBLE (centered card)
+     ════════════════════════════════════════ -->
+<section class="ss-bible">
+  <div class="ss-bible-inner">
+    <span class="sec-num">03 · The Character Bible</span>
+    <h2>Your AI mentor reads the cast<br><em>before it opens its mouth.</em></h2>
+    <p class="lead">Write each character once — wants, hides, voice, the things they would never say. The AI references the Bible on every suggestion, so the dialogue stays in voice and the choices stay in character.</p>
+
+    <article class="bible-card">
+      <div class="col-1">
+        <div class="role">Lead</div>
+        <h3>Maya <em>Chen</em></h3>
+        <div class="age">32 · ferry-line accountant · second-generation Taiwanese</div>
+        <dl>
+          <dt>Wants</dt>
+          <dd>To be believed without having to perform.</dd>
+          <dt>Hides</dt>
+          <dd>That she's been awake since 3 a.m. for nine days.</dd>
+          <dt>Voice</dt>
+          <dd>Short sentences. Apologizes mid-sentence and then doesn't.</dd>
+          <dt>Never</dt>
+          <dd><em>"I'm fine."</em> She uses <em>"it's fine"</em> instead.</dd>
+          <dt>Tell</dt>
+          <dd>Touches her left ear when she's about to lie.</dd>
+        </dl>
+      </div>
+
+      <div class="col-2">
+        <div class="av">M</div>
+        <div class="h">Voice sample</div>
+        <div class="voice-sample">It's fine. The light was always going to break — my dad warned me about lights, you know what he said? He said don't trust anything that turns on every night, sooner or later it just stops.</div>
+        <div class="ai-note">
+          <strong>The AI mentor flags lines</strong> that drift outside Maya's voice — too lyrical, too long, too "fine." Suggestions stay inside the Bible, never outside it.
+        </div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     6. FEATURES MOSAIC
+     ════════════════════════════════════════ -->
+<section class="ss-features">
+  <div class="ss-features-inner">
+    <div class="ss-features-head">
+      <span class="sec-num">04 · Everything else</span>
+      <h2 data-i18n="ss.features.h2">The studio to <em>get work done.</em></h2>
+      <p>Quiet by default. Show up when you need them; disappear when you don't.</p>
+    </div>
+
+    <div class="ss-grid">
+      <!-- Beat sheet (wide, dark) -->
+      <div class="ss-cell wide dark">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M12 20v-6M6 20V10M18 20V4"/></svg></div>
+        <h4>Beat sheet, mapped to scenes.</h4>
+        <p>Save-the-Cat, three-act, or your own. Beats track act lengths automatically.</p>
+        <div class="beats-mini">
+          <i class="act-1"></i><i class="act-1"></i><i class="act-1"></i>
+          <i class="act-2a"></i><i class="act-2a"></i><i class="act-2a"></i><i class="act-2a"></i>
+          <i class="mid"></i>
+          <i class="act-2b"></i><i class="act-2b"></i><i class="act-2b"></i><i class="act-2b"></i>
+          <i class="act-3"></i><i class="act-3"></i><i class="act-3"></i>
+        </div>
+      </div>
+
+      <!-- Page = minute (tall, gold) -->
+      <div class="ss-cell tall gold">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 2"/></svg></div>
+        <h4>Page = minute.</h4>
+        <p>Live runtime estimate, scene by scene. Know if your "tight ninety" is actually ninety before the producer does.</p>
+        <div class="runtime-mini">
+          <span class="num">87</span>
+          <span class="arrow">→</span>
+          <span class="unit">m. estimated</span>
+        </div>
+      </div>
+
+      <!-- Scene checklist -->
+      <div class="ss-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+        <h4>Scene checklist</h4>
+        <p>Every scene tagged for goal, conflict, stakes. Spot the ones doing nothing.</p>
+      </div>
+
+      <!-- Industry-ready PDF -->
+      <div class="ss-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <h4>Industry-ready PDF</h4>
+        <p>Title page, margins, watermarks, page count. Looks the same as a script your agent already trusts.</p>
+      </div>
+
+      <!-- Beat-by-beat AI (wide, teal) -->
+      <div class="ss-cell wide teal">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg></div>
+        <h4>Beat-by-beat AI mentor.</h4>
+        <p>Stuck on a scene? The mentor knows your beats and your characters — it suggests inside the structure, not around it.</p>
+      </div>
+
+      <!-- Production breakdown -->
+      <div class="ss-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></div>
+        <h4>Production breakdown</h4>
+        <p>Cast, locations, day/night counts. Auto-built from the screenplay.</p>
+      </div>
+
+      <!-- Revisions -->
+      <div class="ss-cell">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1015 6.7L21 16"/><path d="M21 21v-5h-5"/></svg></div>
+        <h4>Coloured revisions</h4>
+        <p>Blue, pink, yellow, green pages. Locked scene numbers when you go to production.</p>
+      </div>
+
+      <!-- Export pills -->
+      <div class="ss-cell wide">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 21h14"/></svg></div>
+        <h4>Export anywhere — never held hostage.</h4>
+        <p>Send your script in any common format. Slima just gives it a good home.</p>
+        <div class="export-pills">
+          <span>PDF</span><span>Final Draft</span><span>Fountain</span><span>Word</span><span>Markdown</span><span>EPUB</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     7. STATS row
+     ════════════════════════════════════════ -->
+<section class="ss-stats">
+  <div class="ss-stats-inner">
+    <div class="ss-stats-head">
+      <span class="sec-num">05 · The numbers</span>
+      <h2>What the studio gives a screenwriter <em>that a text editor doesn't.</em></h2>
+    </div>
+    <div class="ss-stats-grid">
+      <div class="stat">
+        <div class="num">2<em>x</em></div>
+        <div class="lbl">Layouts, one source<small>Hollywood + Taiwan, switched in one click.</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">~1<em>m</em></div>
+        <div class="lbl">Per page, runtime estimate<small>Live, scene-aware. Useful from page one.</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">∞</div>
+        <div class="lbl">Scenes, drafts, revisions<small>Coloured pages, locked numbers, version history.</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     8. PULL QUOTE
+     ════════════════════════════════════════ -->
+<section class="ss-quote">
+  <div class="ss-quote-inner">
+    <blockquote data-i18n="t.weston2">
+      "Today's experience was really great — I went back and revised a whole batch of recently-published pieces. <em>My ability as an author may be limited, but my readers' taste is on point.</em> ✌"
+    </blockquote>
+    <div class="byline">
+      <span class="who" data-i18n="t.weston.name">Weston</span>
+      <span class="role" data-i18n="t.weston.role">Writer · ACE</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     9. FAQ
+     ════════════════════════════════════════ -->
+<section class="ss-faq">
+  <div class="ss-faq-inner">
+    <div class="ss-faq-head">
+      <span class="sec-num">06 · Common questions</span>
+      <h2>The <em>"will my agent accept this?"</em> list.</h2>
+      <p>If you don't see your question, write to us. A human reads everything.</p>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Will my exported PDF look like a real screenplay?</summary>
+        <p>Yes. Margins, font, page numbers, MORE/CONTINUED handling, title page — all to industry standard. Open one in Final Draft and you won't see a difference, except your agent will get to your story faster.</p>
+      </details>
+      <details>
+        <summary>Can I import an existing Final Draft file?</summary>
+        <p>Drop in a .fdx, a Fountain file, or a clean PDF. Slima parses the scene structure, character list, and beat hints automatically.</p>
+      </details>
+      <details>
+        <summary>Does the AI write scenes for me?</summary>
+        <p>Only when asked. The default mentor critiques, suggests within structure, and stays in your characters' voices. You can ask it to draft a scene if you're stuck — but you choose what makes the page.</p>
+      </details>
+      <details>
+        <summary>What about TV — episodes, seasons, writers' rooms?</summary>
+        <p>Episodes share a series Bible. The corkboard supports multi-episode arcs. Writers' rooms can collaborate on a single document with comment threads — no "v3-final-FINAL_v2" anywhere in sight.</p>
+      </details>
+      <details>
+        <summary>How is this different from Final Draft?</summary>
+        <p>Final Draft is excellent at formatting and weak everywhere else. Slima brings the corkboard, beat sheet, character bible, AI mentor, and exports together — for screenwriters specifically, in 2026, not 2003.</p>
+      </details>
+      <details>
+        <summary>Is there a free tier?</summary>
+        <p>The free trial gives you the full Script Studio for two weeks. After that, Starter is $9/month — the same price as a streaming subscription, for the studio that helps you make the next show on it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     10. CTA
+     ════════════════════════════════════════ -->
+<section class="ss-cta">
+  <div class="ss-cta-inner">
+    <h2>Where screenplays<br><em>get out the door.</em></h2>
+    <p>Bring the beats. We'll handle the format, the scene numbers, and the part where the AI tries to stay in character.</p>
+    <a href="register.html" class="ss-cta-btn">
+      Open the Script Studio
+      <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="ss-cta-meta">
+      <span>Free for 14 days</span>
+      <span>No credit card</span>
+      <span>Industry-ready PDF on day one</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+        </a>
+        <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="writing-studio.html">Writing Studio</a></li>
+          <li><a href="beta-reader.html">Beta Readers</a></li>
+          <li><a href="script-studio.html">Script Studio</a></li>
+          <li><a href="plan.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slima. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/marketing.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>

@@ -1,0 +1,1738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Beta Readers — Slima</title>
+<meta name="description" content="A panel of AI beta readers, each with a defined taste and reading history, who actually read your manuscript and return a real reading report.">
+<link rel="stylesheet" href="assets/marketing.css">
+<style>
+  /* ──────────────────────────────────────────────
+     BETA READERS — page-specific design
+     "Reading room": wine-leather accents on paper bg
+     ────────────────────────────────────────────── */
+  :root {
+    --paper:    #faf9f6;
+    --paper-2:  #f3f1ec;
+    --rule:     #ececea;
+    --ink-2:    #2a2a2e;
+    --green:    #2f9e6b;
+    --green-bg: #e6f4ec;
+    /* Legacy aliases — all collapsed to brand neutrals/green */
+    --wine:     #2f9e6b;
+    --wine-bg:  #e6f4ec;
+    --leaf:     #2f9e6b;
+    --leaf-bg:  #e6f4ec;
+    --warm:     #2f9e6b;
+    --warm-bg:  #e6f4ec;
+  }
+  body { background: var(--paper); }
+
+  /* Editorial section number */
+  .sec-num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--wine);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .sec-num::before {
+    content: '— ';
+    margin-right: 4px;
+    font-style: normal;
+  }
+
+  /* ══════════════════════════════════════════════
+     1. HERO — copy + fanned reader-report cards
+     ══════════════════════════════════════════════ */
+  .br-hero {
+    position: relative;
+    background: var(--paper);
+    padding: 96px 32px 120px;
+    overflow: hidden;
+  }
+  .br-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 10% 10%, rgba(47,158,107,0.08) 0%, transparent 40%),
+      radial-gradient(ellipse at 100% 80%, rgba(47,158,107,0.05) 0%, transparent 45%);
+  }
+  .br-hero-grid {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 80px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 980px) {
+    .br-hero-grid { grid-template-columns: 1fr; gap: 56px; }
+    .br-hero { padding: 72px 22px 100px; }
+  }
+  .br-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--wine);
+    margin-bottom: 22px;
+  }
+  .br-hero-eyebrow::before {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--wine);
+  }
+  .br-hero h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(46px, 6.4vw, 86px);
+    letter-spacing: -0.028em;
+    line-height: 0.96;
+    color: #0a0a0a;
+    margin-bottom: 28px;
+  }
+  .br-hero h1 em {
+    font-style: italic;
+    color: var(--wine);
+  }
+  .br-hero p.lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: #3a3631;
+    max-width: 540px;
+    margin-bottom: 36px;
+  }
+  .br-hero-cta {
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .br-hero-meta {
+    margin-top: 28px;
+    display: flex; gap: 24px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: #6b6258;
+    font-family: 'Inter', sans-serif;
+  }
+  .br-hero-meta .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--wine);
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* Fanned reader-report cards */
+  .reports-fan {
+    position: relative;
+    height: 460px;
+  }
+  .report-card {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 22px 22px 20px;
+    width: 320px;
+    box-shadow: 0 28px 60px -24px rgba(40,30,15,0.20);
+    font-family: 'Inter', sans-serif;
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .report-card .head {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .report-card .av {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .report-card .who {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #0a0a0a;
+  }
+  .report-card .who small {
+    color: #888;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 13px;
+  }
+  .report-card .who .tag {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--wine);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .report-card .quote {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #2a2620;
+    border-left: 2px solid var(--rule);
+    padding-left: 12px;
+    margin-bottom: 14px;
+  }
+  .report-card .scores {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+  }
+  .report-card .scores div {
+    text-align: center;
+  }
+  .report-card .scores .n {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #0a0a0a;
+    line-height: 1;
+  }
+  .report-card .scores .l {
+    font-size: 9px;
+    color: #b8ad9c;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* Card positions in fan */
+  .report-card.c1 {
+    top: 0; left: 0;
+    transform: rotate(-4deg);
+  }
+  .report-card.c2 {
+    top: 70px; left: 90px;
+    transform: rotate(2deg);
+    z-index: 2;
+  }
+  .report-card.c3 {
+    top: 150px; left: 40px;
+    transform: rotate(-2deg);
+    z-index: 1;
+  }
+  .reports-fan:hover .report-card.c1 { transform: rotate(-7deg) translateX(-12px); }
+  .reports-fan:hover .report-card.c2 { transform: rotate(0deg) translateY(-8px); }
+  .reports-fan:hover .report-card.c3 { transform: rotate(1deg) translateX(12px) translateY(8px); }
+
+  @media (max-width: 980px) {
+    .reports-fan { height: 540px; }
+    .report-card.c1 { left: 0; }
+    .report-card.c2 { left: 40px; }
+    .report-card.c3 { left: 10px; }
+  }
+  @media (max-width: 520px) {
+    .report-card { width: 280px; padding: 18px; }
+  }
+
+  /* ══════════════════════════════════════════════
+     2. EDITORIAL STATEMENT (mantra)
+     ══════════════════════════════════════════════ */
+  .br-mantra {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 130px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .br-mantra::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 100%, rgba(47,158,107,0.12) 0%, transparent 50%);
+  }
+  .br-mantra-inner {
+    max-width: 1100px; margin: 0 auto;
+    position: relative;
+  }
+  .br-mantra .triplet {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  @media (max-width: 880px) {
+    .br-mantra .triplet { grid-template-columns: 1fr; }
+  }
+  .br-mantra .item {
+    padding: 28px 24px;
+    border-right: 1px solid rgba(255,255,255,0.10);
+    text-align: center;
+  }
+  .br-mantra .item:last-child { border-right: 0; }
+  @media (max-width: 880px) {
+    .br-mantra .item { border-right: 0; border-bottom: 1px solid rgba(255,255,255,0.10); }
+    .br-mantra .item:last-child { border-bottom: 0; }
+  }
+  .br-mantra .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(56px, 8vw, 120px);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: #fff;
+    display: block;
+  }
+  .br-mantra .num em {
+    font-style: italic;
+    color: var(--wine);
+  }
+  .br-mantra .lbl {
+    margin-top: 14px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.4;
+  }
+  .br-mantra .equals {
+    margin-top: 64px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: clamp(22px, 2.4vw, 30px);
+    color: rgba(255,255,255,0.85);
+    max-width: 640px;
+    margin-left: auto; margin-right: auto;
+    line-height: 1.45;
+  }
+  .br-mantra .equals em {
+    color: var(--wine);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════════════
+     3. SAMPLE REPORT TOUR (full-width mockup)
+     ══════════════════════════════════════════════ */
+  .br-tour {
+    background: var(--paper);
+    padding: 140px 32px 96px;
+    text-align: center;
+  }
+  .br-tour-inner { max-width: 1180px; margin: 0 auto; }
+  .br-tour h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(36px, 4.5vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    color: #0a0a0a;
+    margin: 14px auto 18px;
+    max-width: 880px;
+  }
+  .br-tour h2 em { font-style: italic; }
+  .br-tour .lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.55;
+    max-width: 580px;
+    margin: 0 auto 56px;
+  }
+  .report-mock {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    box-shadow:
+      0 60px 120px -40px rgba(40,30,15,0.22),
+      0 20px 40px -20px rgba(40,30,15,0.10);
+    overflow: hidden;
+    text-align: left;
+  }
+  .rm-head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 22px 28px;
+    border-bottom: 1px solid var(--rule);
+    background: #fcfaf5;
+  }
+  .rm-head .seal {
+    width: 56px; height: 56px;
+    border: 2px solid var(--wine);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--wine);
+  }
+  .rm-head .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #0a0a0a;
+  }
+  .rm-head .title small {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-style: italic;
+    font-size: 12px;
+    color: #6b6258;
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .rm-head .stamp {
+    background: var(--wine);
+    color: #fff;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 4px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .rm-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    min-height: 480px;
+  }
+  @media (max-width: 880px) {
+    .rm-grid { grid-template-columns: 1fr; }
+  }
+  .rm-section {
+    padding: 28px 32px;
+    border-right: 1px solid var(--rule);
+  }
+  .rm-section:last-child { border-right: 0; }
+  @media (max-width: 880px) {
+    .rm-section { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .rm-section:last-child { border-bottom: 0; }
+  }
+  .rm-section h5 {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: #b8ad9c;
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  /* Scores panel */
+  .rm-scores {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+  }
+  .rm-scores .s {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 8px;
+  }
+  .rm-scores .s .row {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .rm-scores .s .row .label {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #2a2620;
+  }
+  .rm-scores .s .row .val {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #0a0a0a;
+  }
+  .rm-scores .s .bar {
+    height: 4px;
+    background: var(--paper-2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+  .rm-scores .s .bar > i {
+    display: block; height: 100%;
+    background: var(--wine);
+    border-radius: 100px;
+  }
+  .rm-scores .s.weak .bar > i { background: var(--warm); }
+
+  /* Quotes panel */
+  .rm-quotes .q {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px dashed var(--rule);
+  }
+  .rm-quotes .q:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+  .rm-quotes .q .body {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: #2a2620;
+    font-style: italic;
+  }
+  .rm-quotes .q .body::before {
+    content: '"';
+    color: var(--wine);
+    font-size: 20px;
+    margin-right: 4px;
+    line-height: 0;
+    vertical-align: -3px;
+  }
+  .rm-quotes .q .who {
+    margin-top: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: var(--wine);
+    letter-spacing: 0.04em;
+  }
+
+  /* Heatmap panel */
+  .rm-heatmap {
+    margin-top: 8px;
+  }
+  .rm-heatmap .hm-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 12px;
+    padding: 5px 0;
+    align-items: center;
+  }
+  .rm-heatmap .hm-row .c {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11.5px;
+    color: #6b6258;
+  }
+  .rm-heatmap .hm-row .bar {
+    height: 14px;
+    background: var(--paper-2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .rm-heatmap .hm-row .bar i {
+    display: block; height: 100%;
+  }
+  .rm-heatmap .hm-row.h .bar i { background: var(--leaf); }
+  .rm-heatmap .hm-row.m .bar i { background: var(--warm); }
+  .rm-heatmap .hm-row.l .bar i { background: var(--wine); }
+  .rm-actions {
+    margin-top: 22px;
+    padding: 12px 14px;
+    background: var(--wine-bg);
+    border: 1px solid #e9c8c8;
+    border-radius: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12.5px;
+    color: var(--wine);
+    line-height: 1.5;
+    font-style: italic;
+  }
+  .rm-actions strong { font-style: normal; }
+
+  /* ══════════════════════════════════════════════
+     4. READER LIBRARY — gallery
+     ══════════════════════════════════════════════ */
+  .br-library {
+    background: #ffffff;
+    padding: 120px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .br-library-inner { max-width: 1280px; margin: 0 auto; }
+  .br-library-head {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 880px) {
+    .br-library-head { grid-template-columns: 1fr; gap: 14px; margin-bottom: 36px; }
+  }
+  .br-library h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 8px 0 0;
+  }
+  .br-library h2 em { font-style: italic; }
+  .br-library-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #4a4338;
+    max-width: 380px;
+  }
+  .reader-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 980px) { .reader-gallery { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 720px) { .reader-gallery { grid-template-columns: repeat(2, 1fr); } }
+  .reader-tile {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 14px;
+    padding: 22px 20px;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    position: relative;
+  }
+  .reader-tile:hover {
+    transform: translateY(-3px);
+    border-color: var(--wine);
+  }
+  .reader-tile .av {
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 14px;
+  }
+  .reader-tile h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: #0a0a0a;
+    margin-bottom: 4px;
+  }
+  .reader-tile h4 small {
+    font-style: italic;
+    color: #6b6258;
+    font-weight: 400;
+    font-size: 14px;
+  }
+  .reader-tile .taste {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: var(--wine);
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .reader-tile p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    line-height: 1.5;
+    color: #4a4338;
+    font-style: italic;
+  }
+  .reader-tile.build {
+    background: #ffffff;
+    border: 1px dashed var(--rule);
+  }
+  .reader-tile.build .av {
+    background: var(--paper-2);
+    color: var(--wine);
+    border: 1px solid var(--rule);
+  }
+
+  /* ══════════════════════════════════════════════
+     5. WHERE READERS DISAGREE — split parallel quotes
+     ══════════════════════════════════════════════ */
+  .br-disagree {
+    background: var(--paper);
+    padding: 130px 32px;
+  }
+  .br-disagree-inner { max-width: 1180px; margin: 0 auto; }
+  .br-disagree-head {
+    text-align: center;
+    margin-bottom: 64px;
+  }
+  .br-disagree h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4.2vw, 56px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 14px 0 18px;
+  }
+  .br-disagree h2 em { font-style: italic; color: var(--wine); }
+  .br-disagree-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.55;
+  }
+  .disagree-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 28px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .disagree-row:last-child { border-bottom: 1px solid var(--rule); }
+  @media (max-width: 880px) {
+    .disagree-row { grid-template-columns: 1fr; gap: 18px; padding: 22px 0; }
+  }
+  .disagree-cell {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #2a2620;
+    line-height: 1.45;
+    font-style: italic;
+    padding: 16px 0;
+  }
+  .disagree-cell.right { text-align: right; }
+  @media (max-width: 880px) {
+    .disagree-cell.right { text-align: left; }
+  }
+  .disagree-cell .who {
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    color: var(--wine);
+    margin-top: 8px;
+  }
+  .disagree-cell.left .who { color: var(--leaf); }
+  .disagree-vs {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #b8ad9c;
+    border-left: 1px solid var(--rule);
+    border-right: 1px solid var(--rule);
+    padding: 8px 16px;
+    background: var(--paper);
+  }
+  @media (max-width: 880px) {
+    .disagree-vs { border: 0; padding: 0; text-align: left; }
+  }
+  .br-disagree .footnote {
+    margin-top: 40px;
+    text-align: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: #4a4338;
+    font-style: italic;
+    max-width: 580px;
+    margin-left: auto; margin-right: auto;
+  }
+
+  /* ══════════════════════════════════════════════
+     6. CHAPTER HEATMAP (full-width visualization)
+     ══════════════════════════════════════════════ */
+  .br-heatmap {
+    background: linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+    padding: 130px 32px;
+  }
+  .br-heatmap-inner { max-width: 1080px; margin: 0 auto; }
+  .br-heatmap-head {
+    margin-bottom: 56px;
+    max-width: 700px;
+  }
+  .br-heatmap h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 14px 0 14px;
+  }
+  .br-heatmap h2 em { font-style: italic; color: var(--wine); }
+  .br-heatmap-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    line-height: 1.55;
+  }
+  .heatmap-chart {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 36px 32px 28px;
+    box-shadow: 0 30px 60px -20px rgba(40,30,15,0.10);
+  }
+  .hm-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    height: 200px;
+  }
+  .hm-bar {
+    flex: 1;
+    background: var(--paper-2);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    transition: opacity 0.3s ease;
+  }
+  .hm-bar.h { background: var(--leaf); }
+  .hm-bar.m { background: var(--warm); }
+  .hm-bar.l { background: var(--wine); }
+  .hm-bar:hover { opacity: 0.85; }
+  .hm-bar .pct {
+    position: absolute; top: -22px; left: 0; right: 0;
+    text-align: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12px;
+    color: #2a2620;
+  }
+  .hm-labels {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .hm-labels span {
+    flex: 1;
+    text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #6b6258;
+  }
+  .hm-legend {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #4a4338;
+  }
+  .hm-legend i {
+    display: inline-block;
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: -2px;
+  }
+  .hm-legend .h i { background: var(--leaf); }
+  .hm-legend .m i { background: var(--warm); }
+  .hm-legend .l i { background: var(--wine); }
+
+  .hm-callout {
+    margin-top: 28px;
+    background: var(--wine-bg);
+    border: 1px solid #e9c8c8;
+    border-radius: 12px;
+    padding: 18px 22px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: var(--wine);
+    line-height: 1.55;
+    display: flex; align-items: flex-start; gap: 12px;
+  }
+  .hm-callout .ic {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--wine);
+    color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .hm-callout strong { color: var(--wine); font-weight: 600; font-style: normal; }
+
+  /* ══════════════════════════════════════════════
+     7. PRIVACY (centered, with seal)
+     ══════════════════════════════════════════════ */
+  .br-privacy {
+    background: #ffffff;
+    padding: 140px 32px;
+    text-align: center;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .br-privacy-inner { max-width: 720px; margin: 0 auto; }
+  .br-privacy .seal {
+    width: 88px; height: 88px;
+    margin: 0 auto 28px;
+    border: 2px solid var(--leaf);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--leaf-bg);
+    position: relative;
+  }
+  .br-privacy .seal::before, .br-privacy .seal::after {
+    content: '';
+    position: absolute;
+    border: 1px dashed var(--leaf);
+    border-radius: 50%;
+    opacity: 0.5;
+  }
+  .br-privacy .seal::before { inset: -10px; }
+  .br-privacy .seal::after { inset: -20px; opacity: 0.25; }
+  .br-privacy .seal svg {
+    width: 38px; height: 38px;
+    color: var(--leaf);
+  }
+  .br-privacy h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.1;
+    color: #0a0a0a;
+    margin-bottom: 18px;
+  }
+  .br-privacy h2 em { font-style: italic; color: var(--leaf); }
+  .br-privacy p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 18px;
+    color: #4a4338;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+  .privacy-tiles {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    text-align: left;
+  }
+  @media (max-width: 720px) { .privacy-tiles { grid-template-columns: 1fr; } }
+  .privacy-tile {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .privacy-tile h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 4px;
+    color: #0a0a0a;
+  }
+  .privacy-tile p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    color: #4a4338;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════════════════════
+     8. STATS row
+     ══════════════════════════════════════════════ */
+  .br-stats {
+    background: var(--paper);
+    padding: 120px 32px;
+  }
+  .br-stats-inner { max-width: 1280px; margin: 0 auto; }
+  .br-stats-head {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+  .br-stats-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.018em;
+    color: #0a0a0a;
+    line-height: 1.1;
+  }
+  .br-stats-head h2 em { font-style: italic; color: var(--wine); }
+  .br-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+  @media (max-width: 880px) {
+    .br-stats-grid { grid-template-columns: 1fr; }
+    .br-stats-grid .stat { border-right: 0; border-bottom: 1px solid var(--rule); padding: 24px 0; }
+    .br-stats-grid .stat:last-child { border-bottom: 0; }
+  }
+  .br-stats-grid .stat {
+    text-align: center;
+    padding: 20px;
+    border-right: 1px solid var(--rule);
+  }
+  .br-stats-grid .stat:last-child { border-right: 0; }
+  .br-stats-grid .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(56px, 7vw, 100px);
+    line-height: 0.9;
+    color: #0a0a0a;
+    letter-spacing: -0.04em;
+  }
+  .br-stats-grid .num em { font-style: italic; color: var(--wine); }
+  .br-stats-grid .lbl {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #4a4338;
+    margin-top: 14px;
+    line-height: 1.4;
+  }
+  .br-stats-grid .lbl small {
+    display: block;
+    font-size: 12px;
+    color: #b8ad9c;
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  /* ══════════════════════════════════════════════
+     9. PULL QUOTE (testimonial)
+     ══════════════════════════════════════════════ */
+  .br-quote {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .br-quote::before {
+    content: '"';
+    position: absolute;
+    top: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 240px;
+    color: var(--wine);
+    opacity: 0.18;
+    line-height: 1;
+    user-select: none;
+  }
+  .br-quote-inner {
+    max-width: 880px; margin: 0 auto;
+    position: relative;
+  }
+  .br-quote blockquote {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 36px;
+    letter-spacing: -0.012em;
+  }
+  .br-quote blockquote em { color: var(--wine); }
+  .br-quote .byline {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+  }
+  .br-quote .byline .who {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #fff;
+    font-size: 16px;
+  }
+  .br-quote .byline .role {
+    color: var(--wine);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════════════
+     10. FAQ
+     ══════════════════════════════════════════════ */
+  .br-faq {
+    background: var(--paper);
+    padding: 140px 32px 120px;
+  }
+  .br-faq-inner { max-width: 880px; margin: 0 auto; }
+  .br-faq-head { text-align: center; margin-bottom: 56px; }
+  .br-faq-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    margin: 14px 0 8px;
+    color: #0a0a0a;
+  }
+  .br-faq-head h2 em { font-style: italic; color: var(--wine); }
+  .br-faq-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+  }
+  .faq-list { border-top: 1px solid var(--rule); }
+  .faq-list details {
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 0;
+  }
+  .faq-list summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #0a0a0a;
+    display: flex;
+    justify-content: space-between; align-items: flex-start;
+    gap: 24px;
+    transition: color 0.2s;
+  }
+  .faq-list summary:hover { color: var(--wine); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: '＋';
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--wine);
+    font-size: 22px;
+    line-height: 1;
+  }
+  .faq-list details[open] summary::after { content: '−'; }
+  .faq-list details p {
+    margin-top: 14px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    color: #4a4338;
+    line-height: 1.65;
+    padding-right: 40px;
+  }
+
+  /* ══════════════════════════════════════════════
+     11. CTA
+     ══════════════════════════════════════════════ */
+  .br-cta {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 140px 32px;
+    text-align: center;
+  }
+  .br-cta-inner { max-width: 800px; margin: 0 auto; }
+  .br-cta h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 22px;
+  }
+  .br-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
+  .br-cta p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+  }
+  .br-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #0a0a0a;
+    padding: 18px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    font-weight: 500;
+    transition: transform 0.2s;
+  }
+  .br-cta-btn:hover { transform: translateY(-2px); }
+  .br-cta-meta {
+    display: flex; gap: 28px; justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* Reveal-on-load */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.05s; }
+    .reveal.d2 { animation-delay: 0.15s; }
+    .reveal.d3 { animation-delay: 0.25s; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* Language toggle (shared) */
+  .lang-toggle {
+    background: none; border: none; cursor: pointer;
+    color: inherit;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .lang-toggle:hover { opacity: 0.65; }
+  .lang-toggle .sep { color: #cfcdc6; }
+  .lang-toggle .lang.is-active { color: #0a0a0a; font-weight: 600; }
+  .lang-toggle .lang { color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<!-- PROMO -->
+<div class="promo">
+  <span>New: Beta Reader feedback engine — get structured edits on every chapter.</span>
+  <a href="register.html">Try it free →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="Slima — home">
+    <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="writing-studio.html" data-i18n="nav.writing">Writing Studio</a></li>
+    <li><a href="beta-reader.html" class="is-current" data-i18n="nav.beta">Beta Readers</a></li>
+    <li><a href="script-studio.html" data-i18n="nav.script">Script Studio</a></li>
+    <li><a href="plan.html" data-i18n="nav.plans">Plans</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html" data-i18n="nav.login">Log in</a>
+    <a href="register.html" class="nav-cta" data-i18n="nav.cta">Try Slima</a>
+    <button class="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     1. HERO — copy + fanned report cards
+     ════════════════════════════════════════ -->
+<section class="br-hero">
+  <div class="br-hero-grid">
+    <div class="reveal d1">
+      <div class="br-hero-eyebrow" data-i18n="br.hero.eyebrow">AI Beta Readers</div>
+      <h1>The honest read<br>that <em>doesn't ghost you.</em></h1>
+      <p class="lead">A panel of AI readers — each with a defined taste, age, and reading history — actually reads your manuscript. Then they return a real reading report: where they paused, where they reread, what they didn't believe.</p>
+      <div class="br-hero-cta">
+        <a href="register.html" class="btn btn-primary">
+          Get a sample report
+          <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#tour" class="btn btn-secondary">See a real report</a>
+      </div>
+      <div class="br-hero-meta">
+        <span><span class="dot"></span>5–8 readers per panel</span>
+        <span><span class="dot"></span>Read once, never trained on</span>
+        <span><span class="dot"></span>Hours, not weeks</span>
+      </div>
+    </div>
+
+    <div class="reveal d2">
+      <div class="reports-fan">
+        <div class="report-card c1">
+          <div class="head">
+            <div class="av" style="background:#3b5168;">M</div>
+            <div class="who">Maya, 34<span class="tag">LITERARY · SLOW BURN</span></div>
+          </div>
+          <div class="quote">"I almost stopped at chapter three — the timeline confused me. I went back, found my footing, and chapter five hooked me hard."</div>
+          <div class="scores">
+            <div><div class="n">7.4</div><div class="l">Pull</div></div>
+            <div><div class="n">8.1</div><div class="l">Voice</div></div>
+            <div><div class="n">6.2</div><div class="l">Pace</div></div>
+            <div><div class="n">7.8</div><div class="l">Stakes</div></div>
+          </div>
+        </div>
+
+        <div class="report-card c2">
+          <div class="head">
+            <div class="av" style="background:#7a4332;">D</div>
+            <div class="who">David, 47<span class="tag">EX-EDITOR · STRUCTURAL</span></div>
+          </div>
+          <div class="quote">"The dialogue is sharp, but the protagonist's interiority drops out for the middle third. I lost her there."</div>
+          <div class="scores">
+            <div><div class="n">8.6</div><div class="l">Pull</div></div>
+            <div><div class="n">9.0</div><div class="l">Voice</div></div>
+            <div><div class="n">5.4</div><div class="l">Pace</div></div>
+            <div><div class="n">7.0</div><div class="l">Stakes</div></div>
+          </div>
+        </div>
+
+        <div class="report-card c3">
+          <div class="head">
+            <div class="av" style="background:#4d6b3e;">P</div>
+            <div class="who">Pia, 22<span class="tag">YA &amp; SPECULATIVE · TIKTOK PACE</span></div>
+          </div>
+          <div class="quote">"Honestly? Loved chapter three. The confusion is the point. I'd buy this on the strength of that scene alone."</div>
+          <div class="scores">
+            <div><div class="n">8.8</div><div class="l">Pull</div></div>
+            <div><div class="n">7.9</div><div class="l">Voice</div></div>
+            <div><div class="n">8.6</div><div class="l">Pace</div></div>
+            <div><div class="n">9.1</div><div class="l">Stakes</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     2. EDITORIAL MANTRA — 5 readers · 12 chapters · 1 report
+     ════════════════════════════════════════ -->
+<section class="br-mantra">
+  <div class="br-mantra-inner">
+    <div class="triplet">
+      <div class="item">
+        <span class="num">5<em>–</em>8</span>
+        <div class="lbl">Readers in your panel<br>each with their own taste</div>
+      </div>
+      <div class="item">
+        <span class="num">100<em>K</em></span>
+        <div class="lbl">Words read end to end<br>not summarized, not skimmed</div>
+      </div>
+      <div class="item">
+        <span class="num">1</span>
+        <div class="lbl">Report you can act on<br>scored, structured, in-line</div>
+      </div>
+    </div>
+    <div class="equals">A real beta-reader pass — <em>without the three-month wait or the friend who never finished it.</em></div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     3. SAMPLE REPORT TOUR (full mockup)
+     ════════════════════════════════════════ -->
+<section class="br-tour" id="tour">
+  <div class="br-tour-inner">
+    <span class="sec-num">01 · Inside the report</span>
+    <h2 data-i18n="br.tour.h2">Scores. Quotes. A heatmap.<br><em>Things you can fix.</em></h2>
+    <p class="lead">Most "AI feedback" is a paragraph of polite nothing. A Slima reading report is built around the metrics that make a beta reader useful.</p>
+
+    <div class="report-mock">
+      <div class="rm-head">
+        <div class="seal">DG</div>
+        <div class="title">Reading Report — <em>The Dust Garden</em><small>Manuscript v4 · 67,420 words · 5 readers · 1 line editor</small></div>
+        <span class="stamp">Delivered</span>
+      </div>
+
+      <div class="rm-grid">
+        <!-- Scores -->
+        <div class="rm-section">
+          <h5>Aggregate scores</h5>
+          <div class="rm-scores">
+            <div class="s">
+              <div class="row"><span class="label">Pull</span><span class="val">7.4</span></div>
+              <div class="bar"><i style="width:74%;"></i></div>
+            </div>
+            <div class="s">
+              <div class="row"><span class="label">Voice</span><span class="val">8.1</span></div>
+              <div class="bar"><i style="width:81%;"></i></div>
+            </div>
+            <div class="s weak">
+              <div class="row"><span class="label">Pace</span><span class="val">6.2</span></div>
+              <div class="bar"><i style="width:62%;"></i></div>
+            </div>
+            <div class="s">
+              <div class="row"><span class="label">Stakes</span><span class="val">7.8</span></div>
+              <div class="bar"><i style="width:78%;"></i></div>
+            </div>
+            <div class="s">
+              <div class="row"><span class="label">Character</span><span class="val">7.6</span></div>
+              <div class="bar"><i style="width:76%;"></i></div>
+            </div>
+            <div class="s weak">
+              <div class="row"><span class="label">Setting</span><span class="val">6.7</span></div>
+              <div class="bar"><i style="width:67%;"></i></div>
+            </div>
+          </div>
+
+          <div class="rm-actions">
+            <strong>Top fix:</strong> Pace dips in chapters 3–4. Two readers cite the timeline; one cites the protagonist's silence.
+          </div>
+        </div>
+
+        <!-- Quotes -->
+        <div class="rm-section rm-quotes">
+          <h5>What they said</h5>
+          <div class="q">
+            <div class="body">I almost stopped at chapter three — the timeline confused me. I went back, found my footing, and chapter five hooked me hard.</div>
+            <div class="who">Maya, 34 · literary fiction</div>
+          </div>
+          <div class="q">
+            <div class="body">The dialogue is sharp, but the protagonist's interiority drops out for the middle third. I lost her there.</div>
+            <div class="who">David, 47 · ex-editor</div>
+          </div>
+          <div class="q">
+            <div class="body">Honestly? Loved chapter three. The confusion is the point.</div>
+            <div class="who">Pia, 22 · YA &amp; speculative</div>
+          </div>
+        </div>
+
+        <!-- Heatmap -->
+        <div class="rm-section">
+          <h5>Where they paused</h5>
+          <div class="rm-heatmap">
+            <div class="hm-row h"><span class="c">Ch. 1</span><div class="bar"><i style="width:96%;"></i></div></div>
+            <div class="hm-row h"><span class="c">Ch. 2</span><div class="bar"><i style="width:92%;"></i></div></div>
+            <div class="hm-row m"><span class="c">Ch. 3</span><div class="bar"><i style="width:62%;"></i></div></div>
+            <div class="hm-row l"><span class="c">Ch. 4</span><div class="bar"><i style="width:48%;"></i></div></div>
+            <div class="hm-row m"><span class="c">Ch. 5</span><div class="bar"><i style="width:74%;"></i></div></div>
+            <div class="hm-row h"><span class="c">Ch. 6</span><div class="bar"><i style="width:88%;"></i></div></div>
+            <div class="hm-row h"><span class="c">Ch. 7</span><div class="bar"><i style="width:91%;"></i></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     4. READER LIBRARY (gallery)
+     ════════════════════════════════════════ -->
+<section class="br-library">
+  <div class="br-library-inner">
+    <div class="br-library-head">
+      <div>
+        <span class="sec-num">02 · The reading room</span>
+        <h2>A panel that <em>doesn't all agree.</em></h2>
+      </div>
+      <p>Real beta readers contradict each other. Slima's panel does too — that's the point. Pick a mix that matches the audience you're writing for.</p>
+    </div>
+
+    <div class="reader-gallery">
+      <div class="reader-tile">
+        <div class="av" style="background:#3b5168;">M</div>
+        <h4>Maya <small>34</small></h4>
+        <div class="taste">Literary · slow burn</div>
+        <p>Reads at night. Keeps a list of underlined sentences.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#7a4332;">D</div>
+        <h4>David <small>47</small></h4>
+        <div class="taste">Ex-editor · structural</div>
+        <p>Notices when a chapter is doing two jobs. Skeptical by trade.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#4d6b3e;">P</div>
+        <h4>Pia <small>22</small></h4>
+        <div class="taste">YA · TikTok pace</div>
+        <p>Drops books in 50 pages or fewer. When she keeps reading, you've earned it.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#6b4974;">R</div>
+        <h4>Ren <small>58</small></h4>
+        <div class="taste">Memoir · careful</div>
+        <p>Listens for emotional truth. Feels things on a delay; reports them precisely.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#2d5a5e;">A</div>
+        <h4>Anika <small>29</small></h4>
+        <div class="taste">Thriller · plot-first</div>
+        <p>Catches inconsistencies. Will tell you when chapter four contradicts chapter one.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#7a5a25;">J</div>
+        <h4>Jonas <small>41</small></h4>
+        <div class="taste">Non-fiction · argument-tester</div>
+        <p>Reads with a pencil. If your claim doesn't earn the next claim, he flags it.</p>
+      </div>
+      <div class="reader-tile">
+        <div class="av" style="background:#5a3b6b;">L</div>
+        <h4>Lia <small>27</small></h4>
+        <div class="taste">Romance · book-club</div>
+        <p>Re-reads favourite scenes. Marks lines she'd quote at dinner.</p>
+      </div>
+      <div class="reader-tile build">
+        <div class="av">+</div>
+        <h4>Build your own</h4>
+        <div class="taste">Custom persona</div>
+        <p>Define the taste, age, reading history, and pet peeves. They'll stay in voice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     5. WHERE READERS DISAGREE (parallel quotes)
+     ════════════════════════════════════════ -->
+<section class="br-disagree">
+  <div class="br-disagree-inner">
+    <div class="br-disagree-head">
+      <span class="sec-num">03 · Where they disagree</span>
+      <h2>The same chapter,<br><em>through different eyes.</em></h2>
+      <p>Disagreement is signal, not noise. The report flags every place your readers split — and gives you both sides verbatim.</p>
+    </div>
+
+    <div class="disagree-row">
+      <div class="disagree-cell left">
+        "The slow open earns every word. By chapter two I knew exactly who Eleanor was."
+        <span class="who">— Maya, literary</span>
+      </div>
+      <div class="disagree-vs">on Ch. 1–2</div>
+      <div class="disagree-cell right">
+        "Chapter one is a mood piece. I would have closed the book on page nine if I weren't on this panel."
+        <span class="who">Pia, YA &amp; speculative —</span>
+      </div>
+    </div>
+
+    <div class="disagree-row">
+      <div class="disagree-cell left">
+        "The unreliable narrator works. I was second-guessing the whole way and it felt deliberate."
+        <span class="who">— Anika, thriller</span>
+      </div>
+      <div class="disagree-vs">on the narrator</div>
+      <div class="disagree-cell right">
+        "I want to trust the narrator. I never quite did, and I'm not sure that's intentional."
+        <span class="who">David, ex-editor —</span>
+      </div>
+    </div>
+
+    <div class="disagree-row">
+      <div class="disagree-cell left">
+        "The ending is restrained — exactly the right note. Don't change a word."
+        <span class="who">— Ren, memoir</span>
+      </div>
+      <div class="disagree-vs">on the ending</div>
+      <div class="disagree-cell right">
+        "Felt like the book stopped mid-thought. I expected one more beat."
+        <span class="who">Jonas, non-fiction —</span>
+      </div>
+    </div>
+
+    <p class="footnote">Three disagreements. Three places to make a real choice — instead of pleasing nobody and revising forever.</p>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     6. CHAPTER HEATMAP (visualization)
+     ════════════════════════════════════════ -->
+<section class="br-heatmap">
+  <div class="br-heatmap-inner">
+    <div class="br-heatmap-head">
+      <span class="sec-num">04 · The drop-off chart</span>
+      <h2>You'll see, at a glance,<br>which chapter <em>loses which reader.</em></h2>
+      <p>Engagement plotted chapter by chapter, color-coded by intensity. Hover any bar for the underlying notes.</p>
+    </div>
+
+    <div class="heatmap-chart">
+      <div class="hm-bars">
+        <div class="hm-bar h" style="height: 96%;"><span class="pct">96%</span></div>
+        <div class="hm-bar h" style="height: 92%;"><span class="pct">92%</span></div>
+        <div class="hm-bar m" style="height: 62%;"><span class="pct">62%</span></div>
+        <div class="hm-bar l" style="height: 48%;"><span class="pct">48%</span></div>
+        <div class="hm-bar m" style="height: 74%;"><span class="pct">74%</span></div>
+        <div class="hm-bar h" style="height: 88%;"><span class="pct">88%</span></div>
+        <div class="hm-bar h" style="height: 91%;"><span class="pct">91%</span></div>
+        <div class="hm-bar h" style="height: 95%;"><span class="pct">95%</span></div>
+        <div class="hm-bar h" style="height: 98%;"><span class="pct">98%</span></div>
+      </div>
+      <div class="hm-labels">
+        <span>Ch. 1</span><span>Ch. 2</span><span>Ch. 3</span><span>Ch. 4</span><span>Ch. 5</span><span>Ch. 6</span><span>Ch. 7</span><span>Ch. 8</span><span>Ch. 9</span>
+      </div>
+      <div class="hm-legend">
+        <span class="h"><i></i>Held the room</span>
+        <span class="m"><i></i>Some friction</span>
+        <span class="l"><i></i>Drop-off</span>
+      </div>
+    </div>
+
+    <div class="hm-callout">
+      <div class="ic">!</div>
+      <div><strong>Chapters 3–4 lose roughly 40% of readers.</strong> &nbsp;Two readers cite the timeline; one cites the protagonist's silence; one says "the confusion is the point." Worth a real choice — not a compromise.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     7. PRIVACY (centered seal)
+     ════════════════════════════════════════ -->
+<section class="br-privacy">
+  <div class="br-privacy-inner">
+    <div class="seal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
+      </svg>
+    </div>
+    <h2>Your manuscript stays<br><em>your manuscript.</em></h2>
+    <p>Drafts are encrypted, never used for AI training, never shown to other users. Each panel reads your work, returns the report, and the content is purged from active memory.</p>
+
+    <div class="privacy-tiles">
+      <div class="privacy-tile">
+        <h4>Read once, then purged</h4>
+        <p>Your draft enters memory only for the duration of the report. After delivery, it's gone.</p>
+      </div>
+      <div class="privacy-tile">
+        <h4>Never trained on</h4>
+        <p>Slima never uses your work to fine-tune any model. Your sentences belong to you.</p>
+      </div>
+      <div class="privacy-tile">
+        <h4>Never shared</h4>
+        <p>No other reader sees your work. Reports are visible only to your account.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     8. STATS row
+     ════════════════════════════════════════ -->
+<section class="br-stats">
+  <div class="br-stats-inner">
+    <div class="br-stats-head">
+      <span class="sec-num">05 · By the numbers</span>
+      <h2>What you get on a Pro panel <em>(per report)</em>.</h2>
+    </div>
+    <div class="br-stats-grid">
+      <div class="stat">
+        <div class="num">5</div>
+        <div class="lbl">Readers per panel<small>Choose any combination of personas.</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">100<em>K</em></div>
+        <div class="lbl">Word limit per report<small>The whole novel, not "the first chapters."</small></div>
+      </div>
+      <div class="stat">
+        <div class="num">~3<em>min</em></div>
+        <div class="lbl" data-i18n="br.stats.lbl">From submit to delivered<small data-i18n="br.stats.sub">Most reports finish in three minutes or less.</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     9. PULL QUOTE (testimonial)
+     ════════════════════════════════════════ -->
+<section class="br-quote">
+  <div class="br-quote-inner">
+    <blockquote data-i18n="t.weston3">
+      "The reader-feedback reports are fascinating — I'm still working up the nerve to swallow them whole. As a writing newbie, the Kindle data makes me want to <em>chase a perfect score.</em> The editor's notes feel honest — readers can be brutal."
+    </blockquote>
+    <div class="byline">
+      <span class="who" data-i18n="t.weston.name">Weston</span>
+      <span class="role" data-i18n="t.weston.role">Writer · ACE</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     10. FAQ
+     ════════════════════════════════════════ -->
+<section class="br-faq">
+  <div class="br-faq-inner">
+    <div class="br-faq-head">
+      <span class="sec-num">06 · Common questions</span>
+      <h2>The <em>"but is it any good?"</em> list.</h2>
+      <p>If you don't see your question, write to us. A human reads everything.</p>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Are the readers actually reading my whole book?</summary>
+        <p>Yes. The full text — up to 100K words per report — is read end to end. Each reader holds the entire manuscript in context while writing their notes, so when David flags a chapter-six contradiction with chapter one, that's a real cross-chapter call.</p>
+      </details>
+      <details>
+        <summary>Can I bring my own readers?</summary>
+        <p>You can. The "Build your own" persona lets you define taste, age, reading history, pet peeves, and a voice sample. The reader stays consistent across reports for as long as you keep them.</p>
+      </details>
+      <details>
+        <summary>What if my readers disagree?</summary>
+        <p>That's a feature. The report flags every disagreement explicitly so you can see the split and make a real authorial choice — not average everyone into mush.</p>
+      </details>
+      <details>
+        <summary>Is this a replacement for a human editor?</summary>
+        <p>No. It's a replacement for the friend who said they'd read your draft and then didn't. For final edits, hire a person — and bring the Slima report with you. It saves billable hours.</p>
+      </details>
+      <details>
+        <summary>Can I run the same panel on a revision?</summary>
+        <p>Yes — re-running the same panel on a revised draft is the most valuable thing you can do. The report shows the deltas: what improved, what got worse, what you accidentally broke fixing something else.</p>
+      </details>
+      <details>
+        <summary>How is this different from Beta readers I'd find online?</summary>
+        <p>Online betas are humans, which is wonderful and slow. Slima is structured, scored, and arrives in roughly a day. Most novelists use both — Slima for early passes, humans for the final read.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     11. CTA
+     ════════════════════════════════════════ -->
+<section class="br-cta">
+  <div class="br-cta-inner">
+    <h2>Send the manuscript.<br><em>Get the read.</em></h2>
+    <p>Five readers. One report. Less than a day. Your first report is on us.</p>
+    <a href="register.html" class="br-cta-btn">
+      Get my first report
+      <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="br-cta-meta">
+      <span>Free first report</span>
+      <span>No credit card</span>
+      <span>Read once, never trained on</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+        </a>
+        <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="writing-studio.html">Writing Studio</a></li>
+          <li><a href="beta-reader.html">Beta Readers</a></li>
+          <li><a href="script-studio.html">Script Studio</a></li>
+          <li><a href="plan.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slima. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/marketing.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>

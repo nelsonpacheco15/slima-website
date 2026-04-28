@@ -6,7 +6,7 @@
 <title>Slima — Where books get finished</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
@@ -25,8 +25,10 @@
     font-family: 'Inter', sans-serif;
     -webkit-font-smoothing: antialiased;
     color: var(--ink);
-    overflow-x: hidden;
   }
+  /* `overflow-x: hidden` on body breaks position: sticky.
+     `overflow: clip` prevents horizontal scroll without creating a scroll container. */
+  body { overflow-x: clip; }
   a { color: inherit; }
   img { max-width: 100%; display: block; }
 
@@ -87,15 +89,34 @@
      ══════════════════════════════════════ */
   .nav {
     position: sticky;
-    top: 0; left: 0; right: 0;
+    top: 0;
     z-index: 50;
     height: 68px;
     background: #ffffff;
-    border-bottom: 1px solid #ececea;
+    border: 1px solid transparent;
+    border-bottom-color: #ececea;
     display: flex; align-items: center;
     justify-content: space-between;
     padding: 0 32px;
     color: #0a0a0a;
+    transition:
+      top 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      margin 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-radius 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      box-shadow 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+      border-color 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: top, margin, border-radius, box-shadow;
+  }
+  /* On scroll: float into a rounded pill, soft drop shadow */
+  .nav.is-scrolled {
+    top: 12px;
+    margin: 0 15px;
+    border-radius: 18px;
+    box-shadow:
+      0 12px 36px rgba(10, 10, 11, 0.08),
+      0 2px 8px rgba(10, 10, 11, 0.04);
+    border-color: rgba(10, 10, 11, 0.06);
+    border-bottom-color: rgba(10, 10, 11, 0.06);
   }
   .nav-logo {
     display: flex; align-items: center; gap: 4px;
@@ -132,6 +153,20 @@
     transition: background 0.2s, transform 0.2s;
   }
   .nav-cta:hover { background: #2a2a2a; transform: translateY(-1px); opacity: 1 !important; }
+  .lang-toggle {
+    background: none; border: none; cursor: pointer;
+    color: inherit;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .lang-toggle:hover { opacity: 0.65; }
+  .lang-toggle .sep { color: #cfcdc6; }
+  .lang-toggle .lang.is-active { color: #0a0a0a; font-weight: 600; }
+  .lang-toggle .lang { color: #6b6b6b; }
   .nav-hamburger {
     display: none; flex-direction: column; justify-content: space-between;
     width: 22px; height: 16px; background: none; border: none; cursor: pointer;
@@ -143,46 +178,55 @@
   }
 
   /* ══════════════════════════════════════
-     HERO (Runway, dark — sits below white nav)
+     HERO — continuous organic flow lines on a grey field
+     Dark grey gradient with a brighter-grey highlight; ~24 wavy lines flow
+     across the canvas at varying speeds. No phases, just continuous motion.
      ══════════════════════════════════════ */
-  /* Frame the hero like Runway — white margin on left, right and bottom */
   .hero-frame {
     background: #fff;
     padding: 0 12px 12px;
   }
   .hero {
     position: relative; width: 100%;
-    /* Leave a clear strip of white below the hero, like Runway */
     height: calc(100vh - 68px - 44px - 80px);
     min-height: 580px;
     max-height: 820px;
     overflow: hidden;
     border-radius: 20px;
-    background: linear-gradient(45deg, #7d7d7d 0%, #939393 22%, #ababab 45%, #c3c3c3 68%, #d6d6d6 85%, #e6e6e6 100%);
+    background: linear-gradient(135deg, #34343a 0%, #16161a 100%);
     color: #fff;
   }
-  .hero-lines { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
-  .hero-lines svg { width: 100%; height: 100%; display: block; }
-  .hero-line { fill: none; stroke-linecap: round; will-change: transform, opacity; }
-  .hero-glow {
-    position: absolute; top: -20%; right: -20%;
-    width: 110%; height: 130%; border-radius: 50%;
-    background: radial-gradient(circle, rgba(245,245,245,0.85) 0%, rgba(235,235,235,0.5) 22%, rgba(220,220,220,0.22) 45%, rgba(205,205,205,0.07) 65%, transparent 80%);
-    filter: blur(90px); z-index: 1; pointer-events: none;
+
+  .hero-svg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+  }
+  .hero-svg .hero-flow path {
+    fill: none;
+    stroke-linecap: round;
     will-change: transform;
   }
-  .hero-glow-2 { display: none; }
-  .hero::before {
-    content: ''; position: absolute; inset: 0; z-index: 2;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    background-size: 200px 200px; opacity: 0.32; pointer-events: none;
+  .hero-svg .hero-highlight {
+    will-change: transform;
+    mix-blend-mode: screen;
   }
-  .hero::after {
-    content: ''; position: absolute; inset: 0; z-index: 2;
+
+  /* Subtle vignette — keeps the headline readable in the bottom-left */
+  .hero-glass {
+    position: absolute; inset: 0;
+    z-index: 3;
     background:
-      linear-gradient(to right, rgba(0,0,0,0.32) 0%, rgba(0,0,0,0.14) 35%, transparent 65%),
-      radial-gradient(ellipse at center, transparent 50%, rgba(50,50,50,0.18) 100%);
+      radial-gradient(ellipse at 18% 88%, rgba(0,0,0,0.55) 0%, transparent 50%),
+      linear-gradient(to top, rgba(0,0,0,0.30) 0%, transparent 30%);
     pointer-events: none;
+    border-radius: inherit;
+    box-shadow:
+      inset 0 0 0 1px rgba(255,255,255,0.05);
   }
   .hero-content {
     position: absolute; inset: 0; z-index: 5;
@@ -196,14 +240,15 @@
     font-family: 'IBM Plex Serif', serif;
     font-size: clamp(48px, 6vw, 88px);
     font-weight: 500; line-height: 1.0;
-    letter-spacing: -0.025em; color: #fff;
+    letter-spacing: -0.025em; color: #ffffff;
     max-width: 800px;
+    text-shadow: 0 2px 16px rgba(0,0,0,0.45);
   }
   .hero-headline em { font-style: italic; font-weight: 500; }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 8px;
     margin-top: 36px; padding: 14px 22px;
-    background: #fff; color: #0a0a0a;
+    background: #ffffff; color: #0a0a0a;
     border-radius: 100px; text-decoration: none;
     font-size: 14px; font-weight: 500;
     transition: transform 0.2s, background 0.2s;
@@ -211,15 +256,13 @@
   .hero-cta svg { width: 14px; height: 14px; transition: transform 0.2s; }
   .hero-cta:hover { background: #f0f0f0; transform: translateY(-1px); }
   .hero-cta:hover svg { transform: translateX(3px); }
-  .hero-categories {
-    list-style: none; text-align: right;
-    color: rgba(255,255,255,0.7);
-    font-size: 13px; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    line-height: 2.2; padding-bottom: 8px;
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-svg .hero-node,
+    .hero-svg .hero-drift,
+    .hero-svg .hero-highlight,
+    .hero-svg .hero-ln { animation: none !important; }
   }
-  .hero-categories a { color: inherit; text-decoration: none; transition: color 0.2s; }
-  .hero-categories a:hover { color: #fff; }
 
   /* ══════════════════════════════════════
      1. GENRE CAROUSEL
@@ -1335,7 +1378,6 @@
     .hero { height: auto; min-height: 540px; padding: 80px 0; }
     .hero-content { padding: 60px 24px 60px; position: relative; inset: auto; }
     .hero-row { flex-direction: column; align-items: flex-start; gap: 32px; }
-    .hero-categories { text-align: left; line-height: 1.8; }
     .hero-frame { padding: 0 8px 8px; }
     .hero { border-radius: 14px; }
     .section, .features, .cta-strip, .dialogue-section, .genre-carousel { padding: 80px 20px; }
@@ -1379,42 +1421,65 @@
     </svg>
   </a>
   <ul class="nav-links">
-    <li><a href="#feat-studio">Writing Studio</a></li>
-    <li><a href="#feat-beta">Beta Readers</a></li>
-    <li><a href="#feat-script">Script Studio</a></li>
-    <li><a href="#plans">Plans</a></li>
+    <li><a href="writing-studio.html" data-i18n="nav.writing">Writing Studio</a></li>
+    <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
+    <li><a href="script-studio.html" data-i18n="nav.script">Script Studio</a></li>
+    <li><a href="plan.html" data-i18n="nav.plans">Plans</a></li>
   </ul>
   <div class="nav-right">
-    <a href="https://app.slima.ai">Log in</a>
-    <a href="https://app.slima.ai" class="nav-cta">Try Slima</a>
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html" data-i18n="nav.login">Log in</a>
+    <a href="register.html" class="nav-cta" data-i18n="nav.cta">Try Slima</a>
     <button class="nav-hamburger"><span></span><span></span><span></span></button>
   </div>
 </nav>
 
-<!-- HERO (framed card with grey-to-white animated background, sits below white nav) -->
+<!-- HERO — looping video of flowing lines as the background -->
 <div class="hero-frame">
 <section class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-glow-2"></div>
-  <div class="hero-lines">
-    <svg id="heroSvg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"></svg>
-  </div>
+  <!-- Continuous organic flow lines on a grey gradient with a brighter-grey highlight -->
+  <svg class="hero-svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice"
+       role="presentation" aria-hidden="true">
+    <defs>
+      <linearGradient id="heroBg" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#b8b8c0"/>
+        <stop offset="55%" stop-color="#9090a0"/>
+        <stop offset="100%" stop-color="#72727e"/>
+      </linearGradient>
+      <radialGradient id="heroHl" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#f4f4f8" stop-opacity="0.65"/>
+        <stop offset="35%"  stop-color="#dcdce2" stop-opacity="0.28"/>
+        <stop offset="100%" stop-color="#a8a8b0" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="heroHl2" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#ececf2" stop-opacity="0.40"/>
+        <stop offset="100%" stop-color="#9c9ca4" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1600" height="900" fill="url(#heroBg)"/>
+    <!-- Primary highlight blob — large, bright, drifts dynamically -->
+    <circle class="hero-highlight" cx="540" cy="220" r="780" fill="url(#heroHl)"/>
+    <!-- Secondary smaller highlight for layered glow -->
+    <circle class="hero-highlight-2" cx="1100" cy="640" r="520" fill="url(#heroHl2)"/>
+    <!-- Flow lines are generated by JS — multi-curve organic paths
+         translating at varying speeds for parallax depth. -->
+    <g class="hero-flow"></g>
+  </svg>
+
+  <!-- Subtle vignette to keep the headline readable -->
+  <div class="hero-glass"></div>
 
   <div class="hero-content">
     <div class="hero-row">
       <div>
         <h1 class="hero-headline">Where books<br><em>get finished.</em></h1>
-        <a href="https://app.slima.ai" class="hero-cta">
+        <a href="register.html" class="hero-cta">
           Get Started
           <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
-      <ul class="hero-categories">
-        <li><a href="#feat-studio">Writing Studio</a></li>
-        <li><a href="#feat-beta">Beta Reader Feedback</a></li>
-        <li><a href="#feat-memory">Full-Book Memory</a></li>
-        <li><a href="#feat-versions">Version Control</a></li>
-      </ul>
     </div>
   </div>
 </section>
@@ -1622,7 +1687,7 @@
     <header class="features-header">
       <div class="eyebrow">The Slima Ecosystem</div>
       <h2 class="headline">Everything you need to finish your book.</h2>
-      <p class="lead">A writing environment that keeps your full manuscript in memory. Every note, draft, and fragment stays connected — so your book moves forward instead of starting over.</p>
+      <p class="lead">A writing environment that keeps your full manuscript in memory. Every note, draft, and fragment stays connected.</p>
     </header>
 
     <article class="feature-row" id="feat-studio">
@@ -1635,7 +1700,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Folder-based project structure</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Daily word-count goals built in</li>
         </ul>
-        <a href="#" class="feature-link">Explore the Studio
+        <a href="writing-studio.html" class="feature-link">Explore the Studio
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
@@ -1677,7 +1742,7 @@
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Multiple reader personas</li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Action items you can check off</li>
         </ul>
-        <a href="#" class="feature-link">See a sample report
+        <a href="beta-reader.html" class="feature-link">See a sample report
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
       </div>
@@ -1869,34 +1934,34 @@
     <div class="testimonials">
       <div class="testimonial">
         <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote">"I've tried Scrivener, Notion, every Google Doc workflow you can imagine. Slima is the first tool that actually remembers what I wrote three chapters ago."</p>
+        <p class="testimonial-quote" data-i18n="t.weston1">"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">MR</div>
-          <div><div class="testimonial-name">Maria R.</div><div class="testimonial-role">Fiction author</div></div>
+          <div class="testimonial-avatar">魏</div>
+          <div><div class="testimonial-name" data-i18n="t.weston.name">Weston</div><div class="testimonial-role" data-i18n="t.weston.role">Writer · ACE</div></div>
         </div>
       </div>
       <div class="testimonial">
         <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote">"The beta reader feedback is the closest thing to working with a real editor I've found at this price point. Specific. Structural. Honest."</p>
+        <p class="testimonial-quote" data-i18n="t.tim1">"The software is very easy to use and the core concept is excellent. I use it as a writer's writing studio, and I've also used the reader test-reading feature. Overall the experience is very smooth — it's been a huge help."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">JT</div>
-          <div><div class="testimonial-name">James T.</div><div class="testimonial-role">Nonfiction writer</div></div>
+          <div class="testimonial-avatar">蔡</div>
+          <div><div class="testimonial-name" data-i18n="t.tim.name">Tim Tsai</div><div class="testimonial-role" data-i18n="t.tim.role">Writer</div></div>
         </div>
       </div>
       <div class="testimonial">
         <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote">"Finished my manuscript in four months after stalling for two years. The structure alone changed everything."</p>
+        <p class="testimonial-quote" data-i18n="t.weston2">"Today's experience was really great — I went back and revised a whole batch of recently-published pieces. Goes to show: my ability as an author may be limited, but my readers' taste is on point. ✌"</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">SL</div>
-          <div><div class="testimonial-name">Sarah L.</div><div class="testimonial-role">Debut novelist</div></div>
+          <div class="testimonial-avatar">魏</div>
+          <div><div class="testimonial-name" data-i18n="t.weston.name">Weston</div><div class="testimonial-role" data-i18n="t.weston.role">Writer · ACE</div></div>
         </div>
       </div>
       <div class="testimonial">
         <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote">"Branching versions without losing the original draft is something I didn't know I needed until I had it. Now I can't write without it."</p>
+        <p class="testimonial-quote" data-i18n="t.weston3">"The reader-feedback reports are fascinating — I'm still working up the nerve to swallow them whole. As a writing newbie, the Kindle data makes me want to chase a perfect score. The editor's notes feel honest — readers can be brutal."</p>
         <div class="testimonial-author">
-          <div class="testimonial-avatar">DK</div>
-          <div><div class="testimonial-name">Daniel K.</div><div class="testimonial-role">Screenwriter</div></div>
+          <div class="testimonial-avatar">魏</div>
+          <div><div class="testimonial-name" data-i18n="t.weston.name">Weston</div><div class="testimonial-role" data-i18n="t.weston.role">Writer · ACE</div></div>
         </div>
       </div>
     </div>
@@ -1967,7 +2032,7 @@
   <div class="cta-strip-inner">
     <h2>Stop starting over.<br><em>Start finishing.</em></h2>
     <p>Join writers using Slima to keep their manuscripts moving — across sessions, across drafts, across years.</p>
-    <a href="https://app.slima.ai" class="cta-strip-btn">
+    <a href="register.html" class="cta-strip-btn">
       Start writing free
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
@@ -2036,13 +2101,13 @@
             <path d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z" fill="currentColor"/>
           </svg>
         </a>
-        <p>A writing environment that keeps your full manuscript in memory, so your book moves forward instead of starting over.</p>
+        <p>A writing environment that keeps your full manuscript in memory.</p>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
         <ul>
           <li><a href="#features">Features</a></li>
-          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="plan.html">Pricing</a></li>
           <li><a href="#">Changelog</a></li>
           <li><a href="#">Roadmap</a></li>
         </ul>
@@ -2088,52 +2153,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script>
-  /* Hero animated lines */
-  const svg = document.getElementById('heroSvg');
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const LINE_COUNT = 32, W = 1600, H = 900;
-  for (let i = 0; i < LINE_COUNT; i++) {
-    const t = i / (LINE_COUNT - 1);
-    const baseX = -200 + t * (W + 400);
-    const x1 = baseX + 150, y1 = -50, x2 = baseX - 150, y2 = H + 50;
-    const cx = baseX - 50 + Math.sin(t * Math.PI * 1.5) * 100;
-    const cy = H/2 + Math.cos(t * Math.PI) * 80;
-    const path = document.createElementNS(svgNS, 'path');
-    path.setAttribute('class', 'hero-line');
-    path.setAttribute('d', `M ${x1} ${y1} Q ${cx} ${cy} ${x2} ${y2}`);
-    // Neutral grey strokes that read as subtle texture on the grey→white gradient
-    const b = Math.floor(70 + t * 130);
-    path.setAttribute('stroke', `rgb(${b},${b},${b})`);
-    path.setAttribute('stroke-width', 1 + (i % 3) * 0.5);
-    path.setAttribute('opacity', 0.10 + t * 0.38);
-    svg.appendChild(path);
-    if (typeof gsap !== 'undefined') {
-      const phase = i * 0.08;
-      gsap.set(path, { transformOrigin: '50% 50%', svgOrigin: '800 450' });
-      gsap.to(path, { rotation: (4 + (i % 4)) * (i % 2 === 0 ? 1 : -1), duration: 2.5 + (i % 4) * 0.6, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: phase * 0.2 });
-      gsap.to(path, { y: Math.sin(phase) * 14, duration: 3 + (i % 3) * 0.4, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: phase * 0.15 });
-    }
-  }
-  if (typeof gsap !== 'undefined') {
-    // Slow organic drift of the diffuse highlight
-    const positions = [
-      { x: '0vw',   y: '0vh',   scale: 1.00 },
-      { x: '-12vw', y: '8vh',   scale: 1.10 },
-      { x: '-20vw', y: '16vh',  scale: 1.18 },
-      { x: '-14vw', y: '22vh',  scale: 1.10 },
-      { x: '-4vw',  y: '12vh',  scale: 1.15 },
-      { x: '6vw',   y: '4vh',   scale: 1.05 },
-      { x: '0vw',   y: '-4vh',  scale: 1.10 }
-    ];
-    let idx = 0;
-    function nextPos() {
-      const p = positions[idx % positions.length];
-      gsap.to('.hero-glow', { x: p.x, y: p.y, scale: p.scale, duration: 14, ease: 'sine.inOut', onComplete: nextPos });
-      idx++;
-    }
-    nextPos();
-    gsap.to('.hero-glow', { opacity: 0.9, duration: 18, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 2 });
-  }
+  /* Hero background is now a looping <video> — no JS needed. */
 
   /* Genre carousel — buttons + drag (mouse + touch) */
   (function() {
@@ -2219,6 +2239,330 @@
     });
   });
 
+  /* Sticky-nav scroll-state animation: rAF-throttled, passive listener */
+  (function () {
+    const navEl = document.querySelector('.nav');
+    if (!navEl) return;
+    const THRESHOLD = 24;
+    let scrolled = false;
+    let ticking = false;
+    function update() {
+      const next = window.scrollY > THRESHOLD;
+      if (next !== scrolled) {
+        scrolled = next;
+        navEl.classList.toggle('is-scrolled', scrolled);
+      }
+      ticking = false;
+    }
+    update();
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(update); ticking = true; }
+    }, { passive: true });
+  })();
+
+  /* ════════════════════════════════════════════════════════
+     HERO — fragmented lines drifting in space, periodically
+     converging into recognizable shapes (book / page / "S" mark / wave),
+     then dispersing back into chaos. GSAP-driven; shape cycle ~16s.
+     ════════════════════════════════════════════════════════ */
+  (function () {
+    if (typeof gsap === 'undefined') return;
+    const svg = document.querySelector('.hero-svg');
+    if (!svg) return;
+    const flow = svg.querySelector('.hero-flow');
+    if (!flow) return;
+
+    const REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const NS = 'http://www.w3.org/2000/svg';
+    const W = 1600, H = 900;
+    const N = 90; // number of line fragments
+
+    const rnd = (a, b) => a + Math.random() * (b - a);
+
+    /* ─── Shape definitions ───────────────────────────────────
+       Each shape returns N target {x1,y1,x2,y2,opacity,strokeWidth} fragments.
+       If a shape uses fewer line segments than N, extra fragments are sent
+       offscreen / faded out. */
+
+    // Sample N points around a path of polyline points (each point = {x,y}).
+    // Returns N line fragments stitched along the path with consistent length.
+    function fragmentsAlongPath(points, count) {
+      // Compute segment lengths
+      const segs = [];
+      let total = 0;
+      for (let i = 0; i < points.length - 1; i++) {
+        const a = points[i], b = points[i+1];
+        const len = Math.hypot(b.x - a.x, b.y - a.y);
+        segs.push({ a, b, len, start: total });
+        total += len;
+      }
+      const out = [];
+      const segLen = total / count;
+      for (let i = 0; i < count; i++) {
+        const d1 = i * segLen;
+        const d2 = d1 + segLen * 0.78; // gap between fragments
+        const p1 = pointAt(segs, d1);
+        const p2 = pointAt(segs, Math.min(d2, total - 0.01));
+        out.push({ x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, opacity: 0.85, sw: 2.2 });
+      }
+      return out;
+    }
+    function pointAt(segs, dist) {
+      for (const s of segs) {
+        if (dist <= s.start + s.len) {
+          const t = (dist - s.start) / s.len;
+          return { x: s.a.x + (s.b.x - s.a.x) * t, y: s.a.y + (s.b.y - s.a.y) * t };
+        }
+      }
+      const last = segs[segs.length - 1];
+      return { x: last.b.x, y: last.b.y };
+    }
+
+    // Shape 1: Open book — two facing pages
+    function shapeBook() {
+      const cx = W / 2, cy = H / 2 - 20;
+      const pw = 240, ph = 320;
+      // Two rectangles meeting at center spine, slightly tilted outward
+      const path = [
+        { x: cx - pw, y: cy - ph/2 + 10 },  // top-left
+        { x: cx,      y: cy - ph/2 - 10 },  // top-spine
+        { x: cx + pw, y: cy - ph/2 + 10 },  // top-right
+        { x: cx + pw, y: cy + ph/2 + 10 },  // bottom-right
+        { x: cx,      y: cy + ph/2 - 10 },  // bottom-spine
+        { x: cx - pw, y: cy + ph/2 + 10 },  // bottom-left
+        { x: cx - pw, y: cy - ph/2 + 10 },  // close
+        // Spine
+        { x: cx,      y: cy - ph/2 - 10 },
+        { x: cx,      y: cy + ph/2 - 10 },
+      ];
+      return fragmentsAlongPath(path, N);
+    }
+
+    // Shape 2: Page with text lines
+    function shapePage() {
+      const cx = W / 2, cy = H / 2;
+      const pw = 360, ph = 460;
+      const left = cx - pw/2, right = cx + pw/2;
+      const top = cy - ph/2, bot = cy + ph/2;
+      const out = [];
+      // Frame
+      const frame = [
+        { x: left,  y: top },
+        { x: right, y: top },
+        { x: right, y: bot },
+        { x: left,  y: bot },
+        { x: left,  y: top },
+      ];
+      const frameFrags = fragmentsAlongPath(frame, 28);
+      out.push(...frameFrags);
+      // Text lines inside the page
+      const lineCount = N - frameFrags.length;
+      for (let i = 0; i < lineCount; i++) {
+        const t = i / (lineCount - 1);
+        const y = top + 60 + t * (ph - 120);
+        const x1 = left + 30;
+        // Vary line lengths to look like text
+        const lenT = 0.45 + (Math.sin(i * 1.3) * 0.5 + 0.5) * 0.5;
+        const x2 = x1 + (pw - 60) * lenT;
+        out.push({ x1, y1: y, x2, y2: y, opacity: 0.7, sw: 1.6 });
+      }
+      return out;
+    }
+
+    // Shape 3: Sine wave across the canvas
+    function shapeWave() {
+      const cy = H / 2;
+      const points = [];
+      for (let i = 0; i <= 60; i++) {
+        const t = i / 60;
+        const x = 100 + t * (W - 200);
+        const y = cy + Math.sin(t * Math.PI * 4) * 140;
+        points.push({ x, y });
+      }
+      return fragmentsAlongPath(points, N);
+    }
+
+    // Shape 4: Slima "S" — single curving stroke
+    function shapeS() {
+      const cx = W / 2, cy = H / 2;
+      const sw = 360, sh = 460;
+      // Approx S as a series of points
+      const points = [
+        { x: cx + sw/2 - 30, y: cy - sh/2 + 50 },
+        { x: cx + sw/2 - 90, y: cy - sh/2 + 10 },
+        { x: cx,             y: cy - sh/2 + 0 },
+        { x: cx - sw/2 + 90, y: cy - sh/2 + 10 },
+        { x: cx - sw/2 + 30, y: cy - sh/2 + 80 },
+        { x: cx - sw/2 + 10, y: cy - sh/4 },
+        { x: cx - sw/2 + 90, y: cy - 30 },
+        { x: cx,             y: cy + 10 },
+        { x: cx + sw/2 - 90, y: cy + 50 },
+        { x: cx + sw/2 - 10, y: cy + sh/4 },
+        { x: cx + sw/2 - 30, y: cy + sh/2 - 80 },
+        { x: cx + sw/2 - 90, y: cy + sh/2 - 10 },
+        { x: cx,             y: cy + sh/2 },
+        { x: cx - sw/2 + 90, y: cy + sh/2 - 10 },
+        { x: cx - sw/2 + 30, y: cy + sh/2 - 50 },
+      ];
+      return fragmentsAlongPath(points, N);
+    }
+
+    // Shape 0: Scattered (drift state) — random short line fragments
+    function shapeScatter() {
+      const out = [];
+      for (let i = 0; i < N; i++) {
+        const x1 = rnd(40, W - 40);
+        const y1 = rnd(40, H - 40);
+        const ang = rnd(0, Math.PI * 2);
+        const len = rnd(20, 90);
+        const x2 = x1 + Math.cos(ang) * len;
+        const y2 = y1 + Math.sin(ang) * len;
+        out.push({ x1, y1, x2, y2, opacity: rnd(0.18, 0.5), sw: rnd(1.0, 2.4) });
+      }
+      return out;
+    }
+
+    /* ─── Build N line elements ─────────────────────────────── */
+    const lines = [];
+    const init = shapeScatter();
+    for (let i = 0; i < N; i++) {
+      const f = init[i];
+      const ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('x1', f.x1);
+      ln.setAttribute('y1', f.y1);
+      ln.setAttribute('x2', f.x2);
+      ln.setAttribute('y2', f.y2);
+      const grey = Math.floor(rnd(210, 245));
+      ln.setAttribute('stroke', `rgb(${grey}, ${grey}, ${grey + 4})`);
+      ln.setAttribute('stroke-width', f.sw);
+      ln.setAttribute('stroke-linecap', 'round');
+      ln.setAttribute('opacity', f.opacity);
+      flow.appendChild(ln);
+      lines.push(ln);
+    }
+
+    if (REDUCE) return;
+
+    /* ─── Continuous slow drift: every fragment is always wandering ── */
+    function startDrift() {
+      lines.forEach((ln, i) => {
+        // Each fragment hovers slowly in a random direction, then reverses.
+        // Direction & duration are jittered so the cloud never feels uniform.
+        const dx = rnd(-90, 90);
+        const dy = rnd(-90, 90);
+        const dur = rnd(14, 26);
+        gsap.to(ln, {
+          x: `+=${dx}`,
+          y: `+=${dy}`,
+          duration: dur,
+          ease: 'sine.inOut',
+          yoyo: true,
+          repeat: -1,
+          repeatRefresh: true,
+        });
+      });
+    }
+    startDrift();
+
+    /* ─── Morph to a target shape — very slow, heavy stagger ── */
+    function morphTo(target, baseDur) {
+      target.forEach((f, i) => {
+        const ln = lines[i];
+        // Each fragment morphs at its own pace, with a generous delay
+        // window so the shape *emerges* over many seconds rather than snapping.
+        const dur = baseDur * rnd(0.7, 1.6);
+        const delay = rnd(0, baseDur * 1.1);
+        gsap.to(ln, {
+          attr: { x1: f.x1, y1: f.y1, x2: f.x2, y2: f.y2 },
+          x: 0, y: 0,
+          opacity: f.opacity,
+          'stroke-width': f.sw,
+          duration: dur,
+          ease: 'sine.inOut',
+          delay,
+          onComplete: () => {
+            // Once a fragment has reached its shape position, give it a quiet
+            // breathing motion in place — keeps the scene alive while formed.
+            gsap.to(ln, {
+              x: rnd(-12, 12),
+              y: rnd(-12, 12),
+              duration: rnd(6, 10),
+              ease: 'sine.inOut',
+              yoyo: true,
+              repeat: -1,
+            });
+          }
+        });
+      });
+    }
+
+    /* ─── Disperse: kill the held tweens and let drift take over again ── */
+    function disperse(baseDur) {
+      const scatter = shapeScatter();
+      scatter.forEach((f, i) => {
+        const ln = lines[i];
+        gsap.killTweensOf(ln);
+        gsap.to(ln, {
+          attr: { x1: f.x1, y1: f.y1, x2: f.x2, y2: f.y2 },
+          x: 0, y: 0,
+          opacity: f.opacity,
+          'stroke-width': f.sw,
+          duration: baseDur * rnd(0.7, 1.5),
+          ease: 'sine.inOut',
+          delay: rnd(0, baseDur * 0.8),
+        });
+      });
+      // After dispersing, restart the always-on drift
+      gsap.delayedCall(baseDur * 1.6, startDrift);
+    }
+
+    /* ─── Master cycle: drift → emerge → linger → disperse → drift ──
+       Every interval is randomized — the next shape never appears on
+       a predictable beat.                                           */
+    const shapes = [shapeBook, shapeWave, shapePage, shapeS];
+    function nextShape() {
+      // Pick a non-repeating random shape
+      let pick;
+      do { pick = Math.floor(Math.random() * shapes.length); } while (pick === nextShape._last);
+      nextShape._last = pick;
+      return shapes[pick];
+    }
+
+    function cycle() {
+      const assembleDur = rnd(9, 14);   // very slow emergence
+      const target = nextShape()();
+      morphTo(target, assembleDur);
+
+      const hold = rnd(6, 12);
+      gsap.delayedCall(assembleDur + hold, () => {
+        const disperseDur = rnd(7, 11);
+        disperse(disperseDur);
+
+        // Long, unpredictable wandering interval before any next shape
+        const wander = rnd(10, 22);
+        gsap.delayedCall(disperseDur + wander, cycle);
+      });
+    }
+
+    // Long initial calm before the first shape ever appears
+    gsap.delayedCall(rnd(8, 14), cycle);
+
+    /* ─── Drifting highlight blobs ─────────────────────────── */
+    gsap.timeline({ repeat: -1, defaults: { ease: 'sine.inOut' } })
+      .to('.hero-svg .hero-highlight', { x: 220,  y: 100,  duration: 18 })
+      .to('.hero-svg .hero-highlight', { x: 60,   y: 250,  duration: 18 })
+      .to('.hero-svg .hero-highlight', { x: -200, y: 130,  duration: 18 })
+      .to('.hero-svg .hero-highlight', { x: -100, y: -90,  duration: 18 })
+      .to('.hero-svg .hero-highlight', { x: 0,    y: 0,    duration: 16 });
+
+    gsap.timeline({ repeat: -1, defaults: { ease: 'sine.inOut' } })
+      .to('.hero-svg .hero-highlight-2', { x: -180, y: -80,  duration: 22 })
+      .to('.hero-svg .hero-highlight-2', { x: -260, y: 140,  duration: 22 })
+      .to('.hero-svg .hero-highlight-2', { x: 100,  y: 200,  duration: 22 })
+      .to('.hero-svg .hero-highlight-2', { x: 220,  y: -50,  duration: 22 })
+      .to('.hero-svg .hero-highlight-2', { x: 0,    y: 0,    duration: 20 });
+  })();
 </script>
+<script src="assets/i18n.js"></script>
 </body>
 </html>

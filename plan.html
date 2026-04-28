@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans &amp; Pricing — Slima</title>
+<meta name="description" content="Three plans for the writers who actually plan to finish. Starter, Pro, and Team — plus à la carte report packs.">
+<link rel="stylesheet" href="assets/marketing.css">
+<style>
+  /* ──────────────────────────────────────────────
+     PLANS — page-specific design
+     "Pricing as letterpress": confident monochrome
+     with a moss-green growth accent
+     ────────────────────────────────────────────── */
+  :root {
+    --paper:    #faf9f6;
+    --paper-2:  #f3f1ec;
+    --rule:     #ececea;
+    --ink-2:    #2a2a2e;
+    --green:    #2f9e6b;
+    --green-bg: #e6f4ec;
+  }
+  body { background: var(--paper); }
+
+  .sec-num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-bottom: 14px;
+    display: inline-block;
+  }
+  .sec-num::before {
+    content: '— ';
+    margin-right: 4px;
+    font-style: normal;
+  }
+
+  /* ══════════════════════════════════════════════
+     1. HERO + BILLING TOGGLE
+     ══════════════════════════════════════════════ */
+  .pl-hero {
+    position: relative;
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(47,158,107,0.08) 0%, transparent 55%),
+      var(--paper);
+    padding: 96px 32px 56px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .pl-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--green);
+    margin-bottom: 22px;
+  }
+  .pl-hero-eyebrow::before, .pl-hero-eyebrow::after {
+    content: '';
+    width: 28px; height: 1px;
+    background: var(--green);
+  }
+  .pl-hero h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(48px, 6.5vw, 88px);
+    letter-spacing: -0.028em;
+    line-height: 0.96;
+    color: #0a0a0a;
+    margin-bottom: 24px;
+    max-width: 920px;
+    margin-left: auto; margin-right: auto;
+  }
+  .pl-hero h1 em { font-style: italic; color: var(--green); }
+  .pl-hero p.lead {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: #3a3631;
+    max-width: 600px;
+    margin: 0 auto 36px;
+  }
+
+  /* Billing toggle */
+  .billing {
+    display: inline-flex;
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 100px;
+    padding: 5px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(40,30,15,0.05);
+  }
+  .billing button {
+    background: transparent;
+    border: 0;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: #6b6258;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .billing button.is-active {
+    background: #0a0a0a;
+    color: #fff;
+  }
+  .billing .save {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 3px 9px;
+    border-radius: 100px;
+    letter-spacing: 0.04em;
+  }
+  .billing button.is-active .save {
+    background: rgba(47,158,107,0.30);
+    color: #b8e0a3;
+  }
+  .pl-hero .micro {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #6b6258;
+    letter-spacing: 0.06em;
+    margin-bottom: 32px;
+  }
+
+  /* ══════════════════════════════════════════════
+     2. PLAN CARDS (3-up, Pro inverted)
+     ══════════════════════════════════════════════ */
+  .pl-plans {
+    background: var(--paper);
+    padding: 0 32px 120px;
+  }
+  .pl-plans-inner {
+    max-width: 1180px; margin: 0 auto;
+  }
+  .plans-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+  }
+  @media (max-width: 980px) {
+    .plans-grid { grid-template-columns: 1fr; gap: 20px; }
+  }
+  .plan {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 22px;
+    padding: 36px 32px 32px;
+    display: flex; flex-direction: column;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .plan:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 30px 60px -20px rgba(40,30,15,0.12);
+  }
+  .plan .badge {
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--green);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    padding: 6px 14px;
+    border-radius: 100px;
+    text-transform: uppercase;
+  }
+  .plan .ribbon {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--green);
+    margin-bottom: 8px;
+    letter-spacing: 0.04em;
+  }
+  .plan h3 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 28px;
+    letter-spacing: -0.015em;
+    color: #0a0a0a;
+    margin-bottom: 4px;
+  }
+  .plan .tagline {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: #6b6258;
+    margin-bottom: 24px;
+    line-height: 1.4;
+  }
+  .plan .price {
+    margin-bottom: 8px;
+  }
+  .plan .price .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 56px;
+    letter-spacing: -0.03em;
+    color: #0a0a0a;
+    line-height: 1;
+  }
+  .plan .price .per {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: #6b6258;
+    margin-left: 4px;
+  }
+  .plan .billed {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: #b8ad9c;
+    letter-spacing: 0.04em;
+    margin-bottom: 28px;
+  }
+  .plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .plan li {
+    display: flex; align-items: flex-start;
+    gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: #2a2620;
+    line-height: 1.45;
+  }
+  .plan li svg {
+    width: 16px; height: 16px;
+    flex-shrink: 0;
+    color: var(--green);
+    margin-top: 4px;
+  }
+  .plan li.off { color: #b8ad9c; }
+  .plan li.off svg { color: #d4ccba; }
+  .plan li strong {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    color: #0a0a0a;
+  }
+  .plan .cta {
+    margin-top: auto;
+    width: 100%;
+    padding: 14px 22px;
+    border-radius: 100px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #0a0a0a;
+    background: transparent;
+    color: #0a0a0a;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+    display: block;
+  }
+  .plan .cta:hover {
+    background: #0a0a0a;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .plan .footnote {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #b8ad9c;
+    text-align: center;
+    margin-top: 14px;
+    letter-spacing: 0.04em;
+  }
+
+  /* Pro plan — inverted dark */
+  .plan.pro {
+    background: #0a0a0a;
+    color: #faf8f3;
+    border-color: #0a0a0a;
+    transform: translateY(-12px);
+  }
+  @media (max-width: 980px) { .plan.pro { transform: none; } }
+  .plan.pro:hover {
+    transform: translateY(-16px);
+    box-shadow: 0 40px 80px -24px rgba(0,0,0,0.40);
+  }
+  @media (max-width: 980px) {
+    .plan.pro:hover { transform: translateY(-3px); }
+  }
+  .plan.pro .ribbon { color: var(--green-bg); }
+  .plan.pro h3 { color: #fff; }
+  .plan.pro .tagline { color: rgba(255,255,255,0.65); }
+  .plan.pro .price .num { color: #fff; }
+  .plan.pro .price .per { color: rgba(255,255,255,0.65); }
+  .plan.pro .billed { color: rgba(255,255,255,0.45); }
+  .plan.pro li { color: rgba(255,255,255,0.92); }
+  .plan.pro li svg { color: var(--green-bg); }
+  .plan.pro li.off { color: rgba(255,255,255,0.45); }
+  .plan.pro li.off svg { color: rgba(255,255,255,0.30); }
+  .plan.pro li strong { color: #fff; }
+  .plan.pro .cta {
+    background: #fff;
+    color: #0a0a0a;
+    border-color: #fff;
+  }
+  .plan.pro .cta:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .plan.pro .footnote { color: rgba(255,255,255,0.40); }
+
+  /* ══════════════════════════════════════════════
+     3. ADD-ON: REPORT PACKS
+     ══════════════════════════════════════════════ */
+  .pl-addons {
+    background: linear-gradient(180deg, var(--paper-2) 0%, var(--paper) 100%);
+    padding: 130px 32px;
+  }
+  .pl-addons-inner { max-width: 1180px; margin: 0 auto; }
+  .pl-addons-head {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 56px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  @media (max-width: 880px) {
+    .pl-addons-head { grid-template-columns: 1fr; gap: 18px; margin-bottom: 36px; }
+  }
+  .pl-addons h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 8px 0 0;
+  }
+  .pl-addons h2 em { font-style: italic; color: var(--green); }
+  .pl-addons-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #4a4338;
+  }
+  .packs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 880px) { .packs-grid { grid-template-columns: 1fr; } }
+  .pack {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 28px 28px 24px;
+    display: flex; flex-direction: column;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .pack:hover {
+    transform: translateY(-3px);
+    border-color: var(--green);
+  }
+  .pack .seal {
+    width: 44px; height: 44px;
+    border: 2px solid var(--green);
+    border-radius: 50%;
+    color: var(--green);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .pack h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 19px;
+    color: #0a0a0a;
+    margin-bottom: 6px;
+  }
+  .pack .meta {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #6b6258;
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .pack .price {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 28px;
+    color: #0a0a0a;
+    letter-spacing: -0.015em;
+    margin-bottom: 6px;
+  }
+  .pack .price small {
+    font-style: italic;
+    color: #6b6258;
+    font-weight: 400;
+    font-size: 14px;
+    margin-left: 4px;
+  }
+  .pack .perword {
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    color: #b8ad9c;
+    letter-spacing: 0.04em;
+    margin-bottom: 22px;
+  }
+  .pack .cta {
+    margin-top: auto;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: #0a0a0a;
+    padding: 12px 16px;
+    border-radius: 100px;
+    text-align: center;
+    text-decoration: none;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .pack .cta:hover {
+    background: var(--green);
+    border-color: var(--green);
+    color: #fff;
+  }
+  .pack.featured {
+    background: var(--green-bg);
+    border-color: #cfdcc1;
+  }
+  .pack.featured .seal { background: var(--green); color: #fff; }
+
+  /* ══════════════════════════════════════════════
+     4. COMPARISON TABLE
+     ══════════════════════════════════════════════ */
+  .pl-compare {
+    background: #ffffff;
+    padding: 130px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pl-compare-inner { max-width: 1180px; margin: 0 auto; }
+  .pl-compare-head {
+    text-align: center;
+    margin-bottom: 56px;
+  }
+  .pl-compare h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    line-height: 1.05;
+    color: #0a0a0a;
+    margin: 14px 0 16px;
+  }
+  .pl-compare h2 em { font-style: italic; color: var(--green); }
+  .pl-compare-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    max-width: 580px;
+    margin: 0 auto;
+  }
+  .compare-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Inter', sans-serif;
+  }
+  .compare-table thead th {
+    text-align: left;
+    padding: 22px 18px;
+    border-bottom: 2px solid #0a0a0a;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 18px;
+    color: #0a0a0a;
+  }
+  .compare-table thead th .price {
+    display: block;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: #6b6258;
+    font-weight: 400;
+    margin-top: 4px;
+    letter-spacing: 0;
+  }
+  .compare-table thead th.is-pro {
+    color: var(--green);
+  }
+  .compare-table thead th.is-pro::after {
+    content: 'Most popular';
+    display: block;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+    font-size: 10px;
+    color: var(--green);
+    background: var(--green-bg);
+    padding: 3px 8px;
+    border-radius: 100px;
+    margin-top: 6px;
+    width: fit-content;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .compare-table .group-row td {
+    background: var(--paper-2);
+    padding: 14px 18px;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-style: italic;
+    color: var(--green);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .compare-table tbody td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    font-size: 14px;
+    color: #2a2620;
+  }
+  .compare-table tbody td.feat {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    color: #0a0a0a;
+  }
+  .compare-table td.is-pro {
+    background: var(--green-bg);
+    font-weight: 500;
+    color: var(--green);
+  }
+  .compare-table .check {
+    color: var(--green);
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .compare-table .x {
+    color: #b8ad9c;
+    font-size: 15px;
+  }
+  @media (max-width: 880px) {
+    .compare-table { font-size: 13px; }
+    .compare-table thead th { padding: 14px 8px; font-size: 14px; }
+    .compare-table tbody td { padding: 10px 8px; font-size: 12.5px; }
+    .compare-table tbody td.feat { font-size: 13px; }
+  }
+
+  /* ══════════════════════════════════════════════
+     5. CROSS-LINK STRIP
+     ══════════════════════════════════════════════ */
+  .pl-studios {
+    background: var(--paper);
+    padding: 130px 32px;
+  }
+  .pl-studios-inner { max-width: 1180px; margin: 0 auto; }
+  .pl-studios-head { text-align: center; margin-bottom: 56px; }
+  .pl-studios h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(28px, 3.4vw, 44px);
+    letter-spacing: -0.018em;
+    line-height: 1.1;
+    color: #0a0a0a;
+  }
+  .pl-studios h2 em { font-style: italic; }
+  .pl-studios p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+    margin-top: 8px;
+    max-width: 580px;
+    margin-left: auto; margin-right: auto;
+  }
+  .studios-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 880px) { .studios-row { grid-template-columns: 1fr; } }
+  .studio-card {
+    background: #ffffff;
+    border: 1px solid var(--rule);
+    border-radius: 18px;
+    padding: 28px;
+    text-decoration: none;
+    color: #0a0a0a;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+    display: flex; flex-direction: column;
+  }
+  .studio-card:hover { transform: translateY(-3px); border-color: #0a0a0a; }
+  .studio-card .accent {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+  .studio-card.amber .accent { background: var(--warm); }
+  .studio-card.wine .accent { background: var(--wine); }
+  .studio-card.teal .accent { background: var(--teal); }
+  .studio-card h4 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 6px;
+    color: #0a0a0a;
+  }
+  .studio-card p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 14px;
+    color: #4a4338;
+    line-height: 1.55;
+    margin: 0 0 18px;
+  }
+  .studio-card .arrow {
+    margin-top: auto;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #6b6258;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .studio-card.amber .arrow { color: var(--warm); }
+  .studio-card.wine .arrow { color: var(--wine); }
+  .studio-card.teal .arrow { color: var(--teal); }
+  .studio-card .arrow::after { content: '→'; transition: transform 0.2s; }
+  .studio-card:hover .arrow::after { transform: translateX(4px); }
+
+  /* ══════════════════════════════════════════════
+     6. PULL QUOTE
+     ══════════════════════════════════════════════ */
+  .pl-quote {
+    background: #0a0a0a;
+    color: #faf8f3;
+    padding: 140px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .pl-quote::before {
+    content: '"';
+    position: absolute;
+    top: 40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 240px;
+    color: var(--green);
+    opacity: 0.20;
+    line-height: 1;
+    user-select: none;
+  }
+  .pl-quote-inner { max-width: 880px; margin: 0 auto; position: relative; }
+  .pl-quote blockquote {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: clamp(26px, 3.2vw, 42px);
+    line-height: 1.3;
+    color: #fff;
+    margin-bottom: 36px;
+    letter-spacing: -0.012em;
+  }
+  .pl-quote blockquote em { color: var(--green); }
+  .pl-quote .byline {
+    display: inline-flex; align-items: center; gap: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: rgba(255,255,255,0.65);
+  }
+  .pl-quote .byline .who {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-style: normal;
+    color: #fff;
+    font-size: 16px;
+  }
+  .pl-quote .byline .role {
+    color: var(--green-bg);
+    font-style: italic;
+  }
+
+  /* ══════════════════════════════════════════════
+     7. FAQ
+     ══════════════════════════════════════════════ */
+  .pl-faq { background: var(--paper); padding: 140px 32px 120px; }
+  .pl-faq-inner { max-width: 880px; margin: 0 auto; }
+  .pl-faq-head { text-align: center; margin-bottom: 56px; }
+  .pl-faq-head h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(32px, 4vw, 52px);
+    letter-spacing: -0.022em;
+    margin: 14px 0 8px;
+    color: #0a0a0a;
+  }
+  .pl-faq-head h2 em { font-style: italic; color: var(--green); }
+  .pl-faq-head p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    color: #4a4338;
+  }
+  .faq-list { border-top: 1px solid var(--rule); }
+  .faq-list details {
+    border-bottom: 1px solid var(--rule);
+    padding: 24px 0;
+  }
+  .faq-list summary {
+    list-style: none;
+    cursor: pointer;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    font-weight: 500;
+    color: #0a0a0a;
+    display: flex;
+    justify-content: space-between; align-items: flex-start;
+    gap: 24px;
+    transition: color 0.2s;
+  }
+  .faq-list summary:hover { color: var(--green); }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after {
+    content: '＋';
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--green);
+    font-size: 22px;
+    line-height: 1;
+  }
+  .faq-list details[open] summary::after { content: '−'; }
+  .faq-list details p {
+    margin-top: 14px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15.5px;
+    color: #4a4338;
+    line-height: 1.65;
+    padding-right: 40px;
+  }
+
+  /* ══════════════════════════════════════════════
+     8. TRUST STRIP
+     ══════════════════════════════════════════════ */
+  .pl-trust {
+    background: #ffffff;
+    padding: 80px 32px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .pl-trust-inner {
+    max-width: 1180px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  @media (max-width: 880px) { .pl-trust-inner { grid-template-columns: repeat(2, 1fr); } }
+  .pl-trust-item {
+    padding: 18px;
+  }
+  .pl-trust-item .ic {
+    width: 32px; height: 32px;
+    margin: 0 auto 12px;
+    color: var(--green);
+  }
+  .pl-trust-item .ic svg { width: 100%; height: 100%; }
+  .pl-trust-item h5 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 15px;
+    color: #0a0a0a;
+    margin-bottom: 4px;
+  }
+  .pl-trust-item p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+    color: #6b6258;
+    line-height: 1.45;
+    margin: 0;
+  }
+
+  /* ══════════════════════════════════════════════
+     9. CTA
+     ══════════════════════════════════════════════ */
+  .pl-cta {
+    background: #0a0a0a;
+    color: #fff;
+    padding: 140px 32px;
+    text-align: center;
+  }
+  .pl-cta-inner { max-width: 800px; margin: 0 auto; }
+  .pl-cta h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+    color: #fff;
+    margin-bottom: 22px;
+  }
+  .pl-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
+  .pl-cta p {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 36px;
+  }
+  .pl-cta-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: #fff; color: #0a0a0a;
+    padding: 18px 32px;
+    border-radius: 100px;
+    text-decoration: none;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 17px;
+    font-weight: 500;
+    transition: transform 0.2s;
+  }
+  .pl-cta-btn:hover { transform: translateY(-2px); }
+  .pl-cta-meta {
+    display: flex; gap: 28px; justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+  }
+
+  /* Reveal-on-load */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    }
+    .reveal.d1 { animation-delay: 0.05s; }
+    .reveal.d2 { animation-delay: 0.15s; }
+    .reveal.d3 { animation-delay: 0.25s; }
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+
+  /* Language toggle (shared across pages) */
+  .lang-toggle {
+    background: none; border: none; cursor: pointer;
+    color: inherit;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px; font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 6px 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: opacity 0.2s;
+  }
+  .lang-toggle:hover { opacity: 0.65; }
+  .lang-toggle .sep { color: #cfcdc6; }
+  .lang-toggle .lang.is-active { color: #0a0a0a; font-weight: 600; }
+  .lang-toggle .lang { color: #6b6b6b; }
+</style>
+</head>
+<body>
+
+<!-- PROMO -->
+<div class="promo">
+  <span>New: Beta Reader feedback engine — get structured edits on every chapter.</span>
+  <a href="beta-reader.html">Learn more →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="Slima — home">
+    <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="writing-studio.html" data-i18n="nav.writing">Writing Studio</a></li>
+    <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
+    <li><a href="script-studio.html" data-i18n="nav.script">Script Studio</a></li>
+    <li><a href="plan.html" class="is-current" data-i18n="nav.plans">Plans</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html" data-i18n="nav.login">Log in</a>
+    <a href="register.html" class="nav-cta" data-i18n="nav.cta">Try Slima</a>
+    <button class="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════
+     1. HERO + BILLING TOGGLE
+     ════════════════════════════════════════ -->
+<section class="pl-hero">
+  <div class="reveal d1">
+    <div class="pl-hero-eyebrow" data-i18n="pl.hero.eyebrow">Plans &amp; Pricing</div>
+    <h1>The studio costs less than<br>the <em>coffee you write in.</em></h1>
+    <p class="lead">Three plans for the writers who actually plan to finish. Switch any time. Cancel any time. Bring the work with you when you go.</p>
+
+    <div class="billing">
+      <button class="is-active">Monthly</button>
+      <button>Yearly <span class="save">Save 17%</span></button>
+    </div>
+    <div class="micro">14-day free trial · no card to start</div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     2. PLAN CARDS
+     ════════════════════════════════════════ -->
+<section class="pl-plans">
+  <div class="pl-plans-inner reveal d2">
+    <div class="plans-grid">
+
+      <!-- STARTER -->
+      <article class="plan">
+        <div class="ribbon">For your first book</div>
+        <h3>Starter</h3>
+        <p class="tagline">An AI coach to get you started, and the whole studio while you find the habit.</p>
+        <div class="price"><span class="num">$9</span><span class="per">/ month</span></div>
+        <div class="billed">Billed monthly · or $90/year</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books, chapters, drafts</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Coach · ~84 conversations/week</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2 Beta Reader reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>50K word limit per report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 readers per report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Rest Protection · 4 days/month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Story Hook generator</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Weekly progress email</li>
+        </ul>
+        <a href="register.html?plan=starter" class="cta">Start with Starter</a>
+        <p class="footnote">Free for 14 days · cancel any time</p>
+      </article>
+
+      <!-- PRO (highlighted) -->
+      <article class="plan pro">
+        <span class="badge">Most popular</span>
+        <div class="ribbon">For the writers finishing this year</div>
+        <h3>Pro</h3>
+        <p class="tagline">The complete studio — coach, beta panel, full-book memory, and the runway to actually deliver.</p>
+        <div class="price"><span class="num">$19</span><span class="per">/ month</span></div>
+        <div class="billed">Billed monthly · or $190/year</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Everything in Starter</strong></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Coach · ~280 conversations/week</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>5</strong> Beta Reader reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>100K</strong> word limit per report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>5</strong> readers per report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Rest Protection · 8 days/month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>+ AI Weekly Review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>+ Priority support</li>
+        </ul>
+        <a href="register.html?plan=pro" class="cta">Start with Pro</a>
+        <p class="footnote">Free for 14 days · cancel any time</p>
+      </article>
+
+      <!-- TEAM -->
+      <article class="plan">
+        <div class="ribbon">For writing rooms &amp; studios</div>
+        <h3>Team</h3>
+        <p class="tagline">For writers' rooms, screenplay collectives, and small publishers — write together, share readers, ship together.</p>
+        <div class="price"><span class="num">$49</span><span class="per">/ month</span></div>
+        <div class="billed">Billed monthly · or $490/year</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Everything in Pro</strong></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>20</strong> Beta Reader reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>8</strong> readers per report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to <strong>5 collaborators</strong></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Shared Character &amp; World Bibles</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Roles &amp; permission control</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Single sign-on (SSO)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dedicated success manager</li>
+        </ul>
+        <a href="#contact" class="cta">Talk to us</a>
+        <p class="footnote">Custom seats available · invoice billing</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     3. ADD-ON: REPORT PACKS
+     ════════════════════════════════════════ -->
+<section class="pl-addons">
+  <div class="pl-addons-inner">
+    <div class="pl-addons-head">
+      <div>
+        <span class="sec-num">01 · No-subscription option</span>
+        <h2>Just need <em>one good read?</em></h2>
+      </div>
+      <p>Buy a Beta Reader pack à la carte. No subscription, no recurring charge — just structured feedback on your manuscript when you're ready for it.</p>
+    </div>
+
+    <div class="packs-grid">
+      <article class="pack">
+        <div class="seal">i</div>
+        <h4>Single Report</h4>
+        <p class="meta">One panel · 3 readers · up to 50K words. A first read for the early draft.</p>
+        <div class="price">$19<small> / report</small></div>
+        <div class="perword">≈ $0.0004 per word</div>
+        <a href="register.html?pack=single" class="cta">Buy a single</a>
+      </article>
+
+      <article class="pack featured">
+        <div class="seal">ii</div>
+        <h4>Three-Pack</h4>
+        <p class="meta">Three panels · 5 readers each · up to 100K words. The way most novelists actually use it.</p>
+        <div class="price">$45<small> / 3 reports</small></div>
+        <div class="perword">Save 21% vs. single</div>
+        <a href="register.html?pack=three" class="cta">Buy a three-pack</a>
+      </article>
+
+      <article class="pack">
+        <div class="seal">iii</div>
+        <h4>Pre-publication</h4>
+        <p class="meta">Five panels · 8 readers each · 100K words · plus a line-editor pass. Final read before submission.</p>
+        <div class="price">$129<small> / bundle</small></div>
+        <div class="perword">Save 34% vs. singles</div>
+        <a href="register.html?pack=pre-pub" class="cta">Buy pre-pub</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     5. STUDIO CROSS-LINKS
+     ════════════════════════════════════════ -->
+<section class="pl-studios">
+  <div class="pl-studios-inner">
+    <div class="pl-studios-head">
+      <span class="sec-num">03 · What you're paying for</span>
+      <h2>Three studios, <em>one subscription.</em></h2>
+      <p>Each plan includes everything below. The difference between Starter, Pro, and Team is volume — not access.</p>
+    </div>
+
+    <div class="studios-row">
+      <a href="writing-studio.html" class="studio-card amber">
+        <div class="accent">A</div>
+        <h4>Writing Studio</h4>
+        <p>Long-form editor with project structure, full-book memory, an AI coach that has actually read your manuscript.</p>
+        <span class="arrow">Tour the studio</span>
+      </a>
+      <a href="beta-reader.html" class="studio-card wine">
+        <div class="accent">B</div>
+        <h4>AI Beta Readers</h4>
+        <p>A panel of personas reads your manuscript end-to-end and returns a structured, scored, in-line report.</p>
+        <span class="arrow">See a sample report</span>
+      </a>
+      <a href="script-studio.html" class="studio-card teal">
+        <div class="accent">C</div>
+        <h4>Script Studio</h4>
+        <p>Scene-based screenwriting with Hollywood ↔ Taiwan format switching, corkboard, beat sheet, character Bible.</p>
+        <span class="arrow">Open the corkboard</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     6. PULL QUOTE
+     ════════════════════════════════════════ -->
+<section class="pl-quote">
+  <div class="pl-quote-inner">
+    <blockquote data-i18n="t.tim1">
+      "The software is very easy to use and the core concept is excellent. I use it as a writer's writing studio, and I've also used the reader test-reading feature. <em>Overall the experience is very smooth</em> — it's been a huge help."
+    </blockquote>
+    <div class="byline">
+      <span class="who" data-i18n="t.tim.name">Tim Tsai</span>
+      <span class="role" data-i18n="t.tim.role">Writer</span>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     7. FAQ
+     ════════════════════════════════════════ -->
+<section class="pl-faq">
+  <div class="pl-faq-inner">
+    <div class="pl-faq-head">
+      <span class="sec-num">04 · Common questions</span>
+      <h2>The <em>"so wait, how does this work?"</em> list.</h2>
+      <p>If you don't see your question, write to us. A human reads everything.</p>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Can I switch plans?</summary>
+        <p>Any time, in either direction. Upgrade and the new features unlock immediately, prorated. Downgrade and the change applies at the next billing cycle — no surprise charges.</p>
+      </details>
+      <details>
+        <summary>What happens if I cancel?</summary>
+        <p>You keep access through the end of your current billing period, then your account becomes read-only. Your manuscripts stay where they are; you can re-subscribe at any time and pick up exactly where you left off, or export everything and walk away.</p>
+      </details>
+      <details>
+        <summary>Do you offer student or hardship discounts?</summary>
+        <p>Yes. Verified students and writers in financial hardship can apply for a 50% discount on Starter and Pro. Write to us with a few sentences about your situation — we don't ask for documentation we wouldn't want to share ourselves.</p>
+      </details>
+      <details>
+        <summary>Is there a free trial on the Team plan?</summary>
+        <p>Team plans start with a 30-day pilot for the whole room, on us. Schedule a 20-minute onboarding call and we'll set up your collaborators, shared bibles, and SSO before the meeting ends.</p>
+      </details>
+      <details>
+        <summary>Do unused report quotas roll over?</summary>
+        <p>Unused reports roll over for one billing cycle, up to your plan's monthly limit. Beyond that, additional reports can be purchased à la carte — see the report packs above.</p>
+      </details>
+      <details>
+        <summary>What if I just want one report and not a subscription?</summary>
+        <p>Buy a report pack à la carte. The single report is $19, the three-pack is $45, and the pre-publication bundle (with line edit) is $129. No subscription, no recurring charge.</p>
+      </details>
+      <details>
+        <summary>Are my manuscripts private?</summary>
+        <p>Always. Your work is encrypted at rest and in transit, never used for AI training, and never shown to other users. The Beta Reader panel reads your draft, returns the report, and the content is purged from active memory.</p>
+      </details>
+      <details>
+        <summary>Which currencies do you support?</summary>
+        <p>USD, EUR, GBP, CAD, AUD, JPY, and TWD at launch. Local currency is auto-detected at checkout. VAT and sales tax are included where required.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     8. TRUST STRIP
+     ════════════════════════════════════════ -->
+<section class="pl-trust">
+  <div class="pl-trust-inner">
+    <div class="pl-trust-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></div>
+      <h5>Never trained on</h5>
+      <p>Your work is yours. We don't train models on it.</p>
+    </div>
+    <div class="pl-trust-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <h5>Encrypted in transit &amp; at rest</h5>
+      <p>AES-256 storage, TLS 1.3 transport. SOC 2 underway.</p>
+    </div>
+    <div class="pl-trust-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+      <h5>No card to start</h5>
+      <p>14-day free trial. We'll remind you before charging.</p>
+    </div>
+    <div class="pl-trust-item">
+      <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg></div>
+      <h5>Cancel any time</h5>
+      <p>Two clicks. We'll keep your manuscript safely in archive.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     9. CTA
+     ════════════════════════════════════════ -->
+<section class="pl-cta">
+  <div class="pl-cta-inner">
+    <h2>Pick a plan.<br><em>Write a book.</em></h2>
+    <p>Two weeks free. No card required. The studio is the same on every plan — Starter just gives you a smaller pile of words.</p>
+    <a href="register.html" class="pl-cta-btn">
+      Start writing free
+      <svg viewBox="0 0 14 14" fill="none"><path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+    <div class="pl-cta-meta">
+      <span>14-day free trial</span>
+      <span>No credit card</span>
+      <span>Switch or cancel any time</span>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+        </a>
+        <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="writing-studio.html">Writing Studio</a></li>
+          <li><a href="beta-reader.html">Beta Readers</a></li>
+          <li><a href="script-studio.html">Script Studio</a></li>
+          <li><a href="plan.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slima. All rights reserved.</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/marketing.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>
