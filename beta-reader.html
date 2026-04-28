@@ -16,15 +16,14 @@
     --paper-2:  #f3f1ec;
     --rule:     #ececea;
     --ink-2:    #2a2a2e;
-    --green:    #2f9e6b;
-    --green-bg: #e6f4ec;
-    /* Legacy aliases — all collapsed to brand neutrals/green */
-    --wine:     #2f9e6b;
-    --wine-bg:  #e6f4ec;
-    --leaf:     #2f9e6b;
-    --leaf-bg:  #e6f4ec;
-    --warm:     #2f9e6b;
-    --warm-bg:  #e6f4ec;
+    --green:    #0a0a0b;
+    --green-bg: #f3f1ec;
+    --wine:     #0a0a0b;
+    --wine-bg:  #f3f1ec;
+    --leaf:     #0a0a0b;
+    --leaf-bg:  #f3f1ec;
+    --warm:     #0a0a0b;
+    --warm-bg:  #f3f1ec;
   }
   body { background: var(--paper); }
 
@@ -57,8 +56,8 @@
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse at 10% 10%, rgba(47,158,107,0.08) 0%, transparent 40%),
-      radial-gradient(ellipse at 100% 80%, rgba(47,158,107,0.05) 0%, transparent 45%);
+      radial-gradient(ellipse at 10% 10%, rgba(10,10,11,0.08) 0%, transparent 40%),
+      radial-gradient(ellipse at 100% 80%, rgba(10,10,11,0.05) 0%, transparent 45%);
   }
   .br-hero-grid {
     max-width: 1280px;
@@ -90,9 +89,9 @@
   .br-hero h1 {
     font-family: 'IBM Plex Serif', serif;
     font-weight: 500;
-    font-size: clamp(46px, 6.4vw, 86px);
-    letter-spacing: -0.028em;
-    line-height: 0.96;
+    font-size: clamp(48px, 6vw, 88px);
+    letter-spacing: -0.025em;
+    line-height: 1.0;
     color: #0a0a0a;
     margin-bottom: 28px;
   }
@@ -254,7 +253,7 @@
   .br-mantra::before {
     content: '';
     position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(47,158,107,0.12) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 50% 100%, rgba(10,10,11,0.12) 0%, transparent 50%);
   }
   .br-mantra-inner {
     max-width: 1100px; margin: 0 auto;
@@ -324,7 +323,7 @@
   .br-tour-inner { max-width: 1180px; margin: 0 auto; }
   .br-tour h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(36px, 4.5vw, 60px);
     line-height: 1.05;
     letter-spacing: -0.025em;
@@ -553,7 +552,7 @@
   }
   .br-library h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     letter-spacing: -0.022em;
     line-height: 1.05;
@@ -649,7 +648,7 @@
   }
   .br-disagree h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4.2vw, 56px);
     letter-spacing: -0.022em;
     line-height: 1.05;
@@ -737,7 +736,7 @@
   }
   .br-heatmap h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     letter-spacing: -0.022em;
     line-height: 1.05;
@@ -933,7 +932,7 @@
   }
   .br-stats-head h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(28px, 3.4vw, 44px);
     letter-spacing: -0.018em;
     color: #0a0a0a;
@@ -1049,7 +1048,7 @@
   .br-faq-head { text-align: center; margin-bottom: 56px; }
   .br-faq-head h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     letter-spacing: -0.022em;
     margin: 14px 0 8px;
@@ -1104,14 +1103,14 @@
   .br-cta {
     background: #0a0a0a;
     color: #fff;
-    padding: 140px 32px;
+    padding: 120px 32px;
     text-align: center;
   }
   .br-cta-inner { max-width: 800px; margin: 0 auto; }
   .br-cta h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
-    font-size: clamp(40px, 5.5vw, 76px);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 60px);
     letter-spacing: -0.025em;
     line-height: 1.05;
     color: #fff;
@@ -1120,18 +1119,18 @@
   .br-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
   .br-cta p {
     font-family: 'IBM Plex Serif', serif;
-    font-size: 19px;
+    font-size: 17px;
     color: rgba(255,255,255,0.65);
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
   .br-cta-btn {
     display: inline-flex; align-items: center; gap: 10px;
     background: #fff; color: #0a0a0a;
-    padding: 18px 32px;
+    padding: 16px 28px;
     border-radius: 100px;
     text-decoration: none;
     font-family: 'IBM Plex Serif', serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     transition: transform 0.2s;
   }
@@ -1233,7 +1232,7 @@
       <div class="reports-fan">
         <div class="report-card c1">
           <div class="head">
-            <div class="av" style="background:#3b5168;">M</div>
+            <div class="av" style="background:#2a2a2e;">M</div>
             <div class="who">Maya, 34<span class="tag">LITERARY · SLOW BURN</span></div>
           </div>
           <div class="quote">"I almost stopped at chapter three — the timeline confused me. I went back, found my footing, and chapter five hooked me hard."</div>
@@ -1247,7 +1246,7 @@
 
         <div class="report-card c2">
           <div class="head">
-            <div class="av" style="background:#7a4332;">D</div>
+            <div class="av" style="background:#5a5a64;">D</div>
             <div class="who">David, 47<span class="tag">EX-EDITOR · STRUCTURAL</span></div>
           </div>
           <div class="quote">"The dialogue is sharp, but the protagonist's interiority drops out for the middle third. I lost her there."</div>
@@ -1261,7 +1260,7 @@
 
         <div class="report-card c3">
           <div class="head">
-            <div class="av" style="background:#4d6b3e;">P</div>
+            <div class="av" style="background:#8e8e94;">P</div>
             <div class="who">Pia, 22<span class="tag">YA &amp; SPECULATIVE · TIKTOK PACE</span></div>
           </div>
           <div class="quote">"Honestly? Loved chapter three. The confusion is the point. I'd buy this on the strength of that scene alone."</div>

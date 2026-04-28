@@ -16,13 +16,12 @@
     --paper-2:  #f3f1ec;
     --rule:     #ececea;
     --ink-2:    #2a2a2e;
-    --green:    #2f9e6b;
-    --green-bg: #e6f4ec;
-    /* Legacy aliases — all map to brand green/neutral */
-    --warm:     #2f9e6b;
-    --warm-bg:  #e6f4ec;
-    --leaf:     #2f9e6b;
-    --leaf-bg:  #e6f4ec;
+    --green:    #0a0a0b;
+    --green-bg: #f3f1ec;
+    --warm:     #0a0a0b;
+    --warm-bg:  #f3f1ec;
+    --leaf:     #0a0a0b;
+    --leaf-bg:  #f3f1ec;
   }
   body { background: var(--paper); }
 
@@ -54,8 +53,8 @@
     content: '';
     position: absolute; inset: 0;
     background-image:
-      radial-gradient(ellipse at 90% 10%, rgba(47,158,107,0.08) 0%, transparent 50%),
-      radial-gradient(ellipse at 0% 90%, rgba(47,158,107,0.05) 0%, transparent 45%);
+      radial-gradient(ellipse at 90% 10%, rgba(10,10,11,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 0% 90%, rgba(10,10,11,0.05) 0%, transparent 45%);
     pointer-events: none;
   }
   .ws-hero-grid {
@@ -87,9 +86,9 @@
   .ws-hero h1 {
     font-family: 'IBM Plex Serif', serif;
     font-weight: 500;
-    font-size: clamp(46px, 6.5vw, 88px);
-    letter-spacing: -0.028em;
-    line-height: 0.96;
+    font-size: clamp(48px, 6vw, 88px);
+    letter-spacing: -0.025em;
+    line-height: 1.0;
     color: #0a0a0a;
     margin-bottom: 28px;
   }
@@ -126,147 +125,284 @@
     vertical-align: middle;
   }
 
-  /* Editor mockup (white) */
-  .editor-mock {
+  /* ── Slima app mockup — white shell, true to real app structure ── */
+  .slima-app {
     background: #ffffff;
-    border: 1px solid var(--rule);
-    border-radius: 16px;
-    box-shadow:
-      0 30px 60px -20px rgba(58, 50, 35, 0.18),
-      0 12px 24px -12px rgba(58, 50, 35, 0.10);
+    border-radius: 28px;
     overflow: hidden;
+    box-shadow:
+      0 30px 60px -20px rgba(10,10,15,0.14),
+      0 12px 24px -12px rgba(10,10,15,0.08);
+    border: 1px solid #ececea;
+    max-width: 480px;
+    margin: 0 auto;
+    color: #0a0a0b;
+    font-family: 'IBM Plex Serif', 'PingFang TC', serif;
     transform: rotate(0.4deg);
     transition: transform 0.5s ease;
   }
-  .editor-mock:hover { transform: rotate(0deg); }
-  .em-bar {
+  .slima-app:hover { transform: rotate(0deg); }
+
+  /* Top bar (back · status · title pill · kebab) */
+  .sa-topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 14px 18px;
-    border-bottom: 1px solid var(--rule);
-    background: #fcfaf5;
-    font-family: 'Inter', sans-serif;
-    font-size: 12.5px;
-  }
-  .em-bar .left {
-    display: flex; align-items: center; gap: 10px;
-    color: #6b6258;
-  }
-  .em-bar .pulse {
-    width: 7px; height: 7px;
-    background: var(--leaf);
-    border-radius: 50%;
-    box-shadow: 0 0 0 4px rgba(74, 107, 79, 0.12);
-  }
-  .em-bar .center {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 14px;
-    border: 1px solid var(--rule);
-    border-radius: 100px;
-    background: #fff;
-    font-family: 'IBM Plex Serif', serif;
-    font-style: italic;
-    font-size: 12.5px;
-    color: #2a2620;
-  }
-  .em-bar .kebab { color: #b8ad9c; font-size: 16px; letter-spacing: 1px; }
-  .em-toolbar {
-    display: flex; align-items: center; gap: 6px;
-    padding: 10px 18px;
-    border-bottom: 1px solid var(--rule);
-    color: #6b6258;
-    font-size: 13px;
-    font-family: 'Inter', sans-serif;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  .em-toolbar span { padding: 4px 8px; border-radius: 6px; }
-  .em-toolbar span.bold { font-weight: 700; color: #0a0a0a; }
-  .em-toolbar span.it { font-style: italic; }
-  .em-toolbar span.s { text-decoration: line-through; }
-  .em-toolbar .sep { width: 1px; height: 16px; background: var(--rule); margin: 0 4px; }
-  .em-toolbar .right { margin-left: auto; color: #b8ad9c; font-size: 12px; }
-  .em-page {
-    padding: 32px 40px 40px;
-    background: #ffffff;
-    position: relative;
-  }
-  .em-page-meta {
-    font-family: 'Inter', sans-serif;
-    font-size: 10.5px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: #b8ad9c;
-    margin-bottom: 18px;
-  }
-  .em-page h2 {
-    font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
-    font-size: 24px;
-    letter-spacing: -0.01em;
-    margin-bottom: 14px;
-    color: #0a0a0a;
-  }
-  .em-page p {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 14.5px;
-    line-height: 1.78;
-    color: #2a2620;
-    margin-bottom: 12px;
-  }
-  .em-page p.dropcap::first-letter {
-    font-family: 'IBM Plex Serif', serif;
-    font-size: 52px;
-    font-weight: 500;
-    float: left;
-    line-height: 0.85;
-    padding: 6px 8px 0 0;
-    color: var(--warm);
-  }
-  .em-suggest {
-    position: absolute;
-    bottom: 22px; right: 22px;
-    background: #0a0a0a;
-    color: #fff;
-    padding: 10px 14px;
-    border-radius: 12px 12px 12px 4px;
-    font-family: 'Inter', sans-serif;
-    font-size: 12px;
-    line-height: 1.4;
-    max-width: 220px;
-    box-shadow: 0 14px 28px rgba(10,10,11,0.16);
-  }
-  .em-suggest .star {
-    color: var(--warm);
-    margin-right: 6px;
+    padding: 14px 18px 12px;
     font-size: 14px;
   }
-  .em-suggest .meta {
+  .sa-topbar .left {
+    display: flex; align-items: center; gap: 8px;
+    color: #6b6b72;
+  }
+  .sa-topbar .left .arr {
+    color: #2a2a2e; font-size: 16px;
+    margin-right: 2px;
+  }
+  .sa-topbar .left .dot {
+    width: 7px; height: 7px;
+    background: #0a0a0b;
+    border-radius: 50%;
+    opacity: 0.45;
+  }
+  .sa-topbar .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 16px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    background: #ffffff;
+    font-size: 13px;
+    color: #0a0a0b;
+  }
+  .sa-topbar .pill .chev { color: #8e8e94; font-size: 11px; }
+  .sa-topbar .kebab { color: #8e8e94; font-size: 18px; letter-spacing: 2px; }
+
+  /* Toolbar */
+  .sa-toolbar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 8px 18px 10px;
+    color: #6b6b72;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #ececea;
+  }
+  .sa-toolbar::-webkit-scrollbar { display: none; }
+  .sa-toolbar .b { font-weight: 700; color: #0a0a0b; }
+  .sa-toolbar .i { font-style: italic; }
+  .sa-toolbar .s { text-decoration: line-through; }
+  .sa-toolbar .h { font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.02em; }
+  .sa-toolbar .h sub { font-size: 9px; vertical-align: -2px; }
+  .sa-toolbar .wc { margin-left: auto; font-size: 12px; color: #8e8e94; }
+
+  /* Body — serif text */
+  .sa-body {
+    padding: 20px 22px 28px;
+    font-size: 15.5px;
+    line-height: 1.78;
+    color: #2a2a2e;
+    min-height: 320px;
+  }
+  .sa-body p { margin: 0 0 16px; }
+
+  /* Bottom nav (Edit · Files · AI · Search · More) */
+  .sa-nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid #ececea;
+    padding: 8px 0 14px;
+    background: #ffffff;
+  }
+  .sa-nav .item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 6px 4px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11px;
+    color: #8e8e94;
+  }
+  .sa-nav .item.is-active { color: #0a0a0b; }
+  .sa-nav .item.is-active::after {
+    content: ''; display: block;
+    width: 22px; height: 2px;
+    background: #0a0a0b;
+    border-radius: 2px;
     margin-top: 4px;
-    color: rgba(255,255,255,0.55);
-    font-size: 10.5px;
+  }
+  .sa-nav .item svg { width: 20px; height: 20px; }
+
+  /* Title-only top bar variant (when no chapter pill) */
+  .sa-topbar .title-only {
+    flex: 1; text-align: center;
+    color: #0a0a0b;
+    font-size: 15px;
   }
 
-  /* Annotation marks (decorative around hero mockup) */
-  .ws-hero-annot {
-    position: absolute;
-    font-family: 'IBM Plex Serif', serif;
-    font-style: italic;
-    color: var(--warm);
+  /* Files / project tree */
+  .sa-files {
+    padding: 10px 14px 18px;
+    font-size: 14px;
+    color: #2a2a2e;
+    min-height: 320px;
+  }
+  .sa-files .row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 8px;
+    border-radius: 8px;
+  }
+  .sa-files .row.indent { padding-left: 28px; }
+  .sa-files .row.active { background: #faf9f6; }
+  .sa-files .row .chev { color: #8e8e94; width: 12px; font-size: 11px; }
+  .sa-files .row .ic { color: #2a2a2e; }
+  .sa-files .row .wc {
+    margin-left: auto;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #8e8e94;
+  }
+  .sa-files .root .ic { color: #c8854a; }       /* warm folder icon */
+  .sa-files .indent.active .ic { color: #c8854a; }
+  .sa-files .add-content {
+    margin-top: 14px;
+    padding: 14px;
+    text-align: center;
+    border: 1px dashed #d4cec0;
+    border-radius: 12px;
+    color: #8e8e94;
     font-size: 13px;
-    line-height: 1.4;
+    font-family: 'IBM Plex Serif', serif;
   }
-  .ws-hero-annot.a1 {
-    top: -18px; right: 40px;
-    transform: rotate(-3deg);
+
+  /* AI Coach panel */
+  .sa-coach {
+    padding: 18px 18px 20px;
+    min-height: 360px;
   }
-  .ws-hero-annot.a1::after {
-    content: ''; display: block;
-    width: 26px; height: 18px;
-    border: 1.5px solid var(--warm);
-    border-top: 0; border-right: 0;
-    border-radius: 0 0 0 12px;
-    margin-left: 30px;
-    margin-top: 4px;
+  .sa-coach .coach-head {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ececea;
+    margin-bottom: 14px;
+  }
+  .sa-coach .blob {
+    width: 38px; height: 44px;
+    background: radial-gradient(ellipse at 30% 30%, #ff8aa8 0%, #d44d77 70%, #a83359 100%);
+    border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+    flex-shrink: 0;
+    box-shadow: inset -4px -6px 10px rgba(0,0,0,0.18);
+    position: relative;
+  }
+  .sa-coach .blob::before, .sa-coach .blob::after {
+    content: ''; position: absolute;
+    width: 4px; height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    top: 18px;
+  }
+  .sa-coach .blob::before { left: 12px; }
+  .sa-coach .blob::after { left: 22px; }
+  .sa-coach .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #0a0a0b;
+  }
+  .sa-coach .status {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #8e8e94;
+  }
+  .sa-coach .actions {
+    margin-left: auto;
+    color: #8e8e94;
+    font-size: 18px;
+    letter-spacing: 4px;
+  }
+  .sa-coach .msg {
+    background: #faf9f6;
+    border: 1px solid #ececea;
+    border-radius: 12px 12px 12px 4px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2a2a2e;
+    margin-bottom: 14px;
+  }
+  .sa-coach .msg .meta {
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: #8e8e94;
+  }
+  .sa-coach .prompt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sa-coach .prompt-grid span {
+    padding: 9px 10px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 12.5px;
+    color: #2a2a2e;
+    background: #ffffff;
+  }
+  .sa-coach .quick-start { text-align: center; margin-bottom: 14px; }
+  .sa-coach .quick-start small {
+    color: #8e8e94;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 12px;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .sa-coach .quick-pills {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+  }
+  .sa-coach .quick-pills span {
+    padding: 7px 14px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    font-size: 12px;
+    color: #2a2a2e;
+  }
+  .sa-coach .composer {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
+    border: 1px solid #ececea;
+    border-radius: 14px;
+    background: #faf9f6;
+  }
+  .sa-coach .composer input {
+    flex: 1;
+    background: transparent;
+    border: 0;
+    outline: none;
+    color: #2a2a2e;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13.5px;
+  }
+  .sa-coach .composer input::placeholder { color: #8e8e94; }
+  .sa-coach .composer button {
+    background: #6366f1;
+    color: #fff;
+    border: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  /* Dual mockup layout (tour) */
+  .dual-mock {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    margin-top: 36px;
+    max-width: 1080px;
+    margin-left: auto; margin-right: auto;
+  }
+  @media (max-width: 880px) {
+    .dual-mock { grid-template-columns: 1fr; gap: 24px; }
   }
 
   /* ══════════════════════════════════════════════
@@ -283,7 +419,7 @@
     content: '';
     position: absolute; inset: 0;
     background:
-      radial-gradient(ellipse at 50% 0%, rgba(47,158,107,0.10) 0%, transparent 40%);
+      radial-gradient(ellipse at 50% 0%, rgba(10,10,11,0.10) 0%, transparent 40%);
   }
   .ws-statement-inner {
     max-width: 1100px; margin: 0 auto;
@@ -340,7 +476,7 @@
   .ws-tour-inner { max-width: 1180px; margin: 0 auto; }
   .ws-tour h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(36px, 4.5vw, 60px);
     line-height: 1.05;
     letter-spacing: -0.025em;
@@ -618,7 +754,7 @@
   }
   .ws-trio h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     letter-spacing: -0.022em;
     line-height: 1.05;
@@ -772,7 +908,7 @@
   .ws-memory-inner { max-width: 1280px; margin: 0 auto; }
   .ws-memory h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 56px);
     line-height: 1.05;
     letter-spacing: -0.022em;
@@ -880,7 +1016,7 @@
   }
   .ws-coach h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4.2vw, 56px);
     line-height: 1.05;
     letter-spacing: -0.022em;
@@ -971,7 +1107,7 @@
   }
   .ws-stats-head h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(28px, 3.4vw, 44px);
     letter-spacing: -0.018em;
     color: #0a0a0a;
@@ -1036,7 +1172,7 @@
   }
   .ws-mosaic-head h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     line-height: 1.05;
     letter-spacing: -0.022em;
@@ -1105,7 +1241,7 @@
   }
   .mosaic-cell.dark h4 { color: #fff; }
   .mosaic-cell.dark p { color: rgba(255,255,255,0.6); }
-  .mosaic-cell.dark .ic { background: rgba(47,158,107,0.18); color: var(--warm); }
+  .mosaic-cell.dark .ic { background: rgba(10,10,11,0.18); color: var(--warm); }
   .mosaic-cell.warm {
     background: var(--warm-bg);
     border-color: #e8d8af;
@@ -1215,7 +1351,7 @@
   }
   .ws-faq-head h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: clamp(32px, 4vw, 52px);
     letter-spacing: -0.022em;
     margin: 14px 0 8px;
@@ -1271,7 +1407,7 @@
   .ws-cta {
     background: #0a0a0a;
     color: #fff;
-    padding: 140px 32px;
+    padding: 120px 32px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -1282,8 +1418,8 @@
   }
   .ws-cta h2 {
     font-family: 'IBM Plex Serif', serif;
-    font-weight: 500;
-    font-size: clamp(40px, 5.5vw, 76px);
+    font-weight: 400;
+    font-size: clamp(36px, 4.5vw, 60px);
     letter-spacing: -0.025em;
     line-height: 1.05;
     color: #fff;
@@ -1292,19 +1428,19 @@
   .ws-cta h2 em { font-style: italic; color: rgba(255,255,255,0.6); }
   .ws-cta p {
     font-family: 'IBM Plex Serif', serif;
-    font-size: 19px;
+    font-size: 17px;
     color: rgba(255,255,255,0.65);
-    margin-bottom: 36px;
+    margin-bottom: 32px;
   }
   .ws-cta-btn {
     display: inline-flex; align-items: center; gap: 10px;
     background: #fff;
     color: #0a0a0a;
-    padding: 18px 32px;
+    padding: 16px 28px;
     border-radius: 100px;
     text-decoration: none;
     font-family: 'IBM Plex Serif', serif;
-    font-size: 17px;
+    font-size: 15px;
     font-weight: 500;
     transition: transform 0.2s;
   }
@@ -1404,29 +1540,58 @@
     </div>
 
     <div class="reveal d2" style="position:relative;">
-      <div class="editor-mock">
-        <div class="em-bar">
-          <div class="left"><span class="pulse"></span> The Lighthouse Keepers</div>
-          <div class="center">Chapter VII <span style="opacity:0.5;">▾</span></div>
-          <span class="kebab">⋯</span>
+      <div class="slima-app">
+        <div class="sa-topbar">
+          <div class="left">
+            <span class="arr">←</span>
+            <span class="dot"></span>
+            <span>The Lighth…</span>
+          </div>
+          <div class="pill">Chapter VII <span class="chev">▾</span></div>
+          <span class="kebab">⋮</span>
         </div>
-        <div class="em-toolbar">
-          <span class="bold">B</span>
-          <span class="it">I</span>
+        <div class="sa-toolbar">
+          <span class="b">B</span>
+          <span class="i">I</span>
           <span class="s">S</span>
-          <span class="sep"></span>
-          <span>H1</span><span>H2</span>
-          <span class="sep"></span>
-          <span>≡</span><span>1.</span><span>" "</span>
-          <span class="sep"></span>
-          <span>↶</span><span>↷</span>
-          <span class="right">1,247 words</span>
+          <span>✎</span>
+          <span class="h">H<sub>1</sub></span>
+          <span class="h">H<sub>2</sub></span>
+          <span class="h">H<sub>3</sub></span>
+          <span>≡</span>
+          <span>1.</span>
+          <span>"</span>
+          <span>⟨⟩</span>
+          <span>—</span>
+          <span>↶</span>
+          <span>↷</span>
+          <span class="wc">1,247 wo</span>
         </div>
-        <div class="em-page">
-          <div class="em-page-meta">Chapter VII · A Lamp That Will Not Go Out</div>
-          <h2>Eleanor and the Boats</h2>
-          <p class="dropcap">She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down, and sitting down was something she had decided that morning she would not do.</p>
-          <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about, and that thinking about it was what kept the lighthouse keeper's daughters from getting any sleep…</p>
+        <div class="sa-body">
+          <p>She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down — and sitting down was something she had decided that morning she would not do.</p>
+          <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about…</p>
+        </div>
+        <div class="sa-nav">
+          <div class="item is-active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3l5 5-11 11H5v-5z"/></svg>
+            Edit
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l3-3h5l2 2h8v12H3z"/></svg>
+            Files
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 11-3.13-6.34L21 3v6h-6"/></svg>
+            AI
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+            More
+          </div>
         </div>
       </div>
     </div>
@@ -1451,69 +1616,97 @@
   <div class="ws-tour-inner">
     <span class="sec-num">01 · Inside the studio</span>
     <h2>Your manuscript, on a page<br>that <em>knows what to do.</em></h2>
-    <p class="lead">Sidebar for project files, editor in the middle, coach on the right. The kind of layout you'd ask for if you'd ever tried to write a book in a notes app.</p>
+    <p class="lead">A serif editor for the words, a project tree for the files, an AI coach that has actually read your book — all in one place, on every device.</p>
 
-    <div class="ws-tour-mock">
-      <div class="browser-frame">
-        <div class="bf-titlebar">
-          <div class="dots"><span></span><span></span><span></span></div>
-          <div class="url">app.slima.ai / lighthouse-keepers / chapter-vii</div>
-        </div>
-        <div class="bf-body">
-          <!-- Sidebar -->
-          <aside class="sidebar">
-            <h5>The Lighthouse Keepers</h5>
-            <ul>
-              <li><span class="ic">📖</span> Manuscript<span class="wc"></span></li>
-              <li><span class="ic">　</span> Prologue<span class="wc">820</span></li>
-              <li><span class="ic">　</span> I. Salt &amp; Iron<span class="wc">2,144</span></li>
-              <li><span class="ic">　</span> II. The Captain's List<span class="wc">3,012</span></li>
-              <li><span class="ic">　</span> III–VI. (4 chapters)<span class="wc">9,830</span></li>
-              <li class="active"><span class="ic">　</span> VII. A Lamp…<span class="wc">1,247</span></li>
-              <li><span class="ic">　</span> VIII. Drafted<span class="wc">412</span></li>
-            </ul>
-            <h5>Reference</h5>
-            <ul>
-              <li><span class="ic">📚</span> Lighthouse history</li>
-              <li><span class="ic">🗒</span> Maine 1947 timeline</li>
-              <li><span class="ic">👤</span> Characters (4)</li>
-              <li><span class="ic">🗺</span> Coast map</li>
-            </ul>
-            <h5>Trash</h5>
-            <ul>
-              <li><span class="ic">🗑</span> 3 drafts</li>
-            </ul>
-          </aside>
-
-          <!-- Editor -->
-          <div class="editor">
-            <div class="crumb">Chapter VII · A Lamp That Will Not Go Out</div>
-            <h1>Eleanor <em>and the Boats</em></h1>
-            <p class="dropcap">She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down, and sitting down was something she had decided that morning she would not do.</p>
-            <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about, and that thinking about it was what kept the lighthouse keeper's daughters from getting any sleep<sup style="color:var(--warm); font-size:11px;">¹</sup>.</p>
-            <p>Eleanor was not yet a lighthouse keeper's daughter. She was the lighthouse keeper's <em>niece</em>, which was a different rank, and which entitled her<span class="typewriter"></span></p>
-            <div class="footnote"><sup>1.</sup> See reference: <em>"On Insomnia in Coastal Communities,"</em> 1953.</div>
+    <div class="dual-mock">
+      <!-- Files / Project tree (real Writing Studio Files view) -->
+      <div class="slima-app">
+        <div class="sa-topbar">
+          <div class="left">
+            <span class="arr">←</span>
+            <span class="dot"></span>
+            <span>Lighthouse…</span>
           </div>
+          <div class="title-only">The Lighthouse Keepers</div>
+          <span class="kebab">⋮</span>
+        </div>
+        <div class="sa-files">
+          <div class="row root open"><span class="chev">▾</span><span class="ic">📁</span> Manuscript</div>
+          <div class="row indent"><span class="ic">📄</span> Prologue<span class="wc">820</span></div>
+          <div class="row indent active"><span class="ic">📄</span> Chapter VII<span class="wc">1,247</span></div>
+          <div class="row indent"><span class="ic">📄</span> Chapter VIII<span class="wc">412</span></div>
+          <div class="row root"><span class="chev">›</span><span class="ic">📁</span> Reference</div>
+          <div class="row root"><span class="chev">›</span><span class="ic">📁</span> Exercises</div>
+          <div class="row"><span class="ic">📄</span> Writing Plan</div>
+          <div class="row"><span class="ic">📄</span> Writing Guidelines</div>
+          <div class="add-content">+ Add Content</div>
+        </div>
+        <div class="sa-nav">
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M16 3l5 5-11 11H5v-5z"/></svg>
+            Edit
+          </div>
+          <div class="item is-active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 7l3-3h5l2 2h8v12H3z"/></svg>
+            Files
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 12a8 8 0 11-3.13-6.34L21 3v6h-6"/></svg>
+            AI
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            Search
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+            More
+          </div>
+        </div>
+      </div>
 
-          <!-- Right panel — Coach + goals -->
-          <aside class="panel">
-            <h5><span class="star">✦</span> AI Coach</h5>
-            <div class="session coach">
-              <strong>Eleanor's voice in this chapter</strong> is more cautious than chapter III, where she was almost defiant. Was that intentional? If yes — perfect. If not, the shift happens off-page.
-              <div class="meta">— knows chapters 1–7</div>
+      <!-- AI Coach panel (real AI Writing Coach view) -->
+      <div class="slima-app">
+        <div class="sa-topbar">
+          <div class="left">
+            <span class="arr">←</span>
+            <span class="dot"></span>
+            <span>Lighthouse…</span>
+          </div>
+          <div class="pill">Chapter VII <span class="chev">▾</span></div>
+          <span class="kebab">⋮</span>
+        </div>
+        <div class="sa-coach">
+          <div class="coach-head">
+            <div class="blob"></div>
+            <div>
+              <div class="title">AI Writing Coach</div>
+              <div class="status">SLIMA ONLINE</div>
             </div>
-            <div class="session">
-              <strong>Continuity:</strong> Mr. Halberg has a beard in chapter II and is clean-shaven here. Worth a check.
-              <div class="meta">— continuity scan</div>
+            <div class="actions">＋ ↺</div>
+          </div>
+          <div class="msg">
+            Eleanor's voice in this chapter is more cautious than chapter III, where she was almost defiant. Was that intentional?
+            <div class="meta">— knows chapters 1–7</div>
+          </div>
+          <div class="prompt-grid">
+            <span>Character Motivation</span>
+            <span>Scene Immersion</span>
+            <span>Deepen Conflict</span>
+            <span>Explore Theme</span>
+          </div>
+          <div class="quick-start">
+            <small>Or, start somewhere</small>
+            <div class="quick-pills">
+              <span>I'm stuck</span>
+              <span>Inspire me</span>
+              <span>Check my work</span>
             </div>
-
-            <div class="goal">
-              <div class="num">1,247<span class="of"> / 1,000</span></div>
-              <div class="lbl">Today's goal</div>
-              <div class="bar"><div></div></div>
-              <div class="streak"><span class="flame">🔥</span> 14-day streak · 2 rests left</div>
-            </div>
-          </aside>
+          </div>
+          <div class="composer">
+            <input placeholder="Type a message…" />
+            <button>➤</button>
+          </div>
         </div>
       </div>
     </div>
