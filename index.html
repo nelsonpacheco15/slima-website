@@ -246,10 +246,10 @@
   .hero-headline em { font-style: italic; font-weight: 500; }
   .hero-cta {
     display: inline-flex; align-items: center; gap: 8px;
-    margin-top: 36px; padding: 14px 22px;
+    margin-top: 36px; padding: 14px 26px;
     background: #ffffff; color: #0a0a0a;
     border-radius: 100px; text-decoration: none;
-    font-size: 14px; font-weight: 500;
+    font-size: 15px; font-weight: 500;
     transition: transform 0.2s, background 0.2s;
   }
   .hero-cta svg { width: 14px; height: 14px; transition: transform 0.2s; }
@@ -797,6 +797,246 @@
   .gc-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #d97706; }
   .gc-badge svg { width: 12px; height: 12px; }
 
+  /* ── Mini Slima-app mockup (per-genre environment) ── */
+  .gc-app {
+    position: absolute;
+    top: 22px;
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    background: #ffffff;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow:
+      0 30px 50px -16px rgba(0,0,0,0.45),
+      0 8px 20px -8px rgba(0,0,0,0.18);
+    color: #0a0a0b;
+    font-family: 'IBM Plex Serif', serif;
+    display: flex;
+    flex-direction: column;
+  }
+  .gc-app .ab {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid #ececea;
+    font-size: 11px;
+  }
+  .gc-app .ab .left {
+    display: flex; align-items: center; gap: 6px;
+    color: #6b6b72;
+  }
+  .gc-app .ab .left .arr { color: #2a2a2e; }
+  .gc-app .ab .left .dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: #0a0a0b;
+    opacity: 0.4;
+  }
+  .gc-app .ab .pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 4px 10px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    font-size: 10.5px;
+  }
+  .gc-app .ab .pill .chev { color: #8e8e94; font-size: 9px; }
+  .gc-app .ab .kebab { color: #8e8e94; font-size: 13px; letter-spacing: 1px; }
+  .gc-app .at {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border-bottom: 1px solid #ececea;
+    color: #8e8e94;
+    font-size: 11px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .gc-app .at .b { font-weight: 700; color: #0a0a0b; }
+  .gc-app .at .i { font-style: italic; }
+  .gc-app .at .h { font-family: 'Inter', sans-serif; font-size: 9.5px; }
+  .gc-app .at .h sub { font-size: 7px; vertical-align: -1px; }
+  .gc-app .at .wc { margin-left: auto; font-size: 10px; color: #8e8e94; }
+  .gc-app .ag {
+    flex: 1;
+    overflow: hidden;
+    padding: 14px 18px 12px;
+  }
+  .gc-app .an {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    border-top: 1px solid #ececea;
+    padding: 6px 0 8px;
+  }
+  .gc-app .an .item {
+    text-align: center;
+    font-size: 9px;
+    color: #8e8e94;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .gc-app .an .item.is-active { color: #0a0a0b; font-weight: 500; }
+  .gc-app .an .item .ic {
+    display: block;
+    width: 14px; height: 14px;
+    margin: 0 auto 2px;
+    border: 1.4px solid currentColor;
+    border-radius: 3px;
+    opacity: 0.85;
+  }
+
+  /* Per-genre body content */
+  .gc-app .body-fic {
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: #2a2a2e;
+  }
+  .gc-app .body-fic .h {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 4px;
+    color: #0a0a0b;
+  }
+  .gc-app .body-fic .meta {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.10em;
+    color: #b8ad9c;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* Screenplay body — courier */
+  .gc-app .body-sp {
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    color: #0a0a0b;
+  }
+  .gc-app .body-sp .scene {
+    text-transform: uppercase;
+    border-bottom: 1px solid #ececea;
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between;
+    font-size: 9.5px;
+  }
+  .gc-app .body-sp .action { margin-bottom: 6px; }
+  .gc-app .body-sp .character {
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .gc-app .body-sp .dialog {
+    text-align: center;
+    margin: 0 12% 6px;
+  }
+
+  /* Academic / thesis body */
+  .gc-app .body-ac {
+    font-size: 10.5px;
+    line-height: 1.7;
+    color: #2a2a2e;
+  }
+  .gc-app .body-ac .uni {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #8e8e94;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .gc-app .body-ac .h {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+    color: #0a0a0b;
+    margin-bottom: 4px;
+  }
+  .gc-app .body-ac .sub {
+    font-style: italic;
+    font-size: 10px;
+    color: #6b6b72;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .gc-app .body-ac .by {
+    font-size: 9.5px;
+    text-align: center;
+    color: #8e8e94;
+    margin-top: 4px;
+  }
+  .gc-app .body-ac .author {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 12px;
+    text-align: center;
+    color: #0a0a0b;
+  }
+
+  /* Research paper body */
+  .gc-app .body-rp {
+    font-size: 10px;
+    line-height: 1.55;
+    color: #2a2a2e;
+  }
+  .gc-app .body-rp .h {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 12px;
+    color: #0a0a0b;
+    margin-bottom: 4px;
+    line-height: 1.25;
+  }
+  .gc-app .body-rp .auth {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: #6b6b72;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+  .gc-app .body-rp .auth sup { color: #6366f1; }
+  .gc-app .body-rp .abh {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #8e8e94;
+    margin-bottom: 4px;
+  }
+  .gc-app .body-rp p { margin: 0 0 6px; font-family: 'IBM Plex Serif', serif; }
+  .gc-app .body-rp .kw {
+    font-size: 9px;
+    color: #6b6b72;
+    margin-top: 4px;
+  }
+  .gc-app .body-rp .kw strong { color: #0a0a0b; }
+
+  /* Non-fiction outline body */
+  .gc-app .body-nf {
+    font-size: 11px;
+    color: #2a2a2e;
+  }
+  .gc-app .body-nf .h {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: #0a0a0b;
+    margin-bottom: 8px;
+  }
+  .gc-app .body-nf .row {
+    display: flex; gap: 8px;
+    padding: 4px 0;
+    font-size: 10.5px;
+  }
+  .gc-app .body-nf .row .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    color: #8e8e94;
+    width: 16px;
+  }
+  .gc-app .body-nf .row.indent { padding-left: 24px; color: #6b6b72; font-size: 10px; }
+  .gc-app .body-nf .row.active { color: #0a0a0b; font-weight: 500; }
+
   /* ══════════════════════════════════════
      2. WHO WRITES — CATEGORY GRID
      ══════════════════════════════════════ */
@@ -1245,7 +1485,7 @@
   .cta-strip-btn {
     display: inline-flex; align-items: center; gap: 8px;
     background: #fff; color: #0a0a0a;
-    padding: 16px 28px; border-radius: 100px;
+    padding: 14px 26px; border-radius: 100px;
     text-decoration: none; font-weight: 500; font-size: 15px;
     transition: transform 0.2s;
   }
@@ -1502,23 +1742,38 @@
   </div>
   <div class="genre-track-wrap">
     <div class="genre-track" id="genreTrack">
-      <!-- Card 1: Fiction — manuscript editor view -->
-      <!-- 1. Screenplays & scripts (Slima's Script Studio) -->
+      <!-- 1. Screenplays & scripts (Slima's Script Studio environment) -->
       <div class="genre-card tone-4">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-page-back"></div>
-            <div class="gc-page gc-screen-tp">
-              <div class="top-spacer"></div>
-              <div class="title">THE QUIET ROOM</div>
-              <div class="by">Written by</div>
-              <div class="author">M. R. Castelló</div>
-              <div class="mid-spacer"></div>
-              <div class="meta">Pilot · Draft 4<br>Apr 14, 2026<br>117 pp.</div>
+            <div class="gc-app">
+              <div class="ab">
+                <div class="left"><span class="arr">←</span><span class="dot"></span><span>The Quiet Room</span></div>
+                <div class="pill">Scene 12 <span class="chev">▾</span></div>
+                <span class="kebab">⋮</span>
+              </div>
+              <div class="at">
+                <span class="b">B</span><span class="i">I</span>
+                <span class="h">SCENE</span><span class="h">CHAR</span><span class="h">PAREN</span>
+                <span class="wc">12 / 117 pp.</span>
+              </div>
+              <div class="ag body-sp">
+                <div class="scene"><span>INT. APARTMENT — NIGHT</span><span>12</span></div>
+                <div class="action">Maya stands in the hallway, keys still in her hand. The cat hasn't moved.</div>
+                <div class="character">MAYA</div>
+                <div class="dialog">You weren't supposed to be home.</div>
+                <div class="character">DAVID (O.S.)</div>
+                <div class="dialog">Neither were you.</div>
+              </div>
+              <div class="an">
+                <div class="item is-active"><span class="ic"></span>Edit</div>
+                <div class="item"><span class="ic"></span>Scenes</div>
+                <div class="item"><span class="ic"></span>AI</div>
+                <div class="item"><span class="ic"></span>Cast</div>
+                <div class="item"><span class="ic"></span>More</div>
+              </div>
             </div>
-            <div class="gc-badge tr">
-              <span class="dot"></span>Rev. blue
-            </div>
+            <div class="gc-badge tr"><span class="dot"></span>Rev. blue</div>
           </div>
           <div class="gc-text">
             <div class="gc-tag">Screen</div>
@@ -1528,22 +1783,36 @@
         </div>
       </div>
 
-      <!-- 2. Theses & dissertations -->
+      <!-- 2. Theses & dissertations (Slima Writing Studio, academic) -->
       <div class="genre-card tone-6">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-page-back"></div>
-            <div class="gc-page gc-diss">
-              <div class="gc-diss-uni">University of Coimbra<br>Faculdade de Letras</div>
-              <div class="gc-diss-uni-rule"></div>
-              <div class="gc-diss-spacer"></div>
-              <div class="gc-diss-title">Frames of Analysis</div>
-              <div class="gc-diss-sub">Toward a methodology of attention</div>
-              <div class="gc-diss-fulfill">A dissertation submitted in partial fulfillment of the requirements for the degree of Doctor of Philosophy</div>
-              <div class="gc-diss-by">By</div>
-              <div class="gc-diss-author">Camila R. Andrade</div>
-              <div class="gc-diss-spacer-2"></div>
-              <div class="gc-diss-date">May 2026</div>
+            <div class="gc-app">
+              <div class="ab">
+                <div class="left"><span class="arr">←</span><span class="dot"></span><span>Frames of Analysis</span></div>
+                <div class="pill">Ch. 3 <span class="chev">▾</span></div>
+                <span class="kebab">⋮</span>
+              </div>
+              <div class="at">
+                <span class="b">B</span><span class="i">I</span>
+                <span class="h">H<sub>1</sub></span><span class="h">H<sub>2</sub></span>
+                <span>"</span><span>¶</span>
+                <span class="wc">38,140 wo</span>
+              </div>
+              <div class="ag body-ac">
+                <div class="uni">University of Coimbra · Faculdade de Letras</div>
+                <div class="h">Frames of Analysis</div>
+                <div class="sub">Toward a methodology of attention</div>
+                <div class="by">By</div>
+                <div class="author">Camila R. Andrade</div>
+              </div>
+              <div class="an">
+                <div class="item is-active"><span class="ic"></span>Edit</div>
+                <div class="item"><span class="ic"></span>Files</div>
+                <div class="item"><span class="ic"></span>AI</div>
+                <div class="item"><span class="ic"></span>Cite</div>
+                <div class="item"><span class="ic"></span>More</div>
+              </div>
             </div>
             <div class="gc-badge bl">
               <span class="num">8</span><span class="lbl">years · 4 advisors</span>
@@ -1557,19 +1826,36 @@
         </div>
       </div>
 
-      <!-- 3. Research & papers -->
+      <!-- 3. Research & papers (Slima Writing Studio, paper environment) -->
       <div class="genre-card tone-2">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-page-back"></div>
-            <div class="gc-page gc-paper-page">
-              <div class="gc-paper-h">Attention without intervention: A field study of slow knowledge work</div>
-              <div class="gc-paper-authors">M. López<sup>1</sup>, J. Reinhold<sup>2</sup>, A. Park<sup>1</sup><br>
-                <span style="font-size:8px"><sup>1</sup>University of Coimbra · <sup>2</sup>ETH Zürich</span>
+            <div class="gc-app">
+              <div class="ab">
+                <div class="left"><span class="arr">←</span><span class="dot"></span><span>Slow knowledge work</span></div>
+                <div class="pill">Abstract <span class="chev">▾</span></div>
+                <span class="kebab">⋮</span>
               </div>
-              <div class="gc-paper-abstract-h">Abstract</div>
-              <div class="gc-paper-abstract">We examine how sustained attention reorganizes itself in the absence of structured interruption, drawing on a 14-month embedded study of a research team. Three patterns recur, each with implications for how knowledge work is measured.</div>
-              <div class="gc-paper-keywords"><strong>Keywords:</strong> attention, ethnography, knowledge work, slow research, methodology</div>
+              <div class="at">
+                <span class="b">B</span><span class="i">I</span>
+                <span class="h">¶</span><span class="h">[]</span>
+                <span class="h">cite</span>
+                <span class="wc">184 refs</span>
+              </div>
+              <div class="ag body-rp">
+                <div class="h">Attention without intervention: a field study of slow knowledge work</div>
+                <div class="auth">M. López<sup>1</sup>, J. Reinhold<sup>2</sup>, A. Park<sup>1</sup><br><sup>1</sup>U. Coimbra · <sup>2</sup>ETH Zürich</div>
+                <div class="abh">Abstract</div>
+                <p>We examine how sustained attention reorganizes itself in the absence of structured interruption, drawing on a 14-month embedded study of a research team.</p>
+                <div class="kw"><strong>Keywords:</strong> attention, ethnography, slow research</div>
+              </div>
+              <div class="an">
+                <div class="item is-active"><span class="ic"></span>Edit</div>
+                <div class="item"><span class="ic"></span>Refs</div>
+                <div class="item"><span class="ic"></span>AI</div>
+                <div class="item"><span class="ic"></span>Cite</div>
+                <div class="item"><span class="ic"></span>More</div>
+              </div>
             </div>
             <div class="gc-badge br">
               <span class="num">184</span><span class="lbl">refs · synced</span>
@@ -1583,19 +1869,34 @@
         </div>
       </div>
 
-      <!-- 4. Novels & literary fiction -->
+      <!-- 4. Novels & literary fiction (Slima Writing Studio, prose) -->
       <div class="genre-card tone-1">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-cover-back"></div>
-            <div class="gc-cover novel">
-              <div class="gc-cover-tag">A Novel</div>
-              <div class="gc-cover-mid">
-                <div class="gc-cover-title">A Quiet<br>Inheritance</div>
-                <div class="gc-cover-rule"></div>
-                <div class="gc-cover-sub">stories of a returning daughter</div>
+            <div class="gc-app">
+              <div class="ab">
+                <div class="left"><span class="arr">←</span><span class="dot"></span><span>A Quiet Inheritance</span></div>
+                <div class="pill">Ch. VII <span class="chev">▾</span></div>
+                <span class="kebab">⋮</span>
               </div>
-              <div class="gc-cover-author">M. R. Castelló</div>
+              <div class="at">
+                <span class="b">B</span><span class="i">I</span>
+                <span class="h">H<sub>1</sub></span><span class="h">H<sub>2</sub></span>
+                <span>"</span><span>—</span>
+                <span class="wc">98,400 wo</span>
+              </div>
+              <div class="ag body-fic">
+                <div class="meta">CHAPTER VII · A LAMP THAT WILL NOT GO OUT</div>
+                <div class="h">Eleanor and the Boats</div>
+                She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down — and sitting down was something she had decided she would not do.
+              </div>
+              <div class="an">
+                <div class="item is-active"><span class="ic"></span>Edit</div>
+                <div class="item"><span class="ic"></span>Files</div>
+                <div class="item"><span class="ic"></span>AI</div>
+                <div class="item"><span class="ic"></span>Cast</div>
+                <div class="item"><span class="ic"></span>More</div>
+              </div>
             </div>
             <div class="gc-badge bl">
               <span class="num">98,400</span><span class="lbl">words · Draft 4</span>
@@ -1609,19 +1910,38 @@
         </div>
       </div>
 
-      <!-- 5. Non-fiction -->
+      <!-- 5. Non-fiction (Slima Writing Studio, outline) -->
       <div class="genre-card tone-3">
         <div class="genre-card-inner">
           <div class="gc-stage">
-            <div class="gc-cover-back"></div>
-            <div class="gc-cover nf">
-              <div class="gc-cover-tag" style="opacity:0.55">Non-Fiction</div>
-              <div class="gc-cover-mid">
-                <div class="gc-cover-title">The Slow<br>Work</div>
-                <div class="gc-cover-rule"></div>
-                <div class="gc-cover-sub">on attention, depth, and the books that take years</div>
+            <div class="gc-app">
+              <div class="ab">
+                <div class="left"><span class="arr">←</span><span class="dot"></span><span>The Slow Work</span></div>
+                <div class="pill">Outline <span class="chev">▾</span></div>
+                <span class="kebab">⋮</span>
               </div>
-              <div class="gc-cover-author">M. R. Castelló</div>
+              <div class="at">
+                <span class="b">B</span><span class="i">I</span>
+                <span class="h">H<sub>1</sub></span>
+                <span>≡</span><span>1.</span>
+                <span class="wc">47 sources</span>
+              </div>
+              <div class="ag body-nf">
+                <div class="h">The Slow Work</div>
+                <div class="row"><span class="num">i.</span>The discipline of staying with a thing</div>
+                <div class="row indent"><span class="num"></span>— Origins, what attention is for</div>
+                <div class="row active"><span class="num">ii.</span>Knowledge work without interruption</div>
+                <div class="row indent"><span class="num"></span>— Field notes, Coimbra 2024</div>
+                <div class="row indent"><span class="num"></span>— Three patterns, one method</div>
+                <div class="row"><span class="num">iii.</span>Books that take years</div>
+              </div>
+              <div class="an">
+                <div class="item is-active"><span class="ic"></span>Edit</div>
+                <div class="item"><span class="ic"></span>Files</div>
+                <div class="item"><span class="ic"></span>AI</div>
+                <div class="item"><span class="ic"></span>Cite</div>
+                <div class="item"><span class="ic"></span>More</div>
+              </div>
             </div>
             <div class="gc-badge br">
               <span class="num">47</span><span class="lbl">sources cited</span>
