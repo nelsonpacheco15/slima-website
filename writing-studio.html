@@ -405,6 +405,244 @@
     .dual-mock { grid-template-columns: 1fr; gap: 24px; }
   }
 
+  /* ─── Desktop Slima mockup — multi-column, browser-framed ─── */
+  .slima-desk {
+    max-width: 1080px;
+    margin: 12px auto 0;
+    background: #ffffff;
+    border: 1px solid #ececea;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow:
+      0 60px 120px -40px rgba(10,10,15,0.22),
+      0 18px 36px -18px rgba(10,10,15,0.10);
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .slima-desk-bar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 18px;
+    background: #faf9f6;
+    border-bottom: 1px solid #ececea;
+  }
+  .slima-desk-bar .dots { display: flex; gap: 6px; }
+  .slima-desk-bar .dots span {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: #d8d4cd;
+  }
+  .slima-desk-bar .url {
+    flex: 1; text-align: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
+    color: #8e8e94;
+    background: #ffffff;
+    border: 1px solid #ececea;
+    padding: 6px 16px;
+    border-radius: 100px;
+    max-width: 360px;
+    margin: 0 auto;
+  }
+  .slima-desk-body {
+    display: grid;
+    grid-template-columns: 240px 1fr 280px;
+    min-height: 560px;
+    background: #ffffff;
+  }
+  .slima-desk-side {
+    background: #faf9f6;
+    border-right: 1px solid #ececea;
+    padding: 22px 14px;
+    display: flex; flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+  }
+  .slima-desk-side .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0a0a0b;
+    margin-bottom: 14px;
+    padding: 4px 10px;
+  }
+  .slima-desk-side .brand .mark { width: 22px; height: 22px; color: #0a0a0b; }
+  .slima-desk-side .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: #b8ad9c;
+    padding: 14px 10px 6px;
+  }
+  .slima-desk-side .row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    color: #2a2a2e;
+  }
+  .slima-desk-side .row .chev { color: #8e8e94; width: 11px; font-size: 11px; }
+  .slima-desk-side .row .ic { color: #c8854a; }
+  .slima-desk-side .row.is-active { background: #ececea; color: #0a0a0b; }
+  .slima-desk-side .row.indent { padding-left: 28px; }
+  .slima-desk-side .row .wc {
+    margin-left: auto;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: #8e8e94;
+  }
+
+  /* Writing Studio main editor pane */
+  .wsd-main {
+    display: flex; flex-direction: column;
+    border-right: 1px solid #ececea;
+  }
+  .wsd-main .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 22px;
+    border-bottom: 1px solid #ececea;
+    font-size: 14px;
+  }
+  .wsd-main .topbar .left {
+    display: flex; align-items: center; gap: 8px;
+    color: #6b6b72;
+  }
+  .wsd-main .topbar .left .dot {
+    width: 7px; height: 7px;
+    background: #0a0a0b; border-radius: 50%;
+    opacity: 0.4;
+  }
+  .wsd-main .topbar .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    background: #ffffff;
+    font-size: 13px;
+  }
+  .wsd-main .topbar .pill .chev { color: #8e8e94; font-size: 11px; }
+  .wsd-main .toolbar {
+    display: flex; align-items: center; gap: 14px;
+    padding: 8px 22px;
+    color: #6b6b72;
+    font-size: 14px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #ececea;
+  }
+  .wsd-main .toolbar .b { font-weight: 700; color: #0a0a0b; }
+  .wsd-main .toolbar .i { font-style: italic; }
+  .wsd-main .toolbar .s { text-decoration: line-through; }
+  .wsd-main .toolbar .h { font-family: 'Inter', sans-serif; font-size: 12px; }
+  .wsd-main .toolbar .h sub { font-size: 9px; vertical-align: -2px; }
+  .wsd-main .toolbar .wc { margin-left: auto; font-size: 12px; color: #8e8e94; }
+  .wsd-main .body {
+    padding: 36px 48px 40px;
+    font-size: 16px;
+    line-height: 1.78;
+    color: #2a2a2e;
+    flex: 1;
+    overflow: hidden;
+  }
+  .wsd-main .body p { margin: 0 0 16px; }
+
+  /* Right panel — AI coach */
+  .wsd-coach {
+    background: #faf9f6;
+    padding: 22px 18px;
+    overflow: hidden;
+  }
+  .wsd-coach .head {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ececea;
+    margin-bottom: 14px;
+  }
+  .wsd-coach .blob {
+    width: 38px; height: 44px;
+    background: radial-gradient(ellipse at 30% 30%, #ff8aa8 0%, #d44d77 70%, #a83359 100%);
+    border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+    flex-shrink: 0;
+    box-shadow: inset -4px -6px 10px rgba(0,0,0,0.18);
+    position: relative;
+  }
+  .wsd-coach .blob::before, .wsd-coach .blob::after {
+    content: ''; position: absolute;
+    width: 4px; height: 4px;
+    background: #fff;
+    border-radius: 50%;
+    top: 18px;
+  }
+  .wsd-coach .blob::before { left: 12px; }
+  .wsd-coach .blob::after { left: 22px; }
+  .wsd-coach .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: #0a0a0b;
+  }
+  .wsd-coach .status {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    color: #8e8e94;
+  }
+  .wsd-coach .msg {
+    background: #ffffff;
+    border: 1px solid #ececea;
+    border-radius: 12px 12px 12px 4px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: #2a2a2e;
+    margin-bottom: 14px;
+  }
+  .wsd-coach .msg .meta {
+    margin-top: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: #8e8e94;
+  }
+  .wsd-coach .pgrid {
+    display: grid; gap: 6px;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 14px;
+  }
+  .wsd-coach .pgrid span {
+    padding: 8px 10px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    text-align: center;
+    font-size: 12px;
+    color: #2a2a2e;
+    background: #ffffff;
+  }
+  .wsd-coach .composer {
+    display: flex; align-items: center; gap: 8px;
+    padding: 9px 12px;
+    border: 1px solid #ececea;
+    border-radius: 12px;
+    background: #ffffff;
+  }
+  .wsd-coach .composer input {
+    flex: 1; background: transparent; border: 0; outline: none;
+    color: #2a2a2e;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 13px;
+  }
+  .wsd-coach .composer input::placeholder { color: #8e8e94; }
+  .wsd-coach .composer button {
+    background: #6366f1; color: #fff;
+    border: 0; width: 28px; height: 28px;
+    border-radius: 50%; cursor: pointer;
+  }
+
+  /* Mobile: hide desktop, show mobile shell */
+  .slima-mobile-only { display: none; }
+  @media (max-width: 880px) {
+    .slima-desk { display: none; }
+    .slima-mobile-only { display: block; }
+  }
+
   /* ══════════════════════════════════════════════
      SECTION 2 — Editorial statement
      ══════════════════════════════════════════════ */
@@ -1540,6 +1778,90 @@
     </div>
 
     <div class="reveal d2" style="position:relative;">
+      <!-- Desktop layout — shown on viewports >= 880px -->
+      <div class="slima-desk">
+        <div class="slima-desk-bar">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <div class="url">app.slima.ai / writing-studio / the-lighthouse-keepers</div>
+        </div>
+        <div class="slima-desk-body">
+          <aside class="slima-desk-side">
+            <div class="brand">
+              <svg class="mark" viewBox="0 0 130 130"><path fill="currentColor" d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z"/></svg>
+              The Lighthouse Keepers
+            </div>
+            <div class="label">Manuscript</div>
+            <div class="row"><span class="chev">▾</span><span class="ic">📁</span> Chapters</div>
+            <div class="row indent"><span class="ic">📄</span> Prologue<span class="wc">820</span></div>
+            <div class="row indent"><span class="ic">📄</span> I. Salt &amp; Iron<span class="wc">2,144</span></div>
+            <div class="row indent"><span class="ic">📄</span> II. The Captain<span class="wc">3,012</span></div>
+            <div class="row indent is-active"><span class="ic">📄</span> VII. A Lamp…<span class="wc">1,247</span></div>
+            <div class="row indent"><span class="ic">📄</span> VIII. (drafted)<span class="wc">412</span></div>
+            <div class="row"><span class="chev">›</span><span class="ic">📁</span> Reference</div>
+            <div class="row"><span class="chev">›</span><span class="ic">📁</span> Exercises</div>
+            <div class="row"><span class="ic">📄</span> Writing Plan</div>
+          </aside>
+
+          <main class="wsd-main">
+            <div class="topbar">
+              <div class="left">
+                <span class="dot"></span>
+                <span>The Lighthouse Keepers</span>
+              </div>
+              <div class="pill">Chapter VII <span class="chev">▾</span></div>
+              <span style="color:#8e8e94;font-size:18px;letter-spacing:2px">⋮</span>
+            </div>
+            <div class="toolbar">
+              <span class="b">B</span>
+              <span class="i">I</span>
+              <span class="s">S</span>
+              <span>✎</span>
+              <span class="h">H<sub>1</sub></span>
+              <span class="h">H<sub>2</sub></span>
+              <span class="h">H<sub>3</sub></span>
+              <span>≡</span>
+              <span>1.</span>
+              <span>"</span>
+              <span>⟨⟩</span>
+              <span>—</span>
+              <span>↶</span>
+              <span>↷</span>
+              <span class="wc">1,247 words</span>
+            </div>
+            <div class="body">
+              <p>She had counted them twice. Both times the answer was the same and both times she kept counting, because the alternative was to sit down — and sitting down was something she had decided that morning she would not do.</p>
+              <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said that the boats not coming back was a thing that happened, and a thing that you stopped thinking about, and that thinking about it was what kept the lighthouse keeper's daughters from getting any sleep.</p>
+            </div>
+          </main>
+
+          <aside class="wsd-coach">
+            <div class="head">
+              <div class="blob"></div>
+              <div>
+                <div class="title">AI Writing Coach</div>
+                <div class="status">SLIMA ONLINE</div>
+              </div>
+            </div>
+            <div class="msg">
+              Eleanor's voice in this chapter is more cautious than chapter III. Was that intentional?
+              <div class="meta">— knows chapters 1–7</div>
+            </div>
+            <div class="pgrid">
+              <span>Character</span>
+              <span>Pacing</span>
+              <span>Continuity</span>
+              <span>Theme</span>
+            </div>
+            <div class="composer">
+              <input placeholder="Type a message…" />
+              <button>➤</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <!-- Mobile fallback — shown on viewports < 880px -->
+      <div class="slima-mobile-only">
       <div class="slima-app">
         <div class="sa-topbar">
           <div class="left">
@@ -1593,6 +1915,7 @@
             More
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
