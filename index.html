@@ -1318,33 +1318,60 @@
     font-size: 13px; color: #666;
     margin-top: 8px;
   }
-  .testimonials {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
-  .testimonial {
+  /* Featured single testimonial */
+  .testimonial-feature {
+    margin: 56px auto 0;
+    max-width: 820px;
+    text-align: center;
+    padding: 56px 32px;
     background: #fff;
-    padding: 32px;
     border: 1px solid var(--line);
-    border-radius: 16px;
+    border-radius: 22px;
   }
-  .testimonial-stars { color: #f59e0b; font-size: 14px; margin-bottom: 14px; }
-  .testimonial-quote {
+  .testimonial-feature .stars {
+    color: #f59e0b;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    margin-bottom: 22px;
+  }
+  .testimonial-feature blockquote {
     font-family: 'IBM Plex Serif', serif;
-    font-size: 19px; line-height: 1.5;
-    color: #111; margin-bottom: 24px;
-    letter-spacing: -0.01em;
+    font-size: clamp(22px, 2.6vw, 32px);
+    line-height: 1.4;
+    color: #0a0a0a;
+    letter-spacing: -0.018em;
+    margin: 0 0 26px;
+    font-weight: 400;
   }
-  .testimonial-author { display: flex; align-items: center; gap: 12px; }
-  .testimonial-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
+  .testimonial-feature blockquote em {
+    font-style: italic;
+    color: #6b6b72;
+  }
+  .testimonial-feature .author {
+    display: inline-flex; align-items: center; gap: 12px;
+    text-align: left;
+  }
+  .testimonial-feature .av {
+    width: 40px; height: 40px;
+    border-radius: 50%;
     background: var(--bg-warm);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 500; color: #444;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 16px;
+    color: #2a2a2e;
   }
-  .testimonial-name { font-size: 14px; font-weight: 500; color: #111; }
-  .testimonial-role { font-size: 12px; color: #888; margin-top: 2px; }
+  .testimonial-feature .name {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #111;
+  }
+  .testimonial-feature .role {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+  }
 
   /* ══════════════════════════════════════
      7. PRICING TEASER
@@ -2250,37 +2277,14 @@
       </div>
     </div>
 
-    <div class="testimonials">
-      <div class="testimonial">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote" data-i18n="t.weston1">"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">魏</div>
-          <div><div class="testimonial-name" data-i18n="t.weston.name">Weston</div><div class="testimonial-role" data-i18n="t.weston.role">Writer · ACE</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote" data-i18n="t.marisol">"I've started seven novels in eight different apps. Slima is the first one where I finished. The studio just kept track of the book while I kept track of the writing."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">MR</div>
-          <div><div class="testimonial-name" data-i18n="t.marisol.name">Marisol Reyes</div><div class="testimonial-role" data-i18n="t.marisol.role">Novelist</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote" data-i18n="t.daniel">"Branching versions without losing the original draft is something I didn't know I needed until I had it. Now I can't write without it."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">DK</div>
-          <div><div class="testimonial-name" data-i18n="t.daniel.name">Daniel Klein</div><div class="testimonial-role" data-i18n="t.daniel.role">Memoirist</div></div>
-        </div>
-      </div>
-      <div class="testimonial">
-        <div class="testimonial-stars">★ ★ ★ ★ ★</div>
-        <p class="testimonial-quote" data-i18n="t.helena">"I cancelled three writing apps the month I subscribed to Slima. A year later, I'm still here — because for the first time, I have a finished book."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar">HV</div>
-          <div><div class="testimonial-name" data-i18n="t.helena.name">Helena Voss</div><div class="testimonial-role" data-i18n="t.helena.role">Novelist · A Year in Slima</div></div>
+    <div class="testimonial-feature">
+      <div class="stars">★ ★ ★ ★ ★</div>
+      <blockquote data-i18n="t.weston1">"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits <em>never veered off.</em> Superb."</blockquote>
+      <div class="author">
+        <div class="av">魏</div>
+        <div>
+          <div class="name" data-i18n="t.weston.name">Weston</div>
+          <div class="role" data-i18n="t.weston.role">Writer · ACE</div>
         </div>
       </div>
     </div>

@@ -37,33 +37,20 @@
       'home.t.h2.a':     'Writers who didn’t',
       'home.t.h2.b':     'start over.',
 
-      // Testimonials (English) — homepage
-      't.weston1': '"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb."',
-      't.weston.name': 'Weston',
-      't.weston.role': 'Writer · ACE',
-      't.marisol': '"I’ve started seven novels in eight different apps. Slima is the first one where I finished. The studio just kept track of the book while I kept track of the writing."',
-      't.marisol.name': 'Marisol Reyes',
-      't.marisol.role': 'Novelist',
-      't.daniel': '"Branching versions without losing the original draft is something I didn’t know I needed until I had it. Now I can’t write without it."',
-      't.daniel.name': 'Daniel Klein',
-      't.daniel.role': 'Memoirist',
-      't.helena': '"I cancelled three writing apps the month I subscribed to Slima. A year later, I’m still here — because for the first time, I have a finished book."',
-      't.helena.name': 'Helena Voss',
-      't.helena.role': 'Novelist · A Year in Slima',
-
-      // Sub-page tool-specific testimonials
-      't.ws.quote': '"The studio remembered things I’d written two months ago that I’d already forgotten. When the AI asks ‘are you still going with the lighthouse?’ — it actually knows the lighthouse."',
-      't.ws.name':  'Marisol Reyes',
-      't.ws.role':  'Novelist · The Quiet Engine',
-      't.br.quote': '"Three of my friends ‘are reading it.’ Two of them are not. The Slima panel finished my novel in an afternoon and told me, in writing, exactly which chapter I needed to rewrite — with the quotes that proved it."',
-      't.br.name':  'Adriana Köhler',
-      't.br.role':  'Novelist · The Dust Garden',
-      't.ss.quote': '"I wrote the pilot in a week. The format was already right out of the gate, scenes laid out on the corkboard, characters the AI mentor actually knew. I just had to write the scenes."',
-      't.ss.name':  'Sebastián Marín',
-      't.ss.role':  'Screenwriter · The Last Ferry',
-      't.pl.quote': '"I was paying for Scrivener, an AI writing tool, and a beta-reader service separately. Slima is half the price and replaces all three — and the AI actually knows my book."',
-      't.pl.name':  'Helena Voss',
-      't.pl.role':  'Novelist · A Year in Slima',
+      // Real testimonials — every quote is from Weston, the only verified
+      // Slima reviewer. One distinct quote per page; same person never
+      // duplicated on the same page.
+      't.weston.name':       'Weston',
+      't.weston.role':       'Writer · ACE',
+      // Homepage / Plan — universal Slima compliment
+      't.weston1':           '"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb."',
+      't.weston.bothering':  '"This piece had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb."',
+      // Writing Studio — about the writing experience
+      't.weston.today':      '"Today’s experience was really great — I went back and revised a whole batch of recently-published pieces. My ability as an author may be limited, but my readers’ taste is on point. ✌"',
+      // Beta Reader — about the reader-feedback reports
+      't.weston.reports':    '"The reader-feedback reports are fascinating — I’m still working up the nerve to swallow them whole. As a writing newbie, the Kindle data makes me want to chase a perfect score. The editor’s notes feel honest — readers can be brutal."',
+      // Script Studio — early-Notion-AI compliment
+      't.weston.notion':     '"Love this — reminds me of the early Notion AI days. But the suggestions actually keep my voice."',
 
       // CTA strip
       'cta.h2.a':   'Stop starting over.',
@@ -134,31 +121,14 @@
       'home.t.h2.a':     '不再從頭開始的',
       'home.t.h2.b':     '作者們。',
 
-      't.weston1': '「這篇真的困擾我很久了 — 但是 Slima 了解我的想法後給出的修正都不會歪掉 — 超棒」',
-      't.weston.name': '魏斯頓',
-      't.weston.role': '作者 · ACE',
-      't.marisol': '「我用過八種不同的 app 寫了七部小說。Slima 是我第一個真的寫完的。工作室幫我管著整本書，我只要專心寫。」',
-      't.marisol.name': 'Marisol Reyes',
-      't.marisol.role': '小說家',
-      't.daniel': '「能在不丟失原稿的情況下分支版本 — 我沒用過之前根本不知道自己需要這個。現在沒它寫不下去。」',
-      't.daniel.name': 'Daniel Klein',
-      't.daniel.role': '回憶錄作者',
-      't.helena': '「訂閱 Slima 那個月，我退訂了另外三個寫作 app。一年過去 — 我終於有了一本完成的書。」',
-      't.helena.name': 'Helena Voss',
-      't.helena.role': '小說家 · A Year in Slima',
-
-      't.ws.quote': '「工作室記得我兩個月前寫過、自己早就忘了的東西。AI 問我『燈塔那條線還在走嗎？』— 它是真的知道燈塔。」',
-      't.ws.name':  'Marisol Reyes',
-      't.ws.role':  '小說家 · The Quiet Engine',
-      't.br.quote': '「我有三個朋友『正在讀』我的書。其中兩個沒讀。Slima 的試讀小組一個下午就讀完，還白紙黑字告訴我哪一章該重寫 — 連引文都附上。」',
-      't.br.name':  'Adriana Köhler',
-      't.br.role':  '小說家 · The Dust Garden',
-      't.ss.quote': '「我一週就寫完了試播集劇本。格式一開始就對了，分場卡都排好，AI 編劇還真的認識我的角色。我只需要把場景寫出來。」',
-      't.ss.name':  'Sebastián Marín',
-      't.ss.role':  '編劇 · The Last Ferry',
-      't.pl.quote': '「我之前要分別付 Scrivener、AI 寫作工具、試讀服務的錢。Slima 一半的價錢就把三個都取代了 — 而且 AI 是真的看過我的書。」',
-      't.pl.name':  'Helena Voss',
-      't.pl.role':  '小說家 · A Year in Slima',
+      // 真實使用者 Weston 的原始留言。每頁只放一句，不重複同一頁。
+      't.weston.name':       '魏斯頓',
+      't.weston.role':       '作者 · ACE',
+      't.weston1':           '「這篇真的困擾我很久了～但是史萊姆了解我的想法後給出的修正都不會歪掉～超棒」',
+      't.weston.bothering':  '「這篇真的困擾我很久了～但是史萊姆了解我的想法後給出的修正都不會歪掉～超棒」',
+      't.weston.today':      '「今天使用上的體感真的好棒，我把近期發表的文章改了一輪～顯示我身為作者能力有限，但讀者的審美在線。✌」',
+      't.weston.reports':    '「讀者回饋的報告很有趣，但我還在努力說服自己吞下去 XDD。Kindle 數據表現也好好玩（身為寫作小白，會有種想挑戰滿分的衝動）。編輯來信給的回饋蠻中肯的～不像讀者都很賤。」',
+      't.weston.notion':     '「好喜歡這個，想到之前的 Notion AI — 但 Slima 的建議真的不會把我的語氣帶偏。」',
 
       'cta.h2.a':   '別再從頭開始。',
       'cta.h2.b':   '開始完成它。',
