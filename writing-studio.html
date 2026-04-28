@@ -405,20 +405,240 @@
     .dual-mock { grid-template-columns: 1fr; gap: 24px; }
   }
 
-  /* ─── Desktop Slima mockup — multi-column, browser-framed ─── */
-  .slima-desk {
-    width: 100%;
-    max-width: 720px;
-    margin: 12px auto 0;
+  /* ─── Slima Writing Studio mockup — true to the desktop app ─── */
+  .app-mock-frame {
     background: #ffffff;
     border: 1px solid #ececea;
     border-radius: 18px;
     overflow: hidden;
     box-shadow:
-      0 60px 120px -40px rgba(10,10,15,0.22),
-      0 18px 36px -18px rgba(10,10,15,0.10);
-    font-family: 'IBM Plex Serif', serif;
+      0 1px 2px rgba(10,10,15,0.04),
+      0 30px 60px -16px rgba(10,10,15,0.16);
+    aspect-ratio: 16 / 12;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
   }
+  .ws-mock {
+    width: 100%; height: 100%;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: 36px 132px 1fr 168px;
+    color: #0a0a0b;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11px;
+  }
+  /* Icon rail */
+  .ws-mock .rail {
+    background: #faf9f6;
+    border-right: 1px solid #ececea;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px;
+    padding: 14px 0;
+  }
+  .ws-mock .rail svg { width: 16px; height: 16px; color: #8e8e94; }
+  .ws-mock .rail .mark { color: #0a0a0b; }
+  .ws-mock .rail .ic.active {
+    width: 26px; height: 26px;
+    background: #ececea;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ws-mock .rail .ic.active svg { color: #0a0a0b; }
+  /* Sidebar */
+  .ws-mock .side {
+    background: #faf9f6;
+    border-right: 1px solid #ececea;
+    padding: 12px 10px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .ws-mock .side .book {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px; font-weight: 600;
+    letter-spacing: 0.10em;
+    color: #0a0a0b;
+    margin-bottom: 12px;
+    padding: 0 4px;
+  }
+  .ws-mock .side .book .star { color: #c89370; }
+  .ws-mock .side .row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 6px;
+    border-radius: 5px;
+    font-size: 11px;
+    color: #2a2a2e;
+  }
+  .ws-mock .side .row.indent { padding-left: 22px; color: #6b6b72; font-size: 10.5px; }
+  .ws-mock .side .row.active { background: #ececea; color: #0a0a0b; font-weight: 500; }
+  .ws-mock .side .row .chev { color: #8e8e94; width: 9px; font-size: 8px; }
+  .ws-mock .side .row .ic { color: #c89370; font-size: 11px; }
+  .ws-mock .side .add {
+    margin-top: auto;
+    padding: 8px;
+    text-align: center;
+    border: 1px dashed #d4cec0;
+    border-radius: 7px;
+    color: #8e8e94;
+    font-size: 10px;
+  }
+  /* Main editor */
+  .ws-mock .main {
+    background: #ffffff;
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .ws-mock .main .tabbar {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ececea;
+    font-size: 10.5px;
+    color: #6b6b72;
+  }
+  .ws-mock .main .tabbar .tab {
+    padding: 4px 8px;
+    border-radius: 5px;
+  }
+  .ws-mock .main .tabbar .tab.active {
+    background: #f3f1ec;
+    color: #0a0a0b;
+  }
+  .ws-mock .main .toolbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 14px;
+    border-bottom: 1px solid #ececea;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: #8e8e94;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+  .ws-mock .main .toolbar .b { font-weight: 700; color: #0a0a0b; }
+  .ws-mock .main .toolbar .i { font-style: italic; }
+  .ws-mock .main .toolbar .s { text-decoration: line-through; }
+  .ws-mock .main .toolbar .h { font-size: 9.5px; }
+  .ws-mock .main .toolbar .h sub { font-size: 7px; vertical-align: -1px; }
+  .ws-mock .main .toolbar .wc {
+    margin-left: auto;
+    font-size: 9.5px;
+    color: #8e8e94;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .ws-mock .main .body {
+    flex: 1;
+    padding: 16px 24px 16px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11px;
+    line-height: 1.7;
+    color: #2a2a2e;
+    overflow: hidden;
+  }
+  .ws-mock .main .body p { margin: 0 0 9px; }
+  .ws-mock .main .body em { font-style: italic; color: #6b6b72; }
+  .ws-mock .main .footer {
+    padding: 6px 14px;
+    border-top: 1px solid #ececea;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: #8e8e94;
+    display: flex; justify-content: space-between;
+  }
+  /* AI Coach panel */
+  .ws-mock .coach {
+    background: #faf9f6;
+    border-left: 1px solid #ececea;
+    padding: 14px 12px;
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .ws-mock .coach .head {
+    display: flex; align-items: center; gap: 8px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ececea;
+  }
+  .ws-mock .coach .blob {
+    width: 26px; height: 30px;
+    background: radial-gradient(ellipse at 30% 30%, #ff8aa8 0%, #d44d77 70%, #a83359 100%);
+    border-radius: 50% 50% 48% 48% / 60% 60% 40% 40%;
+    flex-shrink: 0;
+    box-shadow: inset -3px -4px 8px rgba(0,0,0,0.16);
+    position: relative;
+  }
+  .ws-mock .coach .blob::before, .ws-mock .coach .blob::after {
+    content: ''; position: absolute;
+    width: 3px; height: 3px;
+    background: #fff; border-radius: 50%;
+    top: 12px;
+  }
+  .ws-mock .coach .blob::before { left: 8px; }
+  .ws-mock .coach .blob::after { left: 15px; }
+  .ws-mock .coach .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 11px;
+    color: #0a0a0b;
+    line-height: 1.2;
+  }
+  .ws-mock .coach .status {
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    letter-spacing: 0.10em;
+    color: #8e8e94;
+    margin-top: 1px;
+  }
+  .ws-mock .coach .h2 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 13px;
+    color: #0a0a0b;
+    line-height: 1.2;
+  }
+  .ws-mock .coach .sub {
+    font-size: 10px;
+    color: #6b6b72;
+    line-height: 1.4;
+  }
+  .ws-mock .coach .label {
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: #8e8e94;
+    letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+  .ws-mock .coach .pill {
+    padding: 6px 10px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    background: #ffffff;
+    font-size: 10px;
+    text-align: center;
+    color: #2a2a2e;
+  }
+  .ws-mock .coach .composer {
+    margin-top: auto;
+    border: 1px solid #ececea;
+    border-radius: 8px;
+    background: #ffffff;
+    padding: 7px 9px;
+    display: flex; align-items: center; gap: 6px;
+    font-size: 10px;
+    color: #8e8e94;
+  }
+  .ws-mock .coach .composer .send {
+    margin-left: auto;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: #6366f1;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+  }
+  /* Mobile fallback toggle (legacy class, retained for compat) */
+  .slima-desk { display: none; }
   .slima-desk-bar {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 18px;
@@ -1779,8 +1999,82 @@
     </div>
 
     <div class="reveal d2" style="position:relative;">
-      <!-- Desktop layout — shown on viewports >= 880px -->
-      <div class="slima-desk">
+      <!-- Polished desktop mockup, true to app.slima.ai Writing Studio -->
+      <div class="app-mock-frame">
+        <div class="ws-mock">
+          <div class="rail">
+            <svg class="mark" viewBox="0 0 130 130"><path fill="currentColor" d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z"/></svg>
+            <div class="ic active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 7l3-3h5l2 2h8v12H3z"/></svg></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 11a4 4 0 10-8 0 4 4 0 008 0zM2 21a8 8 0 0120 0"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>
+          </div>
+          <div class="side">
+            <div class="book"><span class="star">✦</span> THE LIGHTHOUSE…</div>
+            <div class="row"><span class="chev">▾</span><span class="ic">📁</span> Manuscript</div>
+            <div class="row indent">📄 Prologue</div>
+            <div class="row indent">📄 I. Salt &amp; Iron</div>
+            <div class="row indent active">📄 VII. A Lamp…</div>
+            <div class="row indent">📄 VIII. (drafted)</div>
+            <div class="row"><span class="chev">›</span><span class="ic">📁</span> Reference</div>
+            <div class="row"><span class="chev">›</span><span class="ic">📁</span> Exercises</div>
+            <div class="row">📄 Writing Plan</div>
+            <div class="add">+ Add Content</div>
+          </div>
+          <div class="main">
+            <div class="tabbar">
+              <span class="tab">Prologue ×</span>
+              <span class="tab active">VII. A Lamp… ×</span>
+            </div>
+            <div class="toolbar">
+              <span class="b">B</span>
+              <span class="i">I</span>
+              <span class="s">S</span>
+              <span>✎</span>
+              <span class="h">H<sub>1</sub></span>
+              <span class="h">H<sub>2</sub></span>
+              <span>≡</span>
+              <span>1.</span>
+              <span>"</span>
+              <span>⟨⟩</span>
+              <span>—</span>
+              <span class="wc">1,247 WORDS</span>
+            </div>
+            <div class="body">
+              <p>She had counted them twice. Both times the answer was the same — and both times she kept counting, because the alternative was to sit down.</p>
+              <p>The boats had not come back. They had not come back yesterday, either. Mr. Halberg had said the boats not coming back was a thing that happened, <em>and a thing you stopped thinking about.</em></p>
+              <p>Eleanor was not yet a lighthouse keeper's daughter. She was the niece, which was a different rank, which entitled her to nothing.</p>
+            </div>
+            <div class="footer">
+              <span>TOTAL TODAY 0 / 2,000</span>
+              <span>✓ Saved</span>
+            </div>
+          </div>
+          <div class="coach">
+            <div class="head">
+              <div class="blob"></div>
+              <div>
+                <div class="title">AI Writing Coach</div>
+                <div class="status">SLIMA ONLINE</div>
+              </div>
+            </div>
+            <div class="h2">Your coach is here.</div>
+            <div class="sub">Pick a direction, or tell me what's on your mind.</div>
+            <div class="label">FOCUS ON</div>
+            <div class="pill">Character motivation</div>
+            <div class="pill">Scene immersion</div>
+            <div class="pill">Continuity</div>
+            <div class="composer">
+              Type a message…
+              <span class="send">➤</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- (legacy block kept hidden for compat) -->
+      <div class="slima-desk" style="display:none">
         <div class="slima-desk-bar">
           <div class="dots"><span></span><span></span><span></span></div>
           <div class="url">app.slima.ai / writing-studio / the-lighthouse-keepers</div>

@@ -240,20 +240,192 @@
   }
   .ss-mock-nav .item svg { width: 20px; height: 20px; }
 
-  /* ─── Desktop Slima mockup — multi-column, browser-framed ─── */
-  .slima-desk {
-    width: 100%;
-    max-width: 980px;
-    margin: 12px auto 0;
+  /* ─── Slima Script Studio mockup — true to the scene editor ─── */
+  .app-mock-frame {
     background: #ffffff;
     border: 1px solid #ececea;
     border-radius: 18px;
     overflow: hidden;
     box-shadow:
-      0 60px 120px -40px rgba(10,10,15,0.22),
-      0 18px 36px -18px rgba(10,10,15,0.10);
+      0 1px 2px rgba(10,10,15,0.04),
+      0 30px 60px -16px rgba(10,10,15,0.16);
+    aspect-ratio: 16 / 12;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .ss-mock {
+    width: 100%; height: 100%;
+    background: #ffffff;
+    display: grid;
+    grid-template-columns: 36px 1fr 36px;
+    color: #0a0a0b;
     font-family: 'IBM Plex Serif', serif;
   }
+  .ss-mock .rail {
+    background: #faf9f6;
+    border-right: 1px solid #ececea;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 14px; padding: 14px 0;
+  }
+  .ss-mock .rail.right {
+    border-right: 0;
+    border-left: 1px solid #ececea;
+  }
+  .ss-mock .rail svg { width: 16px; height: 16px; color: #8e8e94; }
+  .ss-mock .rail .mark { color: #0a0a0b; }
+  .ss-mock .rail .ic.active {
+    width: 26px; height: 26px;
+    background: #ececea;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ss-mock .rail .ic.active svg { color: #0a0a0b; }
+  .ss-mock .stage {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .ss-mock .topbar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 18px;
+    border-bottom: 1px solid #ececea;
+    font-size: 11px;
+  }
+  .ss-mock .topbar .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 12px;
+    color: #0a0a0b;
+  }
+  .ss-mock .topbar .toggle {
+    display: inline-flex;
+    background: #faf9f6;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    padding: 2px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+  }
+  .ss-mock .topbar .toggle span {
+    padding: 4px 10px;
+    border-radius: 100px;
+    color: #6b6b72;
+  }
+  .ss-mock .topbar .toggle .on {
+    background: #0a0a0b;
+    color: #ffffff;
+  }
+  .ss-mock .topbar .pill {
+    padding: 4px 10px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: #6b6b72;
+  }
+  .ss-mock .topbar .right {
+    margin-left: auto;
+    display: flex; gap: 10px;
+    color: #8e8e94;
+  }
+  .ss-mock .topbar .right svg { width: 13px; height: 13px; }
+  .ss-mock .scenes {
+    flex: 1;
+    background: #faf9f6;
+    padding: 14px 24px;
+    overflow: hidden;
+  }
+  .ss-mock .scene {
+    background: #ffffff;
+    border: 1px solid #ececea;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+  }
+  .ss-mock .scene .head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ececea;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: #0a0a0b;
+    background: #ffffff;
+  }
+  .ss-mock .scene .head .chev { color: #8e8e94; font-size: 9px; }
+  .ss-mock .scene .head .num {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    color: #6b6b72;
+    width: 14px;
+  }
+  .ss-mock .scene .head .int { font-weight: 600; }
+  .ss-mock .scene .head .loc { color: #2a2a2e; flex: 1; }
+  .ss-mock .scene .head .day { color: #6b6b72; }
+  .ss-mock .scene .head .min {
+    margin-left: auto;
+    color: #8e8e94;
+    font-size: 9.5px;
+  }
+  .ss-mock .scene .body {
+    padding: 10px 14px 12px;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-size: 10px;
+    line-height: 1.6;
+    color: #2a2a2e;
+  }
+  .ss-mock .scene .body .ac {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: #8e8e94;
+    margin-bottom: 4px;
+    padding: 1px 6px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+  }
+  .ss-mock .scene .body .ch {
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+  .ss-mock .scene .body .di {
+    text-align: center;
+    margin: 0 14% 4px;
+  }
+  .ss-mock .scene .trans {
+    padding: 6px 14px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 9.5px;
+    color: #8e8e94;
+    text-align: right;
+    font-style: italic;
+  }
+  .ss-mock .add {
+    margin: 10px auto 0;
+    display: block;
+    padding: 6px 12px;
+    border: 1px dashed #d4cec0;
+    border-radius: 100px;
+    text-align: center;
+    color: #8e8e94;
+    font-size: 10px;
+    font-family: 'IBM Plex Serif', serif;
+    width: 90px;
+  }
+  .ss-mock .footer {
+    padding: 6px 18px;
+    border-top: 1px solid #ececea;
+    font-family: 'Inter', sans-serif;
+    font-size: 9px;
+    color: #8e8e94;
+    letter-spacing: 0.04em;
+    display: flex; gap: 16px; align-items: center;
+  }
+  .ss-mock .footer .saved { margin-left: auto; color: #2f9e6b; }
+
+  /* ─── Legacy desktop wrapper hidden ─── */
+  .slima-desk { display: none; }
   .slima-desk-bar {
     display: flex; align-items: center; gap: 14px;
     padding: 12px 18px;
@@ -1507,8 +1679,82 @@
     </div>
 
     <div class="reveal d2">
-      <!-- Desktop layout — shown on viewports >= 880px -->
-      <div class="slima-desk">
+      <!-- Polished desktop mockup, true to app.slima.ai Script Studio editor -->
+      <div class="app-mock-frame">
+        <div class="ss-mock">
+          <div class="rail">
+            <svg class="mark" viewBox="0 0 130 130"><path fill="currentColor" d="M58.8,38.61l39.68-15.07c.8.6,1.56,1.48,1.93,2.42.29.74.76,2.23.2,2.84l-33.5,18.01c.1.24,2.21.66,2.64.76,14.6,3.43,29.37,6.15,44.07,9.15.21.03.34.13.46.3.83,1.19.46,6.42-1.4,6.51-14.91-1.43-29.87-2.4-44.82-3.41l35.8,35.91c-.58,2.36-2.53,5.23-5.18,5.09l-22.15-17.11-17.15-12.38c3.09,15.53,6.74,30.93,10.38,46.34.18.79-.66,1.53-1.26,1.94-1.23.83-4.84,1.91-5.77.36-5.52-15.48-10.88-31.03-17.23-46.18-5.16,13.04-9.74,26.31-14.46,39.51-1.02,1.62-5.36.05-6.25-1.44l9.86-45.05-13.19,9.74-14.41,11.25c-1.63.83-4.72-2.86-3.67-4.14,9.4-8.83,18.66-17.83,27.49-27.23l-27.47,2.24c-1.3-.04-1.75-2.99-1.11-3.93l31.22-6.9-20.63-10.69c-1.44-.53-.12-3.03.81-3.29l23.97,8.98-11.48-20.62c.15-.75,2.19-2.19,2.88-1.26,3.24,4.56,6.44,9.14,9.77,13.63,1.05,1.41,2.18,3.11,3.31,4.42.12.14,0,.36.43.24l1.89-27.64c1.05-.77,3.12-.77,3.35.79.49,7.91.8,15.84,1.37,23.74.02.28-.15.55.28.47,3.35-4.45,6.77-8.85,10.06-13.34,3.49-4.75,6.85-9.66,10.36-14.37,1.23-.38,4.13,1.48,3.56,2.99-4.1,7.49-8.52,14.82-12.59,22.33-.23.43-2.2,3.92-2.04,4.09Z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 4h14v16H5z"/><path d="M5 8h14"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            <div class="ic active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 3l5 5-11 11H5v-5z"/></svg></div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 11l7-7 7 7M12 4v16"/></svg>
+          </div>
+          <div class="stage">
+            <div class="topbar">
+              <span class="title">The Last Ferry</span>
+              <span class="toggle"><span class="on">Hollywood</span><span>Taiwan</span></span>
+              <span class="pill">Dual</span>
+              <span class="pill">Sprint</span>
+              <span class="right">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8M16 6l-4-4-4 4M12 2v13"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 016 0c0 2-3 3-3 5M12 17v.01"/></svg>
+              </span>
+            </div>
+            <div class="scenes">
+              <div class="scene">
+                <div class="head">
+                  <span class="chev">▾</span>
+                  <span class="num">1.</span>
+                  <span class="int">INT.</span>
+                  <span class="loc">Apartment</span>
+                  <span class="day">— NIGHT</span>
+                  <span class="min">~2min</span>
+                </div>
+                <div class="body">
+                  <span class="ac">AC</span>
+                  <div>Maya stands in the hallway, keys still in her hand. The cat hasn't moved. Outside, the elevator finishes a long sigh and gives up.</div>
+                  <div class="ch">MAYA</div>
+                  <div class="di">You weren't supposed to be home.</div>
+                  <div class="ch">DAVID (O.S.)</div>
+                  <div class="di">Neither were you.</div>
+                </div>
+                <div class="trans">CUT TO:</div>
+              </div>
+              <div class="scene">
+                <div class="head">
+                  <span class="chev">▾</span>
+                  <span class="num">2.</span>
+                  <span class="int">EXT.</span>
+                  <span class="loc">Harbor — Ferry deck</span>
+                  <span class="day">— DAWN</span>
+                  <span class="min">~1min</span>
+                </div>
+                <div class="body">
+                  <span class="ac">AC</span>
+                  <div>The ferry pulls slowly out. Maya leans on the rail, the cat carrier silent beside her. Mist rises from the water.</div>
+                </div>
+              </div>
+              <div class="add">+ Add Scene</div>
+            </div>
+            <div class="footer">
+              <span>1,247 words</span>
+              <span>2 scenes</span>
+              <span>3m</span>
+              <span class="saved">✓ Saved</span>
+            </div>
+          </div>
+          <div class="rail right">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2l2 5 5 2-5 2-2 5-2-5-5-2 5-2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l5 3"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 12h10M4 18h16"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- (legacy block hidden) -->
+      <div class="slima-desk" style="display:none">
         <div class="slima-desk-bar">
           <div class="dots"><span></span><span></span><span></span></div>
           <div class="url">app.slima.ai / script-studio</div>
