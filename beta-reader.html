@@ -128,6 +128,153 @@
     vertical-align: middle;
   }
 
+  /* Slima Beta Readers mockup — white shell, true to app */
+  .slima-app {
+    background: #ffffff;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(10,10,15,0.14), 0 12px 24px -12px rgba(10,10,15,0.08);
+    border: 1px solid #ececea;
+    max-width: 480px; margin: 0 auto;
+    color: #0a0a0b;
+    font-family: 'IBM Plex Serif', serif;
+    transform: rotate(0.4deg);
+    transition: transform 0.5s ease;
+  }
+  .slima-app:hover { transform: rotate(0deg); }
+  .br-mock-head {
+    padding: 22px 22px 4px;
+  }
+  .br-mock-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px;
+    border: 1px solid #ececea;
+    border-radius: 100px;
+    font-size: 13px;
+    color: #0a0a0b;
+  }
+  .br-mock-pill .chev { color: #8e8e94; font-size: 11px; }
+  .br-mock-status {
+    margin-top: 12px;
+    padding: 9px 14px;
+    background: #faf9f6;
+    border: 1px solid #ececea;
+    border-radius: 12px;
+    font-size: 13px;
+    color: #6b6b72;
+    text-align: center;
+  }
+  .br-mock-status .sep { color: #c8c8cc; margin: 0 10px; }
+  .br-mock-h1 {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 500;
+    font-size: 26px;
+    letter-spacing: -0.02em;
+    margin: 22px 22px 6px;
+    color: #0a0a0b;
+  }
+  .br-mock-sub {
+    margin: 0 22px 18px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    color: #6b6b72;
+  }
+  .br-mock-upload {
+    margin: 0 22px;
+    display: block;
+    text-align: center;
+    background: #0a0a0b;
+    color: #fff;
+    border-radius: 100px;
+    padding: 13px 20px;
+    font-size: 14px;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .br-mock-upload .ic { margin-right: 8px; }
+  .br-mock-steps {
+    margin: 14px 22px 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+    font-size: 12.5px;
+    color: #8e8e94;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .br-mock-card {
+    margin: 14px 22px 16px;
+    padding: 18px 18px 16px;
+    border: 1px solid #ececea;
+    border-radius: 16px;
+    background: #ffffff;
+  }
+  .br-mock-card .book {
+    font-size: 22px;
+    color: #2a2a2e;
+    margin-bottom: 8px;
+  }
+  .br-mock-card .title {
+    font-family: 'IBM Plex Serif', serif;
+    font-weight: 600;
+    font-size: 18px;
+    color: #0a0a0b;
+    margin-bottom: 6px;
+  }
+  .br-mock-card .badges {
+    display: flex; gap: 6px;
+    flex-wrap: wrap;
+  }
+  .br-mock-card .badges span {
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+  }
+  .br-mock-card .badges .book-b {
+    background: #f3f1ec;
+    color: #2a2a2e;
+  }
+  .br-mock-card .badges .synced {
+    background: #f3f1ec;
+    color: #2a2a2e;
+  }
+  .br-mock-card .badges .synced::before {
+    content: '✓';
+    margin-right: 4px;
+  }
+  .br-mock-card .divider {
+    border-top: 1px solid #ececea;
+    margin: 12px 0 10px;
+  }
+  .br-mock-card .readings {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px;
+    color: #8e8e94;
+    font-family: 'IBM Plex Serif', serif;
+  }
+  .br-mock-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid #ececea;
+    padding: 8px 0 14px;
+    background: #ffffff;
+  }
+  .br-mock-nav .item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    padding: 6px 4px;
+    font-family: 'IBM Plex Serif', serif;
+    font-size: 11px;
+    color: #8e8e94;
+  }
+  .br-mock-nav .item.is-active { color: #0a0a0b; }
+  .br-mock-nav .item.is-active::after {
+    content: ''; display: block;
+    width: 22px; height: 2px;
+    background: #0a0a0b;
+    border-radius: 2px;
+    margin-top: 4px;
+  }
+  .br-mock-nav .item svg { width: 20px; height: 20px; }
+
   /* Fanned reader-report cards */
   .reports-fan {
     position: relative;
@@ -1229,46 +1376,56 @@
     </div>
 
     <div class="reveal d2">
-      <div class="reports-fan">
-        <div class="report-card c1">
-          <div class="head">
-            <div class="av" style="background:#2a2a2e;">M</div>
-            <div class="who">Maya, 34<span class="tag">LITERARY · SLOW BURN</span></div>
-          </div>
-          <div class="quote">"I almost stopped at chapter three — the timeline confused me. I went back, found my footing, and chapter five hooked me hard."</div>
-          <div class="scores">
-            <div><div class="n">7.4</div><div class="l">Pull</div></div>
-            <div><div class="n">8.1</div><div class="l">Voice</div></div>
-            <div><div class="n">6.2</div><div class="l">Pace</div></div>
-            <div><div class="n">7.8</div><div class="l">Stakes</div></div>
-          </div>
+      <div class="slima-app">
+        <div class="br-mock-head">
+          <div class="br-mock-pill">AI Beta Reader <span class="chev">▾</span></div>
+          <div class="br-mock-status">reports: 2 <span class="sep">|</span> This month 3/5</div>
         </div>
-
-        <div class="report-card c2">
-          <div class="head">
-            <div class="av" style="background:#5a5a64;">D</div>
-            <div class="who">David, 47<span class="tag">EX-EDITOR · STRUCTURAL</span></div>
-          </div>
-          <div class="quote">"The dialogue is sharp, but the protagonist's interiority drops out for the middle third. I lost her there."</div>
-          <div class="scores">
-            <div><div class="n">8.6</div><div class="l">Pull</div></div>
-            <div><div class="n">9.0</div><div class="l">Voice</div></div>
-            <div><div class="n">5.4</div><div class="l">Pace</div></div>
-            <div><div class="n">7.0</div><div class="l">Stakes</div></div>
-          </div>
+        <h3 class="br-mock-h1">AI Beta Readers</h3>
+        <p class="br-mock-sub">Before publishing, let AI simulate real readers to read your work and provide professional feedback.</p>
+        <a class="br-mock-upload" href="#"><span class="ic">📤</span> Upload Work</a>
+        <div class="br-mock-steps">
+          <span>1. Select work</span>
+          <span>2. Choose readers &amp; editor</span>
+          <span>3. Get reading report</span>
+          <span>4. Revise in studio</span>
         </div>
-
-        <div class="report-card c3">
-          <div class="head">
-            <div class="av" style="background:#8e8e94;">P</div>
-            <div class="who">Pia, 22<span class="tag">YA &amp; SPECULATIVE · TIKTOK PACE</span></div>
+        <div class="br-mock-card">
+          <div class="book">📖</div>
+          <div class="title">PARIS</div>
+          <div class="badges">
+            <span class="book-b">📕 Book</span>
+            <span class="synced">Synced</span>
           </div>
-          <div class="quote">"Honestly? Loved chapter three. The confusion is the point. I'd buy this on the strength of that scene alone."</div>
-          <div class="scores">
-            <div><div class="n">8.8</div><div class="l">Pull</div></div>
-            <div><div class="n">7.9</div><div class="l">Voice</div></div>
-            <div><div class="n">8.6</div><div class="l">Pace</div></div>
-            <div><div class="n">9.1</div><div class="l">Stakes</div></div>
+          <div class="divider"></div>
+          <div class="readings">⚗ 3 readings</div>
+        </div>
+        <div class="br-mock-card">
+          <div class="book">📖</div>
+          <div class="title">The Search</div>
+          <div class="badges">
+            <span class="book-b">📕 Book</span>
+            <span class="synced">Synced</span>
+          </div>
+          <div class="divider"></div>
+          <div class="readings">⚗ 0 readings</div>
+        </div>
+        <div class="br-mock-nav">
+          <div class="item is-active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+            Reports
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3 8-8M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+            Submit
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2M5 6l1 14a2 2 0 002 2h8a2 2 0 002-2l1-14"/></svg>
+            Trash
+          </div>
+          <div class="item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+            More
           </div>
         </div>
       </div>
