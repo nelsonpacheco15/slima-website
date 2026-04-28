@@ -60,8 +60,8 @@
   .ws-hero-grid {
     max-width: 1280px; margin: 0 auto;
     display: grid;
-    grid-template-columns: 1.1fr 1fr;
-    gap: 80px;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 60px;
     align-items: center;
     position: relative;
     z-index: 1;
@@ -86,9 +86,9 @@
   .ws-hero h1 {
     font-family: 'IBM Plex Serif', serif;
     font-weight: 500;
-    font-size: clamp(48px, 6vw, 88px);
+    font-size: clamp(40px, 4.6vw, 72px);
     letter-spacing: -0.025em;
-    line-height: 1.0;
+    line-height: 1.05;
     color: #0a0a0a;
     margin-bottom: 28px;
   }
@@ -407,7 +407,8 @@
 
   /* ─── Desktop Slima mockup — multi-column, browser-framed ─── */
   .slima-desk {
-    max-width: 1080px;
+    width: 100%;
+    max-width: 720px;
     margin: 12px auto 0;
     background: #ffffff;
     border: 1px solid #ececea;
@@ -443,8 +444,8 @@
   }
   .slima-desk-body {
     display: grid;
-    grid-template-columns: 240px 1fr 280px;
-    min-height: 560px;
+    grid-template-columns: 160px 1fr 180px;
+    min-height: 420px;
     background: #ffffff;
   }
   .slima-desk-side {
