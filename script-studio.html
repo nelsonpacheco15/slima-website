@@ -6,6 +6,7 @@
 <title>Script Studio — Slima</title>
 <meta name="description" content="A screenwriting studio with scene-based structure, Hollywood ↔ Taiwan format switching, character bibles, beat boards, and runtime estimation.">
 <link rel="stylesheet" href="assets/marketing.css">
+<link rel="stylesheet" href="assets/mockups.css">
 <style>
   /* ──────────────────────────────────────────────
      SCRIPT STUDIO — page-specific design
@@ -1686,11 +1687,11 @@
     border-radius: 3px;
     background: rgba(255,255,255,0.18);
   }
-  .beats-mini i.act-1 { background: var(--gold); }
-  .beats-mini i.act-2a { background: rgba(10,10,11,0.55); }
+  .beats-mini i.act-1 { background: #f3f1ec; }
+  .beats-mini i.act-2a { background: rgba(255,255,255,0.45); }
   .beats-mini i.mid { background: #fff; }
-  .beats-mini i.act-2b { background: rgba(10,10,11,0.55); }
-  .beats-mini i.act-3 { background: var(--gold); }
+  .beats-mini i.act-2b { background: rgba(255,255,255,0.45); }
+  .beats-mini i.act-3 { background: #f3f1ec; }
 
   /* Runtime visual */
   .runtime-mini {
@@ -1740,10 +1741,10 @@
     font-weight: 400;
     font-size: clamp(28px, 3.4vw, 44px);
     letter-spacing: -0.018em;
-    color: #ffffff;
+    color: #0a0a0a;
     line-height: 1.1;
   }
-  .ss-stats-head h2 em { font-style: italic; color: rgba(255,255,255,0.65); }
+  .ss-stats-head h2 em { font-style: italic; color: #6b6258; }
   .ss-stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1765,21 +1766,21 @@
     font-weight: 500;
     font-size: clamp(64px, 8vw, 120px);
     line-height: 0.9;
-    color: #ffffff;
+    color: #0a0a0a;
     letter-spacing: -0.04em;
   }
-  .ss-stats-grid .num em { font-style: italic; color: rgba(255,255,255,0.65); }
+  .ss-stats-grid .num em { font-style: italic; color: #0a0a0a; }
   .ss-stats-grid .lbl {
     font-family: 'IBM Plex Serif', serif;
     font-size: 16px;
-    color: #4a4338;
+    color: #0a0a0a;
     margin-top: 14px;
     line-height: 1.4;
   }
   .ss-stats-grid .lbl small {
     display: block;
     font-size: 12px;
-    color: #b8ad9c;
+    color: #0a0a0a;
     margin-top: 6px;
     font-family: 'Inter', sans-serif;
     letter-spacing: 0.04em;
@@ -1835,7 +1836,7 @@
     font-size: 16px;
   }
   .ss-quote .byline .role {
-    color: var(--gold);
+    color: rgba(255,255,255,0.55);
     font-style: italic;
   }
 
@@ -2003,6 +2004,7 @@
     <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
     <li><a href="script-studio.html" class="is-current" data-i18n="nav.script">Script Studio</a></li>
     <li><a href="plan.html" data-i18n="nav.plans">Plans</a></li>
+    <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener" data-i18n="nav.community">Community</a></li>
   </ul>
   <div class="nav-right">
     <button class="lang-toggle" aria-label="Toggle language">
@@ -2773,6 +2775,16 @@
           <img src="assets/logo.svg" alt="Slima" class="slima-logo">
         </a>
         <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+        <div class="footer-downloads">
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima.dmg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-3.18 2.6-4.71 2.71-4.79-1.48-2.16-3.78-2.46-4.59-2.49-1.95-.2-3.81 1.15-4.81 1.15-1.01 0-2.53-1.13-4.16-1.1-2.13.03-4.11 1.24-5.21 3.16-2.23 3.86-.57 9.57 1.6 12.71 1.06 1.54 2.32 3.27 3.97 3.21 1.6-.07 2.2-1.04 4.13-1.04 1.92 0 2.47 1.04 4.16 1 1.72-.03 2.81-1.57 3.86-3.12 1.22-1.79 1.72-3.52 1.75-3.61-.04-.02-3.36-1.29-3.4-5.08zm-3.16-9.34C14.79 1.62 15.4.16 15.23-1.3c-1.26.05-2.79.84-3.7 1.91-.82.94-1.54 2.45-1.34 3.88 1.41.11 2.85-.71 3.7-1.79z"/></svg>
+            Download for Mac
+          </a>
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima-Setup.exe">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5L10 4.5V11H3V5.5zM3 18.5L10 19.5V13H3V18.5zM11 19.7L21 21V13H11V19.7zM11 4.3V11H21V3L11 4.3z"/></svg>
+            Download for Windows
+          </a>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
@@ -2789,7 +2801,7 @@
           <li><a href="#">Help Center</a></li>
           <li><a href="#">Templates</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Community</a></li>
+          <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener">Community</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2798,7 +2810,7 @@
           <li><a href="#">About</a></li>
           <li><a href="#">Manifesto</a></li>
           <li><a href="#">Careers</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="mailto:service@slima.ai">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -2812,7 +2824,18 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Slima. All rights reserved.</span>
+      <span>© 2026 Slima. All rights reserved. · <a href="mailto:service@slima.ai">service@slima.ai</a></span>
+      <div class="footer-social">
+        <a href="https://www.threads.com/@slima.ai" target="_blank" rel="noopener" aria-label="Threads">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.18 2C6.55 2 2 6.55 2 12.18c0 5.62 4.55 10.18 10.18 10.18s10.18-4.55 10.18-10.18C22.36 6.55 17.81 2 12.18 2zm4.83 9.81c-.41-.21-.86-.39-1.34-.54.05-.42.07-.83.07-1.23 0-1.97-.74-3.34-2.18-3.96-.18-.08-.37-.14-.56-.19-1.04-.27-2.36-.18-3.49.36-.91.43-1.61 1.13-2.06 2.04-.16.31-.04.69.27.85.31.16.69.04.85-.27.32-.66.83-1.16 1.49-1.47.79-.38 1.78-.46 2.61-.21.7.18 1.93.59 2.51 1.78-.4-.07-.8-.11-1.21-.11-2.21 0-4 1.79-4 4 0 2.21 1.79 4 4 4 1.31 0 2.41-.61 3.13-1.6.91.94 1.34 2.27 1.34 3.4 0 1.84-1.85 3.38-4.04 3.38-2.73 0-4.27-2.06-4.59-3.91-.06-.34-.39-.57-.73-.51-.34.06-.57.39-.51.73.39 2.27 2.34 5.04 5.83 5.04 2.85 0 5.31-2.06 5.31-4.73 0-1.32-.4-2.81-1.27-4.05zm-3.32 2.42c-.99 0-1.79-.81-1.79-1.79 0-.99.81-1.79 1.79-1.79.43 0 .85.07 1.25.21-.05.32-.13.64-.23.95-.27.91-.86 1.42-1.02 2.42z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/slima.ai" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7" fill="currentColor"/></svg>
+        </a>
+        <a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener" aria-label="Discord">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 00-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 00-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05 0 .07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.04.01-.05.06-.04.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12z"/></svg>
+        </a>
+      </div>
       <div class="footer-legal">
         <a href="#">Privacy</a>
         <a href="#">Terms</a>
@@ -2823,6 +2846,7 @@
 </footer>
 
 <script src="assets/marketing.js"></script>
+<script src="assets/mockups.js"></script>
 <script src="assets/i18n.js"></script>
 </body>
 </html>

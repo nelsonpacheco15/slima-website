@@ -143,18 +143,21 @@
   }
   .plans-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 22px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
     align-items: stretch;
   }
-  @media (max-width: 980px) {
+  @media (max-width: 1180px) {
+    .plans-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  }
+  @media (max-width: 640px) {
     .plans-grid { grid-template-columns: 1fr; gap: 20px; }
   }
   .plan {
     background: #ffffff;
     border: 1px solid var(--rule);
     border-radius: 22px;
-    padding: 36px 32px 32px;
+    padding: 32px 24px 28px;
     display: flex; flex-direction: column;
     position: relative;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -206,7 +209,7 @@
   .plan .price .num {
     font-family: 'IBM Plex Serif', serif;
     font-weight: 500;
-    font-size: 56px;
+    font-size: 48px;
     letter-spacing: -0.03em;
     color: #0a0a0a;
     line-height: 1;
@@ -290,12 +293,12 @@
     border-color: #0a0a0a;
     transform: translateY(-12px);
   }
-  @media (max-width: 980px) { .plan.pro { transform: none; } }
+  @media (max-width: 1180px) { .plan.pro { transform: none; } }
   .plan.pro:hover {
     transform: translateY(-16px);
     box-shadow: 0 40px 80px -24px rgba(0,0,0,0.40);
   }
-  @media (max-width: 980px) {
+  @media (max-width: 1180px) {
     .plan.pro:hover { transform: translateY(-3px); }
   }
   .plan.pro .ribbon { color: var(--green-bg); }
@@ -443,6 +446,14 @@
     border-color: #cfdcc1;
   }
   .pack.featured .seal { background: var(--green); color: #fff; }
+  .packs-note {
+    text-align: center;
+    margin-top: 28px;
+    font-family: 'IBM Plex Serif', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: #6b6258;
+  }
 
   /* ══════════════════════════════════════════════
      4. COMPARISON TABLE
@@ -893,6 +904,7 @@
     <li><a href="beta-reader.html" data-i18n="nav.beta">Beta Readers</a></li>
     <li><a href="script-studio.html" data-i18n="nav.script">Script Studio</a></li>
     <li><a href="plan.html" class="is-current" data-i18n="nav.plans">Plans</a></li>
+    <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener" data-i18n="nav.community">Community</a></li>
   </ul>
   <div class="nav-right">
     <button class="lang-toggle" aria-label="Toggle language">
@@ -928,68 +940,90 @@
   <div class="pl-plans-inner reveal d2">
     <div class="plans-grid">
 
+      <!-- FREE -->
+      <article class="plan">
+        <div class="ribbon">Start here</div>
+        <h3>Free</h3>
+        <p class="tagline">No credit card. No catch. Just start writing.</p>
+        <div class="price"><span class="num">$0</span><span class="per">forever</span></div>
+        <div class="billed">Both studios, free, forever</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Writing Studio</strong> — full features</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Script Studio</strong> — full features</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Habit building system</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Version control &amp; snapshots</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cloud backup &amp; sync</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Offline writing (PWA)</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Multi-format export</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scene board &amp; character bible</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Foreshadowing tracker</li>
+        </ul>
+        <a href="register.html?plan=free" class="cta">Start free</a>
+        <p class="footnote">No credit card required</p>
+      </article>
+
       <!-- STARTER -->
       <article class="plan">
         <div class="ribbon">For your first book</div>
         <h3>Starter</h3>
-        <p class="tagline">An AI coach to get you started, and the whole studio while you find the habit.</p>
+        <p class="tagline">AI coach to get you started.</p>
         <div class="price"><span class="num">$9</span><span class="per">/ month</span></div>
         <div class="billed">Billed monthly · or $90/year</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books, chapters, drafts</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Coach · ~84 conversations/week</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>2 Beta Reader reports / month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>50K word limit per report</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 readers per report</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Rest Protection · 4 days/month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Story Hook generator</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Weekly progress email</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Chat Coach · 20×/day</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Analysis · 10×/week</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>3</strong> reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 50K words / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>3 readers / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI story hooks</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Weekly email digest</li>
         </ul>
         <a href="register.html?plan=starter" class="cta">Start with Starter</a>
-        <p class="footnote">Free for 14 days · cancel any time</p>
+        <p class="footnote">7-day AI trial · cancel any time</p>
       </article>
 
       <!-- PRO (highlighted) -->
       <article class="plan pro">
-        <span class="badge">Most popular</span>
+        <span class="badge">Recommended</span>
         <div class="ribbon">For the writers finishing this year</div>
         <h3>Pro</h3>
-        <p class="tagline">The complete studio — coach, beta panel, full-book memory, and the runway to actually deliver.</p>
+        <p class="tagline">Best value full writing team.</p>
         <div class="price"><span class="num">$19</span><span class="per">/ month</span></div>
         <div class="billed">Billed monthly · or $190/year</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Everything in Starter</strong></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Coach · ~280 conversations/week</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>5</strong> Beta Reader reports / month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>100K</strong> word limit per report</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>5</strong> readers per report</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Rest Protection · 8 days/month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>+ AI Weekly Review</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>+ Priority support</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> AI Chat Coach</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> AI Analysis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>10</strong> reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 100K words / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>5 readers / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI story hooks + weekly review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Custom API Key (BYOK)</li>
         </ul>
         <a href="register.html?plan=pro" class="cta">Start with Pro</a>
-        <p class="footnote">Free for 14 days · cancel any time</p>
+        <p class="footnote">7-day AI trial · cancel any time</p>
       </article>
 
       <!-- TEAM -->
       <article class="plan">
         <div class="ribbon">For writing rooms &amp; studios</div>
         <h3>Team</h3>
-        <p class="tagline">For writers' rooms, screenplay collectives, and small publishers — write together, share readers, ship together.</p>
+        <p class="tagline">Write together.</p>
         <div class="price"><span class="num">$49</span><span class="per">/ month</span></div>
         <div class="billed">Billed monthly · or $490/year</div>
         <ul>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Everything in Pro</strong></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>20</strong> Beta Reader reports / month</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>8</strong> readers per report</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to <strong>5 collaborators</strong></li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Shared Character &amp; World Bibles</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Roles &amp; permission control</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Single sign-on (SSO)</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Dedicated success manager</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> AI Chat Coach</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> AI Analysis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>20</strong> reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 100K words / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>8 readers / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI story hooks + weekly review</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>5-person</strong> team management</li>
         </ul>
-        <a href="#contact" class="cta">Talk to us</a>
-        <p class="footnote">Custom seats available · invoice billing</p>
+        <a href="register.html?plan=team" class="cta">Start with Team</a>
+        <p class="footnote">For writers' rooms &amp; collectives</p>
       </article>
     </div>
   </div>
@@ -1011,31 +1045,32 @@
     <div class="packs-grid">
       <article class="pack">
         <div class="seal">i</div>
-        <h4>Single Report</h4>
-        <p class="meta">One panel · 3 readers · up to 50K words. A first read for the early draft.</p>
-        <div class="price">$19<small> / report</small></div>
-        <div class="perword">≈ $0.0004 per word</div>
-        <a href="register.html?pack=single" class="cta">Buy a single</a>
+        <h4>1 Report</h4>
+        <p class="meta">A single AI editor report. Use it whenever you want a structured read on a draft.</p>
+        <div class="price">$5<small> / report</small></div>
+        <div class="perword">Single use</div>
+        <a href="register.html?pack=1" class="cta">Buy 1 report</a>
       </article>
 
       <article class="pack featured">
         <div class="seal">ii</div>
-        <h4>Three-Pack</h4>
-        <p class="meta">Three panels · 5 readers each · up to 100K words. The way most novelists actually use it.</p>
-        <div class="price">$45<small> / 3 reports</small></div>
-        <div class="perword">Save 21% vs. single</div>
-        <a href="register.html?pack=three" class="cta">Buy a three-pack</a>
+        <h4>5 Reports</h4>
+        <p class="meta">Five AI editor reports — the way most novelists actually use it across a draft cycle.</p>
+        <div class="price">$20<small> / 5 reports</small></div>
+        <div class="perword">$4 each · save 20%</div>
+        <a href="register.html?pack=5" class="cta">Buy 5 reports</a>
       </article>
 
       <article class="pack">
         <div class="seal">iii</div>
-        <h4>Pre-publication</h4>
-        <p class="meta">Five panels · 8 readers each · 100K words · plus a line-editor pass. Final read before submission.</p>
-        <div class="price">$129<small> / bundle</small></div>
-        <div class="perword">Save 34% vs. singles</div>
-        <a href="register.html?pack=pre-pub" class="cta">Buy pre-pub</a>
+        <h4>10 Reports</h4>
+        <p class="meta">Ten AI editor reports — for serial writers, prolific drafters, and full series passes.</p>
+        <div class="price">$35<small> / 10 reports</small></div>
+        <div class="perword">$3.50 each · save 30%</div>
+        <a href="register.html?pack=10" class="cta">Buy 10 reports</a>
       </article>
     </div>
+    <p class="packs-note">Report packs never expire.</p>
   </div>
 </section>
 
@@ -1100,36 +1135,24 @@
     </div>
     <div class="faq-list">
       <details>
-        <summary>Can I switch plans?</summary>
-        <p>Any time, in either direction. Upgrade and the new features unlock immediately, prorated. Downgrade and the change applies at the next billing cycle — no surprise charges.</p>
+        <summary>What's included in the free plan?</summary>
+        <p>Both Writing Studio and Script Studio with full editing features, habit tracking, version control, cloud sync, offline mode, and multi-format export.</p>
       </details>
       <details>
-        <summary>What happens if I cancel?</summary>
-        <p>You keep access through the end of your current billing period, then your account becomes read-only. Your manuscripts stay where they are; you can re-subscribe at any time and pick up exactly where you left off, or export everything and walk away.</p>
+        <summary>What happens after the 7-day AI trial?</summary>
+        <p>Your studios and all data remain intact. You keep full editing, sync, and export features. AI coaching features pause until you subscribe or use credits.</p>
       </details>
       <details>
-        <summary>Do you offer student or hardship discounts?</summary>
-        <p>Yes. Verified students and writers in financial hardship can apply for a 50% discount on Starter and Pro. Write to us with a few sentences about your situation — we don't ask for documentation we wouldn't want to share ourselves.</p>
+        <summary>What's the difference between subscriptions and report packs?</summary>
+        <p>Subscriptions include AI coaching, analysis tools, and monthly report credits. Report packs are one-time purchases for AI editor reports only.</p>
       </details>
       <details>
-        <summary>Is there a free trial on the Team plan?</summary>
-        <p>Team plans start with a 30-day pilot for the whole room, on us. Schedule a 20-minute onboarding call and we'll set up your collaborators, shared bibles, and SSO before the meeting ends.</p>
+        <summary>Can I cancel anytime?</summary>
+        <p>Yes. Cancel from account settings. Your features continue until the billing period ends. Report packs never expire regardless.</p>
       </details>
       <details>
-        <summary>Do unused report quotas roll over?</summary>
-        <p>Unused reports roll over for one billing cycle, up to your plan's monthly limit. Beyond that, additional reports can be purchased à la carte — see the report packs above.</p>
-      </details>
-      <details>
-        <summary>What if I just want one report and not a subscription?</summary>
-        <p>Buy a report pack à la carte. The single report is $19, the three-pack is $45, and the pre-publication bundle (with line edit) is $129. No subscription, no recurring charge.</p>
-      </details>
-      <details>
-        <summary>Are my manuscripts private?</summary>
-        <p>Always. Your work is encrypted at rest and in transit, never used for AI training, and never shown to other users. The Beta Reader panel reads your draft, returns the report, and the content is purged from active memory.</p>
-      </details>
-      <details>
-        <summary>Which currencies do you support?</summary>
-        <p>USD, EUR, GBP, CAD, AUD, JPY, and TWD at launch. Local currency is auto-detected at checkout. VAT and sales tax are included where required.</p>
+        <summary>What payment methods do you support?</summary>
+        <p>Stripe processes all payments: Visa, Mastercard, Amex, Apple Pay, and Google Pay.</p>
       </details>
     </div>
   </div>
@@ -1191,6 +1214,16 @@
           <img src="assets/logo.svg" alt="Slima" class="slima-logo">
         </a>
         <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+        <div class="footer-downloads">
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima.dmg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-3.18 2.6-4.71 2.71-4.79-1.48-2.16-3.78-2.46-4.59-2.49-1.95-.2-3.81 1.15-4.81 1.15-1.01 0-2.53-1.13-4.16-1.1-2.13.03-4.11 1.24-5.21 3.16-2.23 3.86-.57 9.57 1.6 12.71 1.06 1.54 2.32 3.27 3.97 3.21 1.6-.07 2.2-1.04 4.13-1.04 1.92 0 2.47 1.04 4.16 1 1.72-.03 2.81-1.57 3.86-3.12 1.22-1.79 1.72-3.52 1.75-3.61-.04-.02-3.36-1.29-3.4-5.08zm-3.16-9.34C14.79 1.62 15.4.16 15.23-1.3c-1.26.05-2.79.84-3.7 1.91-.82.94-1.54 2.45-1.34 3.88 1.41.11 2.85-.71 3.7-1.79z"/></svg>
+            Download for Mac
+          </a>
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima-Setup.exe">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5L10 4.5V11H3V5.5zM3 18.5L10 19.5V13H3V18.5zM11 19.7L21 21V13H11V19.7zM11 4.3V11H21V3L11 4.3z"/></svg>
+            Download for Windows
+          </a>
+        </div>
       </div>
       <div class="footer-col">
         <h4>Product</h4>
@@ -1207,7 +1240,7 @@
           <li><a href="#">Help Center</a></li>
           <li><a href="#">Templates</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Community</a></li>
+          <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener">Community</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1216,7 +1249,7 @@
           <li><a href="#">About</a></li>
           <li><a href="#">Manifesto</a></li>
           <li><a href="#">Careers</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="mailto:service@slima.ai">Contact</a></li>
         </ul>
       </div>
       <div class="footer-col">
@@ -1230,7 +1263,18 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2026 Slima. All rights reserved.</span>
+      <span>© 2026 Slima. All rights reserved. · <a href="mailto:service@slima.ai">service@slima.ai</a></span>
+      <div class="footer-social">
+        <a href="https://www.threads.com/@slima.ai" target="_blank" rel="noopener" aria-label="Threads">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.18 2C6.55 2 2 6.55 2 12.18c0 5.62 4.55 10.18 10.18 10.18s10.18-4.55 10.18-10.18C22.36 6.55 17.81 2 12.18 2zm4.83 9.81c-.41-.21-.86-.39-1.34-.54.05-.42.07-.83.07-1.23 0-1.97-.74-3.34-2.18-3.96-.18-.08-.37-.14-.56-.19-1.04-.27-2.36-.18-3.49.36-.91.43-1.61 1.13-2.06 2.04-.16.31-.04.69.27.85.31.16.69.04.85-.27.32-.66.83-1.16 1.49-1.47.79-.38 1.78-.46 2.61-.21.7.18 1.93.59 2.51 1.78-.4-.07-.8-.11-1.21-.11-2.21 0-4 1.79-4 4 0 2.21 1.79 4 4 4 1.31 0 2.41-.61 3.13-1.6.91.94 1.34 2.27 1.34 3.4 0 1.84-1.85 3.38-4.04 3.38-2.73 0-4.27-2.06-4.59-3.91-.06-.34-.39-.57-.73-.51-.34.06-.57.39-.51.73.39 2.27 2.34 5.04 5.83 5.04 2.85 0 5.31-2.06 5.31-4.73 0-1.32-.4-2.81-1.27-4.05zm-3.32 2.42c-.99 0-1.79-.81-1.79-1.79 0-.99.81-1.79 1.79-1.79.43 0 .85.07 1.25.21-.05.32-.13.64-.23.95-.27.91-.86 1.42-1.02 2.42z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/slima.ai" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7" fill="currentColor"/></svg>
+        </a>
+        <a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener" aria-label="Discord">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 00-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 00-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05 0 .07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.04.01-.05.06-.04.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12z"/></svg>
+        </a>
+      </div>
       <div class="footer-legal">
         <a href="#">Privacy</a>
         <a href="#">Terms</a>
