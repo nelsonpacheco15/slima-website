@@ -1,0 +1,79 @@
+/* Slima — interactive states for marketing mockups.
+   Layered on top of each page's existing mockup styles. */
+
+/* ── Writing Studio ─────────────────────────────────────── */
+.chat-mock .chat-msg.cm-pending {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.chat-mock .chat-msg {
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.chat-mock .chat-msg.cm-shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ws-mock .side .row.indent { transition: background 0.18s ease, color 0.18s ease; }
+.ws-mock .main .body { transition: opacity 0.18s ease; }
+.dual-mock .sa-nav .item { transition: color 0.18s ease; }
+
+/* ── Script Studio ─────────────────────────────────────── */
+.ss-mock .scenes .scene { transition: background 0.2s ease, box-shadow 0.2s ease; border-radius: 8px; }
+.ss-mock .scenes .scene.is-focused {
+  background: rgba(20,90,90,0.05);
+  box-shadow: inset 3px 0 0 var(--teal-2, #2d7d7a);
+}
+.ss-room .ss-line { transition: opacity 0.25s ease, transform 0.25s ease; }
+.ss-room .ss-line.is-dim { opacity: 0.32; }
+.ss-room .ss-line.is-pop { transform: translateX(2px); }
+.ss-room .ss-line-head { user-select: none; }
+.ss-room .ss-room-toolbar .filter { transition: color 0.18s ease; }
+.ss-room .ss-room-season ul li { transition: background 0.18s ease; border-radius: 4px; }
+.ss-room .ss-cast-card { transition: background 0.2s ease, box-shadow 0.2s ease; }
+
+/* ── Beta Reader ───────────────────────────────────────── */
+.br-mock .history .item,
+.br-mock .reptabs span,
+.br-mock .history .tabs span { transition: background 0.18s ease, color 0.18s ease; }
+
+.report-mock .rm-section {
+  transition: opacity 0.28s ease, box-shadow 0.28s ease, transform 0.28s ease, border-color 0.28s ease;
+}
+.report-mock .rm-section.is-dim { opacity: 0.42; }
+.report-mock .rm-section.is-focused {
+  box-shadow: 0 18px 44px -18px rgba(0,0,0,0.20);
+  transform: translateY(-2px);
+}
+.report-mock .rm-section.is-flash {
+  box-shadow: inset 3px 0 0 var(--wine, #6b3a4a);
+}
+
+.reader-tile {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  position: relative;
+}
+.reader-tile.is-picked {
+  border-color: var(--green, #4a6b3e) !important;
+  box-shadow: 0 14px 30px -12px rgba(74,107,62,0.30);
+}
+.reader-tile.is-picked::after {
+  content: '✓';
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--green, #4a6b3e);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; line-height: 1;
+}
+.reader-tile:focus-visible { outline: 2px solid var(--green, #4a6b3e); outline-offset: 3px; }
+
+/* ── Reduced motion ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .chat-mock .chat-msg.cm-pending { opacity: 1; transform: none; }
+  .ss-mock .scenes .scene,
+  .ss-room .ss-line,
+  .report-mock .rm-section,
+  .reader-tile { transition: none; }
+}
