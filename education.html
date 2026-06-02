@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slima for Students — Finish the book, at a student price</title>
+<meta name="description" content="Your teacher uses Slima. Now you get it too — free to start, with 20% off Pro unlocked by your educator. Editor-grade feedback and full-book memory built to help you finish.">
+<link rel="stylesheet" href="assets/marketing.css">
+<style>
+  /* ──────────────────────────────────────────────
+     EDUCATION — student-first landing page
+     Borrowed trust → student pain → perks → the
+     teacher-unlocked discount. Indigo/violet accent
+     borrowed from the brand promo gradient.
+     ────────────────────────────────────────────── */
+  :root {
+    --edu:       #6366f1;
+    --edu-deep:  #4f46e5;
+    --edu-soft:  #eef0ff;
+    --edu-grad:  linear-gradient(90deg, #5b6cff 0%, #8a5bff 50%, #c45bff 100%);
+    --paper:     #faf9f6;
+    --paper-2:   #f3f1ec;
+    --rule:      #ececea;
+    --ink-2:     #2a2a2e;
+  }
+  body { background: var(--paper); }
+
+  /* On-load reveal (matches plan.html) */
+  .reveal { opacity: 0; transform: translateY(18px); animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  .reveal.d1 { animation-delay: 0.05s; }
+  .reveal.d2 { animation-delay: 0.15s; }
+  .reveal.d3 { animation-delay: 0.25s; }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; animation: none; }
+  }
+
+  .edu-wrap { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+  .edu-eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--edu-deep); margin-bottom: 16px;
+  }
+  .edu-h2 {
+    font-family: 'IBM Plex Serif', serif; font-weight: 400;
+    font-size: clamp(32px, 4.2vw, 54px); line-height: 1.06;
+    letter-spacing: -0.025em; color: #0a0a0a;
+  }
+  .edu-h2 em { font-style: italic; }
+  .edu-lead { font-size: 17px; line-height: 1.65; color: #555; max-width: 560px; }
+
+  /* ── Education promo bar (replaces stock promo) ── */
+  .promo.edu-promo { background: var(--edu-grad); }
+
+  /* ════════════════ HERO ════════════════ */
+  .edu-hero { padding: 64px 0 84px; background: var(--paper); }
+  .edu-hero-grid {
+    display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center;
+  }
+  .edu-trust-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--edu-soft); color: var(--edu-deep);
+    border: 1px solid #dce0ff; border-radius: 100px;
+    padding: 7px 14px; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+  }
+  .edu-trust-tag svg { width: 15px; height: 15px; }
+  .edu-hero h1 {
+    font-family: 'IBM Plex Serif', serif; font-weight: 500;
+    font-size: clamp(40px, 5.4vw, 68px); line-height: 1.02;
+    letter-spacing: -0.03em; color: #0a0a0a; margin-bottom: 22px;
+  }
+  .edu-hero h1 em { font-style: italic; }
+  .edu-hero .edu-lead { font-size: 18px; max-width: 540px; margin-bottom: 32px; }
+  .edu-cta-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 9px;
+    background: #0a0a0a; color: #fff; text-decoration: none;
+    padding: 15px 28px; border-radius: 100px; font-size: 15px; font-weight: 600;
+    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { background: var(--edu-deep); transform: translateY(-2px); box-shadow: 0 14px 30px -12px rgba(79,70,229,0.5); }
+  .btn-primary svg { width: 14px; height: 14px; transition: transform 0.2s; }
+  .btn-primary:hover svg { transform: translateX(3px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: #0a0a0a; text-decoration: none; padding: 15px 22px;
+    border-radius: 100px; font-size: 15px; font-weight: 600;
+    border: 1px solid #d9d7d0; background: #fff; transition: background 0.2s, border-color 0.2s;
+  }
+  .btn-ghost:hover { background: var(--paper-2); border-color: #c9c7c0; }
+  .edu-hero-foot { margin-top: 26px; font-size: 13.5px; color: #8a8780; }
+
+  /* Hero "student pass" card */
+  .pass-card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 20px;
+    box-shadow: 0 30px 70px -32px rgba(20,20,40,0.28); overflow: hidden;
+  }
+  .pass-head { background: var(--edu-grad); color: #fff; padding: 22px 24px; }
+  .pass-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+  .pass-head .t { font-family: 'IBM Plex Serif', serif; font-size: 22px; margin-top: 4px; }
+  .pass-body { padding: 8px 24px 22px; }
+  .pass-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .pass-row:last-child { border-bottom: 0; }
+  .pass-row .name { font-weight: 600; font-size: 15px; color: #0a0a0a; }
+  .pass-row .name span { display: block; font-weight: 400; font-size: 12.5px; color: #8a8780; margin-top: 2px; }
+  .pass-row .price { text-align: right; white-space: nowrap; }
+  .pass-row .price .now { font-family: 'IBM Plex Serif', serif; font-size: 22px; color: #0a0a0a; }
+  .pass-row .price .was { font-size: 12.5px; color: #b6b3ab; text-decoration: line-through; margin-right: 6px; }
+  .pass-row .price .per { font-size: 12px; color: #8a8780; }
+  .pass-foot { background: var(--paper); padding: 14px 24px; font-size: 12.5px; color: #6b6b6b; text-align: center; border-top: 1px solid var(--rule); }
+
+  /* Hero "what you get" feature card */
+  .feat-card { background: #fff; border: 1px solid var(--rule); border-radius: 20px; box-shadow: 0 30px 70px -32px rgba(20,20,40,0.28); overflow: hidden; }
+  .feat-head { background: var(--edu-grad); color: #fff; padding: 22px 24px; }
+  .feat-head .k { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
+  .feat-head .t { font-family: 'IBM Plex Serif', serif; font-size: 21px; margin-top: 4px; line-height: 1.15; }
+  .feat-list { list-style: none; padding: 6px 24px 18px; }
+  .feat-list li { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--rule); }
+  .feat-list li:last-child { border-bottom: 0; }
+  .feat-list .ic { width: 36px; height: 36px; border-radius: 10px; background: var(--edu-soft); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .feat-list .ic svg { width: 18px; height: 18px; color: var(--edu-deep); }
+  .feat-list .tx b { display: block; font-size: 14.5px; font-weight: 600; color: #0a0a0a; }
+  .feat-list .tx span { display: block; font-size: 12.5px; color: #8a8780; margin-top: 2px; }
+  .feat-foot { background: var(--paper); padding: 13px 24px; font-size: 12.5px; color: #6b6b6b; text-align: center; border-top: 1px solid var(--rule); }
+
+  /* ════════════════ logos / trust strip ════════════════ */
+  .edu-strip { padding: 30px 0; background: #fff; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .edu-strip-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px 40px; }
+  .edu-strip .stat { display: flex; align-items: baseline; gap: 8px; }
+  .edu-strip .stat b { font-family: 'IBM Plex Serif', serif; font-size: 22px; color: #0a0a0a; }
+  .edu-strip .stat span { font-size: 13.5px; color: #6b6b6b; }
+  .edu-strip .dot { width: 4px; height: 4px; border-radius: 50%; background: #d8d6cf; }
+
+  /* ════════════════ section base ════════════════ */
+  .edu-section { padding: 100px 0; }
+  .edu-section.paper2 { background: var(--paper-2); }
+  .edu-section.dark { background: #0a0a0a; color: #fff; }
+  .edu-section.dark .edu-h2 { color: #fff; }
+  .edu-section.dark .edu-eyebrow { color: #b9b6ff; }
+  .edu-head { max-width: 640px; margin-bottom: 56px; }
+  .edu-head.center { margin-left: auto; margin-right: auto; text-align: center; }
+
+  /* ════════════════ PAIN ════════════════ */
+  .pain-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .pain-card {
+    background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 26px 24px;
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .pain-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -22px rgba(20,20,40,0.22); }
+  .pain-card .icn { width: 40px; height: 40px; border-radius: 11px; background: var(--paper-2); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .pain-card .icn svg { width: 20px; height: 20px; color: var(--edu-deep); }
+  .pain-card h3 { font-family: 'IBM Plex Serif', serif; font-weight: 500; font-size: 18px; color: #0a0a0a; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .pain-card p { font-size: 14px; line-height: 1.55; color: #6b6b6b; }
+
+  /* ════════════════ PERKS ════════════════ */
+  .perk-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 22px; }
+  .perk {
+    background: #fff; border: 1px solid var(--rule); border-radius: 20px; padding: 32px;
+    display: flex; flex-direction: column; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  }
+  .perk:hover { transform: translateY(-3px); box-shadow: 0 22px 50px -26px rgba(20,20,40,0.24); border-color: #e0deff; }
+  .perk.span6 { grid-column: span 6; }
+  .perk.span4 { grid-column: span 4; }
+  .perk-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--edu-deep); margin-bottom: 14px; }
+  .perk h3 { font-family: 'IBM Plex Serif', serif; font-weight: 500; font-size: 24px; line-height: 1.12; letter-spacing: -0.015em; color: #0a0a0a; margin-bottom: 10px; }
+  .perk p { font-size: 14.5px; line-height: 1.6; color: #5f5f5f; }
+  .perk .perk-visual { margin-top: 22px; }
+
+  /* mini beta-reader report */
+  .mini-report { background: var(--paper); border: 1px solid var(--rule); border-radius: 14px; padding: 18px; }
+  .mini-report .mr-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .mini-report .mr-title { font-weight: 600; font-size: 13px; color: #0a0a0a; }
+  .mini-report .mr-title span { display: block; font-weight: 400; font-size: 11px; color: #9a978f; margin-top: 1px; }
+  .mini-report .mr-badge { font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: #fff; background: var(--edu-deep); padding: 4px 9px; border-radius: 100px; }
+  .mr-scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 14px; }
+  .mr-score { background: #fff; border: 1px solid var(--rule); border-radius: 9px; padding: 9px 10px; }
+  .mr-score .lab { font-size: 10.5px; color: #9a978f; }
+  .mr-score .val { font-family: 'IBM Plex Serif', serif; font-size: 18px; color: #0a0a0a; }
+  .mr-quote { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 13px; line-height: 1.5; color: #3a3a3a; border-left: 2px solid var(--edu); padding-left: 12px; }
+  .mr-quote .who { display: block; font-style: normal; font-family: 'Inter', sans-serif; font-size: 11px; color: #9a978f; margin-top: 6px; }
+
+  /* memory chat bubble */
+  .mem-chat { display: flex; flex-direction: column; gap: 10px; }
+  .mem-q { align-self: flex-start; background: #fff; border: 1px solid var(--rule); border-radius: 12px 12px 12px 4px; padding: 11px 14px; font-size: 13px; color: #0a0a0a; max-width: 90%; }
+  .mem-a { align-self: flex-end; background: var(--edu-deep); color: #fff; border-radius: 12px 12px 4px 12px; padding: 11px 14px; font-size: 13px; line-height: 1.5; max-width: 95%; }
+
+  /* version branches */
+  .branches { display: flex; flex-direction: column; gap: 9px; }
+  .branch { display: flex; align-items: center; gap: 11px; background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 11px 14px; font-size: 13px; color: #3a3a3a; }
+  .branch .b-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+  .branch.cur { border-color: #d6d2ff; background: var(--edu-soft); color: #0a0a0a; font-weight: 600; }
+  .branch .b-tag { margin-left: auto; font-size: 11px; color: #9a978f; }
+
+  /* small feature list inside perk */
+  .perk-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .perk-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; color: #3a3a3a; }
+  .perk-list svg { width: 17px; height: 17px; color: var(--edu-deep); flex-shrink: 0; margin-top: 1px; }
+
+  /* export formats chips */
+  .fmt-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .fmt-chips span { font-family: 'IBM Plex Serif', serif; font-size: 13px; color: #0a0a0a; background: var(--paper); border: 1px solid var(--rule); border-radius: 8px; padding: 7px 13px; }
+
+  /* ════════════════ PRICING ════════════════ */
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; align-items: stretch; }
+  .plan-card { position: relative; background: #fff; border: 1px solid var(--rule); border-radius: 20px; padding: 32px 30px; display: flex; flex-direction: column; }
+  .plan-card.hot { border: 1.5px solid var(--edu); box-shadow: 0 30px 70px -34px rgba(99,102,241,0.55); }
+  .plan-card .badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); background: var(--edu-grad); color: #fff; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; padding: 6px 16px; border-radius: 100px; white-space: nowrap; }
+  .plan-card h3 { font-family: 'IBM Plex Serif', serif; font-weight: 500; font-size: 24px; color: #0a0a0a; }
+  .plan-card .tagline { font-size: 13.5px; color: #8a8780; margin: 6px 0 20px; }
+  .plan-price { display: flex; align-items: baseline; gap: 10px; }
+  .plan-price .was { font-size: 16px; color: #b6b3ab; text-decoration: line-through; }
+  .plan-price .now { font-family: 'IBM Plex Serif', serif; font-size: 40px; color: #0a0a0a; letter-spacing: -0.02em; }
+  .plan-price .per { font-size: 14px; color: #8a8780; }
+  .plan-save { margin-top: 8px; font-size: 12.5px; font-weight: 600; color: var(--edu-deep); }
+  .plan-save.zero { color: #8a8780; font-weight: 500; }
+  .plan-card ul { list-style: none; margin: 24px 0 28px; display: flex; flex-direction: column; gap: 12px; }
+  .plan-card li { display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.4; color: #3a3a3a; }
+  .plan-card li svg { width: 17px; height: 17px; color: var(--edu-deep); flex-shrink: 0; margin-top: 1px; }
+  .plan-card li strong { color: #0a0a0a; }
+  .plan-cta { margin-top: auto; display: block; text-align: center; text-decoration: none; padding: 14px 20px; border-radius: 100px; font-size: 14.5px; font-weight: 600; transition: transform 0.2s, background 0.2s; }
+  .plan-cta.solid { background: #0a0a0a; color: #fff; }
+  .plan-cta.solid:hover { background: var(--edu-deep); transform: translateY(-2px); }
+  .plan-cta.hot { background: var(--edu-deep); color: #fff; }
+  .plan-cta.hot:hover { background: #4338ca; transform: translateY(-2px); }
+  .plan-cta.line { border: 1px solid #d9d7d0; color: #0a0a0a; }
+  .plan-cta.line:hover { background: var(--paper-2); transform: translateY(-2px); }
+  .price-note { text-align: center; margin-top: 28px; font-size: 13.5px; color: #6b6b6b; }
+  .price-note a { color: var(--edu-deep); }
+
+  /* ════════════════ HOW TO CLAIM ════════════════ */
+  .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .step { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 18px; padding: 30px; }
+  .step .num { font-family: 'IBM Plex Serif', serif; font-size: 15px; color: #b9b6ff; margin-bottom: 16px; }
+  .step h3 { font-family: 'IBM Plex Serif', serif; font-weight: 500; font-size: 21px; color: #fff; margin-bottom: 10px; }
+  .step p { font-size: 14.5px; line-height: 1.6; color: rgba(255,255,255,0.62); }
+  .step p em { color: #fff; font-style: normal; font-weight: 600; }
+
+  /* ════════════════ PROOF ════════════════ */
+  .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+  .proof-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .proof-stat { background: #fff; border: 1px solid var(--rule); border-radius: 16px; padding: 26px; }
+  .proof-stat b { display: block; font-family: 'IBM Plex Serif', serif; font-size: 40px; line-height: 1; color: #0a0a0a; letter-spacing: -0.02em; }
+  .proof-stat span { display: block; margin-top: 8px; font-size: 13.5px; color: #6b6b6b; }
+  .proof-quote { font-family: 'IBM Plex Serif', serif; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.35; color: #0a0a0a; letter-spacing: -0.015em; }
+  .proof-quote .stars { color: #f0b429; font-size: 15px; letter-spacing: 3px; margin-bottom: 18px; }
+  .proof-quote .who { font-family: 'Inter', sans-serif; font-size: 14px; color: #8a8780; margin-top: 18px; }
+
+  /* ════════════════ FAQ ════════════════ */
+  .faq-list { max-width: 820px; margin: 0 auto; }
+  .faq-item { border-bottom: 1px solid var(--rule); }
+  .faq-item summary { list-style: none; cursor: pointer; padding: 24px 0; display: flex; align-items: center; justify-content: space-between; gap: 20px; font-family: 'IBM Plex Serif', serif; font-size: 19px; color: #0a0a0a; letter-spacing: -0.01em; }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary .chev { width: 22px; height: 22px; flex-shrink: 0; color: var(--edu-deep); transition: transform 0.25s; }
+  .faq-item[open] summary .chev { transform: rotate(45deg); }
+  .faq-item .ans { padding: 0 0 24px; font-size: 15px; line-height: 1.65; color: #5f5f5f; max-width: 680px; }
+
+  /* ════════════════ FINAL CTA ════════════════ */
+  .final { text-align: center; padding: 110px 0; background: var(--paper-2); }
+  .final h2 { font-family: 'IBM Plex Serif', serif; font-weight: 400; font-size: clamp(34px, 4.6vw, 60px); line-height: 1.05; letter-spacing: -0.025em; color: #0a0a0a; margin-bottom: 18px; }
+  .final h2 em { font-style: italic; }
+  .final p { font-size: 16px; color: #6b6b6b; max-width: 480px; margin: 0 auto 32px; }
+  .final .edu-cta-row { justify-content: center; }
+  .final .micro { margin-top: 22px; font-size: 13px; color: #8a8780; }
+
+  /* ════════════════ RESPONSIVE ════════════════ */
+  @media (max-width: 980px) {
+    .edu-hero-grid { grid-template-columns: 1fr; gap: 44px; }
+    .pass-card { max-width: 440px; }
+    .pain-grid { grid-template-columns: 1fr 1fr; }
+    .perk.span6, .perk.span4 { grid-column: span 12; }
+    .price-grid { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .proof-grid { grid-template-columns: 1fr; gap: 36px; }
+  }
+  @media (max-width: 560px) {
+    .edu-wrap { padding: 0 20px; }
+    .edu-section { padding: 72px 0; }
+    .pain-grid { grid-template-columns: 1fr; }
+    .proof-stats { grid-template-columns: 1fr 1fr; }
+    .edu-strip .dot { display: none; }
+    .edu-cta-row .btn-primary, .edu-cta-row .btn-ghost { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- PROMO -->
+<div class="promo edu-promo">
+  <span>Slima for students — full-book memory and editor-grade feedback, built to help you finish.</span>
+  <a href="#what-you-get">See what you get →</a>
+</div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo" aria-label="Slima — home">
+    <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="writing-studio.html">Writing Studio</a></li>
+    <li><a href="beta-reader.html">Beta Readers</a></li>
+    <li><a href="script-studio.html">Script Studio</a></li>
+    <li><a href="plan.html">Plans</a></li>
+    <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener">Community</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-toggle" aria-label="Toggle language">
+      <span class="lang lang-en is-active">EN</span><span class="sep">·</span><span class="lang lang-zh">中</span>
+    </button>
+    <a href="login.html">Log in</a>
+    <a href="register.html?plan=free&ref=education" class="nav-cta">Start free</a>
+    <button class="nav-hamburger"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ════════════════ HERO ════════════════ -->
+<section class="edu-hero">
+  <div class="edu-wrap">
+    <div class="edu-hero-grid">
+      <div class="reveal d1">
+        <span class="edu-trust-tag">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          Shared with you by your teacher
+        </span>
+        <h1>Finish the book you keep<br><em>starting over.</em></h1>
+        <p class="edu-lead">Slima keeps your entire manuscript in memory and returns editor-grade feedback on every chapter — so you stop losing the thread and actually reach the end. It's the same studio your teacher uses.</p>
+        <div class="edu-cta-row">
+          <a href="register.html?plan=free&ref=education" class="btn-primary">Start writing free
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#what-you-get" class="btn-ghost">See everything you get</a>
+        </div>
+        <p class="edu-hero-foot">Free to start · Never trained on your work · 20% off Pro with your teacher</p>
+      </div>
+
+      <div class="reveal d2">
+        <div class="feat-card" role="img" aria-label="What you get in your Slima account: Beta Reader feedback, full-book memory, version control, both studios, and private encrypted storage that is never used to train AI.">
+          <div class="feat-head">
+            <div class="k">In your account</div>
+            <div class="t">The writing team behind your book</div>
+          </div>
+          <ul class="feat-list">
+            <li>
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>
+              <span class="tx"><b>Beta Reader feedback</b><span>Scored, structured notes on every chapter</span></span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></span>
+              <span class="tx"><b>Full-book memory</b><span>It never forgets your plot or characters</span></span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v12"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg></span>
+              <span class="tx"><b>Version control</b><span>Try the risky ending, keep the original</span></span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
+              <span class="tx"><b>Writing + Script Studio</b><span>Novels and screenplays in one project</span></span>
+            </li>
+            <li>
+              <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+              <span class="tx"><b>Private &amp; yours</b><span>Encrypted, and never used to train AI</span></span>
+            </li>
+          </ul>
+          <div class="feat-foot">Everything above is free to start — paid plans add more AI volume</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ TRUST STRIP ════════════════ -->
+<div class="edu-strip">
+  <div class="edu-strip-inner edu-wrap reveal">
+    <div class="stat"><b>86%</b><span>finish their first project</span></div>
+    <span class="dot"></span>
+    <div class="stat"><b>50K+</b><span>active manuscripts</span></div>
+    <span class="dot"></span>
+    <div class="stat"><b>4.9★</b><span>from 2,000+ writers</span></div>
+    <span class="dot"></span>
+    <div class="stat"><b>0</b><span>of your words used to train AI</span></div>
+  </div>
+</div>
+
+<!-- ════════════════ PAIN ════════════════ -->
+<section class="edu-section">
+  <div class="edu-wrap">
+    <div class="edu-head reveal">
+      <div class="edu-eyebrow">Why drafts stall out</div>
+      <h2 class="edu-h2">The hard part was never <em>the writing.</em></h2>
+      <p class="edu-lead" style="margin-top:18px;">You can write a great chapter. Finishing the whole thing — across weeks, deadlines, and rewrites — is where most student projects fall apart. Slima is built for exactly that gap.</p>
+    </div>
+    <div class="pain-grid reveal d1">
+      <div class="pain-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Feedback that never comes</h3>
+        <p>You wait weeks for a peer review — or get back "I liked it, good job." Nothing you can actually fix.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <h3>You lose the thread</h3>
+        <p>Open the draft a week later and you've forgotten a character's age, a subplot, the tone you set in chapter one.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg></div>
+        <h3>You start over</h3>
+        <p>Trying a new ending means risking the version that worked. So you don't try — and the draft stays stuck.</p>
+      </div>
+      <div class="pain-card">
+        <div class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Pro tools cost too much</h3>
+        <p>The software that actually helps is priced for professionals — not for someone on a student budget.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PERKS ════════════════ -->
+<section class="edu-section paper2" id="what-you-get">
+  <div class="edu-wrap">
+    <div class="edu-head reveal">
+      <div class="edu-eyebrow">What you get</div>
+      <h2 class="edu-h2">Tools that get you to <em>"The End."</em></h2>
+      <p class="edu-lead" style="margin-top:18px;">This is why students stay. The same studio your teacher uses — built around the things that keep a long project moving.</p>
+    </div>
+
+    <div class="perk-grid">
+      <!-- Beta Reader (big) -->
+      <article class="perk span6 reveal d1">
+        <div class="perk-kicker">Beta Reader feedback</div>
+        <h3>Honest, structured notes — tonight, not in three weeks.</h3>
+        <p>A panel of AI readers actually reads your chapter and returns a real report: scores, an attention curve showing where readers drift, the risk they put it down, and specific lines to fix. Bring the mechanical critique to class already done.</p>
+        <div class="perk-visual">
+          <div class="mini-report">
+            <div class="mr-top">
+              <div class="mr-title">Reading Report — Chapter 1<span>Manuscript v4 · 5 readers · 1 line editor</span></div>
+              <div class="mr-badge">Delivered</div>
+            </div>
+            <div class="mr-scores">
+              <div class="mr-score"><div class="lab">Pull</div><div class="val">7.4</div></div>
+              <div class="mr-score"><div class="lab">Pace</div><div class="val">6.2</div></div>
+              <div class="mr-score"><div class="lab">DNF risk</div><div class="val">Med</div></div>
+            </div>
+            <p class="mr-quote">I almost stopped at chapter three — the timeline confused me. I went back, found my footing, and chapter five hooked me hard.
+              <span class="who">Maya, 34 · literary fiction</span>
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <!-- Full-book memory (big) -->
+      <article class="perk span6 reveal d2">
+        <div class="perk-kicker">Full-book memory</div>
+        <h3>It never forgets your plot. So you can't lose it.</h3>
+        <p>Slima holds your whole manuscript in memory. Open it at 2 a.m. and it's exactly where you left off — characters, timeline, tone and all. Ask it anything about your draft and the answer is about <em>your</em> book, not generic writing advice.</p>
+        <div class="perk-visual">
+          <div class="mem-chat">
+            <div class="mem-q">Where have I been inconsistent with Inspector Rivière's age?</div>
+            <div class="mem-a">Two places. Chapter 1 calls her early forties; Chapter 6 references fifteen years on the force; Chapter 9 says she joined in 2008. Reconcile to seventeen years to keep the early-forties read.</div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Version branching -->
+      <article class="perk span4 reveal d1">
+        <div class="perk-kicker">Version control</div>
+        <h3>Try the risky ending. Keep the safe one.</h3>
+        <p>Every draft is saved as a branch you can compare, restore, or merge. Experiment freely — nothing good ever gets overwritten.</p>
+        <div class="perk-visual">
+          <div class="branches">
+            <div class="branch"><span class="b-dot" style="background:#c9c7c0"></span>v3 · Pacing tightened<span class="b-tag">restore</span></div>
+            <div class="branch cur"><span class="b-dot" style="background:var(--edu-deep)"></span>main · v4<span class="b-tag">current</span></div>
+            <div class="branch"><span class="b-dot" style="background:#8a5bff"></span>alt-ending<span class="b-tag">compare</span></div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Two studios -->
+      <article class="perk span4 reveal d2">
+        <div class="perk-kicker">Writing + Script Studio</div>
+        <h3>Novels and screenplays, one project.</h3>
+        <p>Write long-form fiction, essays, and theses in Writing Studio, or industry-format scripts in Script Studio — without switching tools.</p>
+        <ul class="perk-list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Distraction-free serif editor</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Outline, character &amp; timeline tools</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scene branching &amp; revision colors</li>
+        </ul>
+      </article>
+
+      <!-- Export + ownership -->
+      <article class="perk span4 reveal d3">
+        <div class="perk-kicker">Yours to submit, yours to keep</div>
+        <h3>Hand it in. In the right format.</h3>
+        <p>Export any chapter to <strong>.docx</strong>, <strong>.epub</strong>, or <strong>Markdown</strong> — submit the way your teacher wants, no conversion mess. And your work stays yours: encrypted, private, and never used to train AI.</p>
+        <div class="fmt-chips">
+          <span>.docx</span><span>.epub</span><span>.md</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PRICING ════════════════ -->
+<section class="edu-section" id="pricing">
+  <div class="edu-wrap">
+    <div class="edu-head center reveal">
+      <div class="edu-eyebrow">Plans</div>
+      <h2 class="edu-h2">The studio is the <em>same on every plan.</em></h2>
+      <p class="edu-lead" style="margin:18px auto 0;">The editor, version control, and export are free forever — start there and never pay a cent. Paid plans only add more AI coaching and feedback reports. And because your teacher is a Slima Educator, you get 20% off when you upgrade — easier, never required.</p>
+    </div>
+
+    <div class="price-grid reveal d1">
+      <!-- FREE -->
+      <article class="plan-card">
+        <h3>Free</h3>
+        <p class="tagline">No card. No catch. Just start writing.</p>
+        <div class="plan-price"><span class="now">$0</span><span class="per">forever</span></div>
+        <div class="plan-save zero">Yours for as long as you want</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Writing &amp; Script Studio</strong> — full features</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Version control &amp; cloud sync</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Offline writing &amp; multi-format export</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Scene board &amp; character bible</li>
+        </ul>
+        <a href="register.html?plan=free&ref=education" class="plan-cta line">Start free</a>
+      </article>
+
+      <!-- STARTER -->
+      <article class="plan-card">
+        <h3>Starter</h3>
+        <p class="tagline">An AI coach to get you moving.</p>
+        <div class="plan-price"><span class="was">$9</span><span class="now">$7.20</span><span class="per">/ month</span></div>
+        <div class="plan-save">You save 20% — student price</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> books</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>AI Chat Coach &amp; analysis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>3</strong> reading reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 50K words / report</li>
+        </ul>
+        <a href="register.html?plan=starter&ref=education" class="plan-cta solid">Get Starter</a>
+      </article>
+
+      <!-- PRO -->
+      <article class="plan-card hot">
+        <span class="badge">Most popular for students</span>
+        <h3>Pro</h3>
+        <p class="tagline">The full writing team behind your book.</p>
+        <div class="plan-price"><span class="was">$19</span><span class="now">$15.20</span><span class="per">/ month</span></div>
+        <div class="plan-save">You save 20% — student price</div>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>Unlimited</strong> AI Chat Coach &amp; analysis</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><strong>10</strong> reading reports / month</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Up to 100K words / report</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>5 readers / report + weekly review</li>
+        </ul>
+        <a href="register.html?plan=pro&ref=education" class="plan-cta hot">Get Pro at 20% off</a>
+      </article>
+    </div>
+
+    <p class="price-note reveal">The discount stays active for as long as your teacher remains a Slima Educator. Want the full breakdown? <a href="plan.html">See all plans →</a></p>
+  </div>
+</section>
+
+<!-- ════════════════ HOW TO CLAIM ════════════════ -->
+<section class="edu-section dark">
+  <div class="edu-wrap">
+    <div class="edu-head reveal">
+      <div class="edu-eyebrow">How to claim it</div>
+      <h2 class="edu-h2">Three steps. No code to copy.</h2>
+    </div>
+    <div class="steps-grid reveal d1">
+      <div class="step">
+        <div class="num">01</div>
+        <h3>Sign up free</h3>
+        <p>Create your account and open the studio. No card, no commitment — the free tier is yours for as long as you want it.</p>
+      </div>
+      <div class="step">
+        <div class="num">02</div>
+        <h3>Add your teacher</h3>
+        <p>At signup, enter your teacher's <em>name and email</em> in the educator field. That's the whole verification.</p>
+      </div>
+      <div class="step">
+        <div class="num">03</div>
+        <h3>Your 20% applies</h3>
+        <p>We verify against your teacher's educator profile and the discount lands <em>automatically</em> the moment you upgrade.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ PROOF ════════════════ -->
+<section class="edu-section">
+  <div class="edu-wrap">
+    <div class="proof-grid">
+      <div class="reveal">
+        <div class="proof-quote">
+          <div class="stars">★ ★ ★ ★ ★</div>
+          This had been bothering me for ages — but once Slima understood what I was trying to say, the suggested edits never veered off. Superb.
+          <div class="who">Weston · Writer · ACE</div>
+        </div>
+      </div>
+      <div class="proof-stats reveal d1">
+        <div class="proof-stat"><b>86%</b><span>of users finish their first project</span></div>
+        <div class="proof-stat"><b>50K+</b><span>manuscripts in progress</span></div>
+        <div class="proof-stat"><b>3.2M</b><span>words written this month</span></div>
+        <div class="proof-stat"><b>100%</b><span>of your work stays yours</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FAQ ════════════════ -->
+<section class="edu-section">
+  <div class="edu-wrap">
+    <div class="edu-head center reveal">
+      <div class="edu-eyebrow">Student questions</div>
+      <h2 class="edu-h2">The "wait, how does this work?" list.</h2>
+    </div>
+    <div class="faq-list reveal d1">
+      <details class="faq-item" open>
+        <summary>Does Slima write the book for me?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">No. Slima organizes, remembers, and critiques — but the words stay yours. It never auto-generates pages of prose into your manuscript, so the work you submit is your own.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you own or train on my writing?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">No on both. You own 100% of your work. Your manuscript is encrypted, scoped to your account, and never used to train AI models. Your teacher can't see your drafts either — unless you choose to share them.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What does the free plan actually include?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">Both Writing Studio and Script Studio with full editing, version control, cloud sync, offline mode, and export to .docx, .epub, and Markdown. The paid plans add the AI coach and reading reports — but the studio itself is free forever.</div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I get the 20% student discount?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">When you sign up, enter your teacher's name and email in the educator field. We verify against their educator profile and apply 20% off Starter or Pro automatically — no promo code needed. The discount stays active as long as your teacher remains a Slima Educator.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I bring in a draft I've already started?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">Yes. Drag in a .docx, .md, or plain text file. Slima reads the chapter structure and indexes the whole project, so full-book memory works from day one.</div>
+      </details>
+      <details class="faq-item">
+        <summary>What if I cancel? Do I lose my work?
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </summary>
+        <div class="ans">Never. Cancel any time and you keep full editing, sync, and export on the free tier. Export every chapter — with its version history — to .docx or .md whenever you want. Your work travels with you.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════ FINAL CTA ════════════════ -->
+<section class="final">
+  <div class="edu-wrap reveal">
+    <h2>Stop starting over.<br>Start <em>finishing.</em></h2>
+    <p>Open the studio your teacher trusts, claim your discount, and keep your manuscript moving — across sessions, drafts, and deadlines.</p>
+    <div class="edu-cta-row">
+      <a href="register.html?plan=free&ref=education" class="btn-primary">Start writing free
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="#what-you-get" class="btn-ghost">See everything you get</a>
+    </div>
+    <p class="micro">Free forever plan · No credit card required · 20% off Pro with your teacher</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="index.html" class="footer-logo">
+          <img src="assets/logo.svg" alt="Slima" class="slima-logo">
+        </a>
+        <p>The serif-first writing studio. Where books, screenplays, and essays get finished.</p>
+        <div class="footer-downloads">
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima.dmg">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.03-3.18 2.6-4.71 2.71-4.79-1.48-2.16-3.78-2.46-4.59-2.49-1.95-.2-3.81 1.15-4.81 1.15-1.01 0-2.53-1.13-4.16-1.1-2.13.03-4.11 1.24-5.21 3.16-2.23 3.86-.57 9.57 1.6 12.71 1.06 1.54 2.32 3.27 3.97 3.21 1.6-.07 2.2-1.04 4.13-1.04 1.92 0 2.47 1.04 4.16 1 1.72-.03 2.81-1.57 3.86-3.12 1.22-1.79 1.72-3.52 1.75-3.61-.04-.02-3.36-1.29-3.4-5.08zm-3.16-9.34C14.79 1.62 15.4.16 15.23-1.3c-1.26.05-2.79.84-3.7 1.91-.82.94-1.54 2.45-1.34 3.88 1.41.11 2.85-.71 3.7-1.79z"/></svg>
+            Download for Mac
+          </a>
+          <a href="https://github.com/slima-ai/slima-releases/releases/latest/download/Slima-Setup.exe">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5L10 4.5V11H3V5.5zM3 18.5L10 19.5V13H3V18.5zM11 19.7L21 21V13H11V19.7zM11 4.3V11H21V3L11 4.3z"/></svg>
+            Download for Windows
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="writing-studio.html">Writing Studio</a></li>
+          <li><a href="beta-reader.html">Beta Readers</a></li>
+          <li><a href="script-studio.html">Script Studio</a></li>
+          <li><a href="plan.html">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Templates</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener">Community</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Manifesto</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="mailto:service@slima.ai">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy</a></li>
+          <li><a href="#">Terms</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Slima. All rights reserved. · <a href="mailto:service@slima.ai">service@slima.ai</a></span>
+      <div class="footer-social">
+        <a href="https://www.threads.com/@slima.ai" target="_blank" rel="noopener" aria-label="Threads">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.18 2C6.55 2 2 6.55 2 12.18c0 5.62 4.55 10.18 10.18 10.18s10.18-4.55 10.18-10.18C22.36 6.55 17.81 2 12.18 2zm4.83 9.81c-.41-.21-.86-.39-1.34-.54.05-.42.07-.83.07-1.23 0-1.97-.74-3.34-2.18-3.96-.18-.08-.37-.14-.56-.19-1.04-.27-2.36-.18-3.49.36-.91.43-1.61 1.13-2.06 2.04-.16.31-.04.69.27.85.31.16.69.04.85-.27.32-.66.83-1.16 1.49-1.47.79-.38 1.78-.46 2.61-.21.7.18 1.93.59 2.51 1.78-.4-.07-.8-.11-1.21-.11-2.21 0-4 1.79-4 4 0 2.21 1.79 4 4 4 1.31 0 2.41-.61 3.13-1.6.91.94 1.34 2.27 1.34 3.4 0 1.84-1.85 3.38-4.04 3.38-2.73 0-4.27-2.06-4.59-3.91-.06-.34-.39-.57-.73-.51-.34.06-.57.39-.51.73.39 2.27 2.34 5.04 5.83 5.04 2.85 0 5.31-2.06 5.31-4.73 0-1.32-.4-2.81-1.27-4.05zm-3.32 2.42c-.99 0-1.79-.81-1.79-1.79 0-.99.81-1.79 1.79-1.79.43 0 .85.07 1.25.21-.05.32-.13.64-.23.95-.27.91-.86 1.42-1.02 2.42z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/slima.ai" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".7" fill="currentColor"/></svg>
+        </a>
+        <a href="https://discord.gg/vBh9c7ErXv" target="_blank" rel="noopener" aria-label="Discord">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 00-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 00-4.8 0c-.14-.34-.35-.76-.54-1.09-.01-.02-.04-.03-.07-.03-1.5.26-2.93.71-4.27 1.33-.01 0-.02.01-.03.02-2.72 4.07-3.47 8.03-3.1 11.95 0 .02.01.04.03.05 1.8 1.32 3.53 2.12 5.24 2.65.03.01.06 0 .07-.02.4-.55.76-1.13 1.07-1.74.02-.04 0-.08-.04-.09-.57-.22-1.11-.48-1.64-.78-.04-.02-.04-.08-.01-.11.11-.08.22-.17.33-.25.02-.02.05-.02.07-.01 3.44 1.57 7.15 1.57 10.55 0 .02-.01.05 0 .07.01.11.09.22.17.33.26.04.03.04.09-.01.11-.52.31-1.07.56-1.64.78-.04.01-.05.06-.04.09.32.61.68 1.19 1.07 1.74.03.01.06.02.09.01 1.72-.53 3.45-1.33 5.25-2.65.02-.01.03-.03.03-.05.44-4.53-.73-8.46-3.1-11.95-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12 0 1.17-.83 2.12-1.89 2.12z"/></svg>
+        </a>
+      </div>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="assets/marketing.js"></script>
+<script src="assets/i18n.js"></script>
+</body>
+</html>
